@@ -1,0 +1,4 @@
+IEX_API_KEY = 'sk_c791cd5efbd145868405c61dc0de6c9a'
+ALPHA_VANTAGE_API_KEY = 'A14HOYEGJRE9SXHA'
+
+IEX_BASE_URL = 'https://cloud.iexapis.com/'
