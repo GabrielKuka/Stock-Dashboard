@@ -26,9 +26,9 @@ const StockLists = ({user})=>{
                     stockLists.map(list=>{
                         return(
                             <div key={list.id} className='card' style={{width: '18rem'}}>
-                                <div className='card-body'>
-                                    <h3 className='card-title'>{list.title}</h3>
-                                </div>
+                                <Link className='card-body' to={{pathname: '/stocklist', param1: `${list.title}`}}>
+                                    <h2 className='card-title'>{list.title}</h2>
+                                </Link>
                                 <div className='list-group list-group-flush'>
                                     {list.stocks.map(stonk=>{
                                         const dest = {

@@ -25,6 +25,25 @@ def get_stock_lists(request):
 
 
 @api_view(['GET'])
+def get_list(request, title):
+
+    # Retrieve token
+    token = request.headers['Authorization']
+    user_id = Token.objects.get(key=token).user_id
+
+    try:
+        list = StockList.objects.get(title=title, user=user_id)
+
+        serializer = StockListSerializer(list)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except StockList.DoesNotExist as e:
+        return Response({'Error': 'Does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
 def get_stock_data_view(request, stonk):
 
     url = '{}stable/stock/{}/company?token={}'.format(IEX_BASE_URL, stonk, IEX_API_KEY)

@@ -15,6 +15,15 @@ const getStockLists = async () => {
     return response.data
 }
 
+const getListData = async (title) => {
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const response = await axios.get(`${apiURL}lists/get_list/${title}`, config)
+    return response.data
+}
+
 const getTickerPrice = async (ticker) => {
     const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
     const response = await axios.get(url)
@@ -74,4 +83,4 @@ const getTickerNews = async (ticker) => {
     return response.data
 }
 
-export default {getTickerData, getTickerPrice, getHeader, getStockLists}
+export default {getTickerData, getListData, getTickerPrice, getHeader, getStockLists}
