@@ -11,16 +11,20 @@ const getStockLists = async () => {
     const config = {
         headers: {Authorization: `${token}`}
     }
-
     const response = await axios.get(`${apiURL}lists/get_lists`, config)
-
     return response.data
 }
 
 const getTickerPrice = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/quote/latestPrice?token=${iex.api_token}`
+    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
     const response = await axios.get(url)
-    return response.data
+
+    const data = {
+        price: response.data.latestPrice,
+        changePercent: response.data.changePercent
+    }
+
+    return data 
 }
 
 const getTickerData = async (ticker, tickerView) => {
@@ -70,4 +74,4 @@ const getTickerNews = async (ticker) => {
     return response.data
 }
 
-export default {getTickerData, getHeader, getStockLists}
+export default {getTickerData, getTickerPrice, getHeader, getStockLists}

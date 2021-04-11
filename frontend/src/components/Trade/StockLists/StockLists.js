@@ -3,6 +3,8 @@ import tradeService from '../../../services/trade'
 import {Link} from 'react-router-dom'
 import './lists.css'
 
+import StockRow from './StockRow'
+
 const StockLists = ({user})=>{
 
     const [stockLists, setLists] = useState([])
@@ -35,7 +37,7 @@ const StockLists = ({user})=>{
                                         }
                                         return(
                                             <Link key={stonk} to={dest} className='list-group-item list-group-item-action'>
-                                                {stonk}
+                                                <StockRow ticker={stonk} /> 
                                             </Link>
                                     )})}
                                 </div>
