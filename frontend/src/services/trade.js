@@ -15,6 +15,31 @@ const getStockLists = async () => {
     return response.data
 }
 
+const getListData = async (title) => {
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const response = await axios.get(`${apiURL}lists/get_list/${title}`, config)
+    return response.data
+}
+
+const addList = async (payload)=> {
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const url = `${apiURL}lists/addlist`
+    const response = await axios.post(url, payload, config)
+    return response.data
+}
+
+const deleteList = async (id)=>{
+    const url = `${apiURL}lists/delete/${id}`
+    const response = await axios.delete(url)
+    return response.data
+}
+
 const getTickerPrice = async (ticker) => {
     const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
     const response = await axios.get(url)
@@ -25,6 +50,29 @@ const getTickerPrice = async (ticker) => {
     }
 
     return data 
+}
+
+const isTitleValid = async (title)=>{
+    const url = `${apiURL}lists/checktitle/${title}`
+    const response = await axios.get(url)
+    return response.data
+}
+
+const listAction = async (action, data) => {
+    switch(action){
+        case 'ADD':
+            return addList(data)
+        case 'DELETE':
+            return deleteList(data)
+        case 'GET_ALL_LISTS':
+            return getStockLists()
+        case 'GET_LIST_DATA':
+            return getListData(data)
+        case 'CHECK_TITLE':
+            return isTitleValid(data)
+        default:
+            return null;
+    }
 }
 
 const getTickerData = async (ticker, tickerView) => {
@@ -74,4 +122,4 @@ const getTickerNews = async (ticker) => {
     return response.data
 }
 
-export default {getTickerData, getTickerPrice, getHeader, getStockLists}
+export default {getTickerData, listAction, getTickerPrice, getHeader}

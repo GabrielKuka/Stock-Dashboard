@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 import requests
 from .config import IEX_API_KEY, IEX_BASE_URL
 
-from .models import StockList
+from .models import StockList, Stock
 from .serializers import StockListSerializer
 
 @api_view(['GET'])
@@ -23,6 +23,74 @@ def get_stock_lists(request):
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_list(request, title):
+
+    # Retrieve token
+    token = request.headers['Authorization']
+    user_id = Token.objects.get(key=token).user_id
+
+    print(title, user_id)
+
+    try:
+        my_list = StockList.objects.get(title=title, user=user_id)
+
+        serializer = StockListSerializer(my_list)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except StockList.DoesNotExist as e:
+        return Response({'Error': 'Does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def add_list(request):
+
+    # Retrieve user id
+    token = request.headers['Authorization']
+    user = Token.objects.get(key=token).user
+
+    payload = request.data
+
+    try:
+        new_list = StockList(user=user, title=payload['title'])
+        new_list.save()
+        for ticker in payload['stocks']:
+            new_stock = Stock().add_stock(ticker)
+            new_list.stocks.add(new_stock)
+    except:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def check_title(request, title):
+
+    try:
+        title = StockList.objects.get(title=title)
+    except:
+        return Response({'status': True}, status=status.HTTP_200_OK)
+    
+    return Response({'status': False}, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_list(request, id):
+
+    try:
+        my_list = StockList.objects.get(id=id)
+    except StockList.DoesNotExist as e:
+        return Response({"Error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+    data = {}
+
+    operation = my_list.delete()
+
+    if operation:
+        data['success'] = 'Delete successful'
+    else:
+        data['failure'] = 'Delete failed'
+    
+    return Response(data=data, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def get_stock_data_view(request, stonk):

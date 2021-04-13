@@ -6,11 +6,16 @@ import {
     useHistory
  
   } from "react-router-dom" 
+
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
 import Dashboard from './components/Trade/Dashboard/Dashboard'
 import NavBar from './components/Core/NavBar'
+
 import StockLists from './components/Trade/StockLists/StockLists'
+import StockList from './components/Trade/StockLists/StockList'
+import CreateList from './components/Trade/StockLists/CreateList'
+
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
 import { set_user_from_ls, logout } from './reducers/userReducer'
@@ -58,6 +63,14 @@ const App = () => {
 
         <Route exact path='/lists'>
           <StockLists user={user} /> 
+        </Route>
+
+        <Route exact path='/createlist'>
+          <CreateList user={user} /> 
+        </Route>
+
+        <Route exact path='/stocklist/:title'>
+          <StockList /> 
         </Route>
 
         <Route exact path="/register">

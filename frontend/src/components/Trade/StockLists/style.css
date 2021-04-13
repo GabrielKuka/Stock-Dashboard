@@ -1,0 +1,29 @@
+.card-title {
+    color: black;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+.list-options {
+    border: 1px solid black;
+}
+
+.main_wrapper {
+    padding: 2rem;
+}
+
+.header {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.edit-option, .goback-option {
+    margin-left: 1rem;
+}
+
+.create-list-wrapper {
+    border: 2px solid black;
+    margin-top: 5rem;
+    padding: 5rem;
+}

@@ -27,6 +27,12 @@ const Side = (props) => {
         setView(e.target.value)
     }
 
+    useEffect(()=>{
+        if(typeof(props.ticker) !== 'undefined'){
+            submitRequest({'ticker': props.ticker})
+        }
+    }, [])
+
     const submitRequest = async (values) => {
 
         try{
@@ -45,12 +51,6 @@ const Side = (props) => {
             setTimeout(()=>dispatch(errorAlert('')), 3000)
         }
     }
-
-    useEffect(()=>{
-        if(typeof(props.ticker) !== 'undefined'){
-            submitRequest({'ticker': props.ticker})
-        }
-    }, [])
 
     return (
         <Nav className="col-md-12 d-none d-md-block sidebar"
@@ -79,7 +79,7 @@ const Side = (props) => {
                                 <option>News</option>
                                 <option>Technicals</option>
                             </select><span> </span>
-                            <button name='submit' type='submit'>{props.isSubmitting ? 'Loading':'Search'}</button>
+                            <button className='btn btn-primary' name='submit' type='submit'>{props.isSubmitting ? 'Loading':'Search'}</button>
                         </Form>
                     )}
                 </Formik>
