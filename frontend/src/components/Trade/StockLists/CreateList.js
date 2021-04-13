@@ -3,6 +3,8 @@ import {useHistory} from 'react-router-dom'
 import {Formik, useField, Form} from 'formik'
 import * as Yup from 'yup'
 
+import cts from 'check-ticker-symbol'
+
 import tradeService from '../../../services/trade'
 
 import LoggedOut from '../../Core/LoggedOut'
@@ -26,9 +28,10 @@ const CustomTextInput = ({label, ...props}) => {
 
 const AddTitle = (props)=>{
 
-    const isTitleValid = (title) => {
+    const isTitleValid = async (title) => {
         // Make a request to server to see if this title exists
-        return true
+        const response = await tradeService.listAction('CHECK_TITLE', title)
+        return response.status 
     }
 
     return (
@@ -38,10 +41,10 @@ const AddTitle = (props)=>{
                 title: '',
             }}
 
-            onSubmit={(values, {setSubmitting, resetForm})=>{
+            onSubmit={async (values, {setSubmitting, resetForm})=>{
                 resetForm()
                 setSubmitting(false)
-                if(isTitleValid){
+                if(await isTitleValid(values.title)){
                     props.setTitle(values.title)
                 }else {
                     window.alert('A list with this title already exists.')
@@ -60,22 +63,22 @@ const AddTitle = (props)=>{
 
 const AddStocks = (props)=>{
 
-    const [stocks, setStocks] = useState([])
     const [fieldVal, setFieldVal] = useState('')
 
     const addStock = () => {
-        if(isStockValid){ 
-            setStocks(oldStocks => [...oldStocks, fieldVal])
-            setFieldVal('')
+        // Check whether the stock entered is valid and whether it already exists in the list
+        if(!isStockValid(fieldVal)){
+            window.alert('Ticker is not valid!')
+        }else if(props.isPresent(fieldVal)){
+            window.alert('This ticker is already on this list.')
         }else {
-            window.alert('Stock is not valid')
+            props.setStockList(oldStocks => [...oldStocks, fieldVal])
+            setFieldVal('')
         }
     }
 
-    const isStockValid = () => {
-        // Check whether ticker is valid (make a request to alpaca or iex cloud) 
-        var exists = true
-        return exists
+    const isStockValid = (stock) => {
+        return cts.valid(stock)
     }
 
     const handleChange = (e) => {
@@ -91,7 +94,11 @@ const AddStocks = (props)=>{
             onSubmit={(values, {setSubmitting, resetForm})=>{
                 resetForm()
                 setSubmitting(false)
-                props.setStockList(stocks)
+                if(!props.isEmpty){
+                    props.setFinished(true)
+                }else{
+                    window.alert('No stocks have been selected so far.')
+                }
             }}
         >
             {props => (
@@ -110,6 +117,7 @@ const CreateList = ({user}) => {
     const history = useHistory()
     const [title, setTitle] = useState()
     const [stocks, setStocks] = useState([])
+    const [finished, setFinished] = useState(false)
 
     if(!user){
         return <LoggedOut />
@@ -118,6 +126,24 @@ const CreateList = ({user}) => {
     function setListTitle(title){
         setTitle(title)
         console.log(title)
+    }
+
+    const removeStock = (stock)=>{
+        setStocks(stocks.filter(s=>s!==stock))
+    }
+
+    const isEmpty = () =>{
+        return stocks.isEmpty
+    }
+
+    const isPresent = (stock) => {
+        var present = false
+        stocks.forEach(s => {
+            if(s == stock){
+                present = true
+            } 
+        });
+        return present 
     }
 
     const finishList = async ()=>{
@@ -136,37 +162,64 @@ const CreateList = ({user}) => {
 
     const goBack = ()=>{
         // Empty fields 
-        console.log('Going back')
         setStocks([])
+        setFinished(false)
         setTitle('')
     }
 
     return (
-        <div className='container'>
-            <h1>Create a List</h1>
-            {!title && 
-                <AddTitle setTitle={setListTitle}/>
-            }
-            {title && stocks.length == 0 &&  
-                <AddStocks setStockList={setStocks}/>
-            }
-            {stocks.length > 0 && title && 
-                <div className='card'>
-                    <div className='card-body'>
-                        <p className='card-title'>Title: {title}</p>
-                        <label><b>Chosen stocks:</b></label>
-                        <ul>
-                            {stocks.map(stock=>{
-                                return <li key={stock}>{stock}</li>
-                            })}
-                        </ul>
-                        <div className='d-flex justify-content-center'>
-                            <button onClick={()=>finishList()} className='btn btn-success'>Create List</button>
-                            <button onClick={()=>goBack()}className='btn btn-outline-danger goback-option'>Go Back</button>
+        <div className='row justify-content-md-center create-list-wrapper'>
+            <div className='col-md-3'>
+                <h1>Create a List</h1>
+                {!title && 
+                    <AddTitle setTitle={setListTitle}/>
+                }
+                {title && finished == false &&  
+                    <AddStocks isEmpty={isEmpty} setStockList={setStocks} setFinished={setFinished} isPresent={isPresent}/>
+                }
+                {finished == true && title && 
+                    <div className='card'>
+                        <div className='card-body'>
+                            <p className='card-title'>Title: {title}</p>
+                            <label><b>Chosen stocks:</b></label>
+                            <ul>
+                                {stocks.map(stock=>{
+                                    return <li key={stock}>{stock}</li>
+                                })}
+                            </ul>
+                            <div className='d-flex justify-content-center'>
+                                <button onClick={()=>finishList()} className='btn btn-success'>Create List</button>
+                                <button onClick={()=>goBack()}className='btn btn-outline-danger goback-option'>Go Back</button>
+                            </div>
                         </div>
                     </div>
+                }
+            </div>
+            <div className='col-md-3'>
+            </div>
+            <div className='col-md-3'>
+                <div className='card'>
+                    <div className='card-body'>
+                        <table class='table'>
+                            <thead>
+                                <tr key='list-title' className='card-title'><td>Current List</td></tr>
+                            </thead>
+                            <tbody>
+                                {stocks.length > 0 && stocks.map(stock=>{
+                                    return (<tr>
+                                        <td className='row'>
+                                            <div className='col-md-5'>{stock}</div>
+                                            <div className='col-md-3'></div>
+                                            <div className='col-md-2'></div>
+                                            <button onClick={()=>removeStock(stock)} className='col-md-2 btn btn-danger btn-sm'> X </button>
+                                        </td>
+                                        </tr>)
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            }
+            </div>
         </div>
     )
 }

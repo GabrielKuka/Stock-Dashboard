@@ -21,3 +21,9 @@
 .edit-option, .goback-option {
     margin-left: 1rem;
 }
+
+.create-list-wrapper {
+    border: 2px solid black;
+    margin-top: 5rem;
+    padding: 5rem;
+}

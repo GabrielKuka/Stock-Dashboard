@@ -63,6 +63,16 @@ def add_list(request):
 
     return Response(status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+def check_title(request, title):
+
+    try:
+        title = StockList.objects.get(title=title)
+    except:
+        return Response({'status': True}, status=status.HTTP_200_OK)
+    
+    return Response({'status': False}, status=status.HTTP_200_OK)
+
 @api_view(['DELETE'])
 def delete_list(request, id):
 

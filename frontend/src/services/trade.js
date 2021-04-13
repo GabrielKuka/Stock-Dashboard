@@ -52,6 +52,12 @@ const getTickerPrice = async (ticker) => {
     return data 
 }
 
+const isTitleValid = async (title)=>{
+    const url = `${apiURL}lists/checktitle/${title}`
+    const response = await axios.get(url)
+    return response.data
+}
+
 const listAction = async (action, data) => {
     switch(action){
         case 'ADD':
@@ -62,6 +68,8 @@ const listAction = async (action, data) => {
             return getStockLists()
         case 'GET_LIST_DATA':
             return getListData(data)
+        case 'CHECK_TITLE':
+            return isTitleValid(data)
         default:
             return null;
     }
@@ -114,4 +122,4 @@ const getTickerNews = async (ticker) => {
     return response.data
 }
 
-export default {getTickerData, listAction, addList, deleteList, getListData, getTickerPrice, getHeader, getStockLists}
+export default {getTickerData, listAction, getTickerPrice, getHeader}
