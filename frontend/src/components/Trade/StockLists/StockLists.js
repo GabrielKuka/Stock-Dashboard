@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import tradeService from '../../../services/trade'
 import {Link} from 'react-router-dom'
-import './lists.css'
+import './style.css'
 
 import StockRow from './StockRow'
 
@@ -12,7 +12,7 @@ const StockLists = ({user})=>{
 
     useEffect(()=>{
         const fetchData = async()=>{
-            const result = await tradeService.getStockLists()
+            const result = await tradeService.listAction('GET_ALL_LISTS')
             setLists(result)
         }
         fetchData()
@@ -26,7 +26,7 @@ const StockLists = ({user})=>{
                     stockLists.map(list=>{
                         return(
                             <div key={list.id} className='card' style={{width: '18rem'}}>
-                                <Link className='card-body' to={{pathname: '/stocklist', param1: `${list.title}`}}>
+                                <Link className='card-body' to={'/stocklist/' + list.title}>
                                     <h2 className='card-title'>{list.title}</h2>
                                 </Link>
                                 <div className='list-group list-group-flush'>
@@ -53,7 +53,10 @@ const StockLists = ({user})=>{
         <div className='main_wrapper'>
             {user &&
                 <div>
-                    <p className='header'>My stock lists:</p>
+                    <p className='header'>
+                       <Link className='btn btn-outline-dark' to='/createlist'>+</Link><span> </span>
+                        My stock lists:
+                        </p>
                     <Lists />
                 </div>
             }

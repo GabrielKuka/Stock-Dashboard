@@ -11,8 +11,10 @@ import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
 import Dashboard from './components/Trade/Dashboard/Dashboard'
 import NavBar from './components/Core/NavBar'
+
 import StockLists from './components/Trade/StockLists/StockLists'
 import StockList from './components/Trade/StockLists/StockList'
+import CreateList from './components/Trade/StockLists/CreateList'
 
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
@@ -63,7 +65,11 @@ const App = () => {
           <StockLists user={user} /> 
         </Route>
 
-        <Route exact path='/stocklist'>
+        <Route exact path='/createlist'>
+          <CreateList user={user} /> 
+        </Route>
+
+        <Route exact path='/stocklist/:title'>
           <StockList /> 
         </Route>
 
