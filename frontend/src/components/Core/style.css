@@ -1,0 +1,16 @@
+nav {
+    background-color: #00276c!important;
+}
+
+.profile-wrapper {
+    padding: 2rem;
+    max-width: 100%;
+}
+
+.profile-data {
+    margin: 2rem 2rem 2rem 2rem;
+}
+
+.trades-watchlists {
+    margin: 2rem 2rem 2rem 2rem;
+}

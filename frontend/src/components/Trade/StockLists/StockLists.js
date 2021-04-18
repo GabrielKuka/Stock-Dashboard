@@ -9,7 +9,6 @@ const StockLists = ({user})=>{
 
     const [stockLists, setLists] = useState([])
     
-
     useEffect(()=>{
         const fetchData = async()=>{
             const result = await tradeService.listAction('GET_ALL_LISTS')
@@ -50,7 +49,7 @@ const StockLists = ({user})=>{
     }
 
     return(
-        <div className='main_wrapper'>
+        <div className='main_wrapper body'>
             {user &&
                 <div>
                     <p className='header'>

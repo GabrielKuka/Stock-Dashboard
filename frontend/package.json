@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -21,6 +22,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "web-vitals": "^1.1.1",
+    "websocket": "^1.0.33",
     "yup": "^0.32.9"
   },
   "scripts": {

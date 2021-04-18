@@ -26,7 +26,7 @@ const StockRow = ({ticker}) => {
         }
     }
 
-    return (<div className='row'>
+    return (<div className='row stock-row'>
         <div className='col-sm'>{ticker}</div>
         <div className='col-sm'>${data.price}</div>
         <div className='col-sm' style={changeStyle()}>{Number(100*data.changePercent).toFixed(2)}%</div>

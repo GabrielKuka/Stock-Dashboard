@@ -12,7 +12,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 const renderApp = () => {
   ReactDOM.render(
 
-  <Provider store={store} >
+  <Provider store={store} className='body'>
     <Router>
     <App />   
     </Router>

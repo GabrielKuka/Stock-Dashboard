@@ -11,10 +11,13 @@ import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
 import Dashboard from './components/Trade/Dashboard/Dashboard'
 import NavBar from './components/Core/NavBar'
+import Profile from './components/Core/Profile'
 
 import StockLists from './components/Trade/StockLists/StockLists'
 import StockList from './components/Trade/StockLists/StockList'
 import CreateList from './components/Trade/StockLists/CreateList'
+
+import {Socket} from './services/socket'
 
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,8 +47,8 @@ const App = () => {
   }
 
   return (
-    <div>
-
+    <div >
+      <Socket />
     <Router>
 
       <CustomAlert/>
@@ -55,6 +58,10 @@ const App = () => {
         
         <Route exact path='/test'>
           <Test />
+        </Route>
+
+        <Route exact path='/profile/:name'>
+          <Profile user={user} />
         </Route>
 
         <Route exact path="/dashboard">

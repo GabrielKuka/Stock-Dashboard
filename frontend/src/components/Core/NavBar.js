@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
-
+import './style.css'
  
 const styles = {
     root: {
@@ -22,14 +22,16 @@ const NavBar = ({user, handleLogout}) => {
 
     
     return(
-      <nav id='nav'className="navbar navbar-expand-lg navbar-dark bg-primary rounded">
+      <nav id='nav'className="navbar navbar-expand-lg">
         <a className="navbar-brand" style={styles.link} href="/">Pernet</a>
       {
       user
       ?
         <ul className="navbar-nav ml-auto">
           <li className="nav-item active">
-          <Link style={styles.link} className="nav-link"  to="/me">My Profile</Link>
+          <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
+              My Profile
+          </Link>
           </li>
 
           <li className="nav-item">

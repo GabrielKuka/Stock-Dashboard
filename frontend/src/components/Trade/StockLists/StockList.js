@@ -30,7 +30,7 @@ const TickerRow = ({ticker})=>{
     }, [])
 
     return(
-        <tr>
+        <tr style={{backgroundColor: 'white', color: 'black'}}>
             <td>{ticker}</td>
             <td>$<span> </span>{tickerData.price}</td>
             <td style={changeStyle()}><span> </span>{Helper.formatChangePercent(tickerData.changePercent)}%</td>
@@ -78,8 +78,8 @@ const StockList = ()=>{
     return (
         <div className='container fluid'>
             <div className='card' style={{marginTop: '2rem'}}>
-                <h2 className='card-title'>{title}</h2>
                 <div className='card-body'>
+                    <h2 className='card-title'>{title}</h2>
                     <table className='table table-bordered table-sm table-hover'>
                         <thead className='table-dark'>
                             <tr key='header'>
