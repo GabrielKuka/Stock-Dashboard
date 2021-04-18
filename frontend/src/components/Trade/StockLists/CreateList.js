@@ -94,7 +94,7 @@ const AddStocks = (props)=>{
             onSubmit={(values, {setSubmitting, resetForm})=>{
                 resetForm()
                 setSubmitting(false)
-                if(!props.isEmpty){
+                if(!props.isEmpty()){
                     props.setFinished(true)
                 }else{
                     window.alert('No stocks have been selected so far.')
@@ -133,7 +133,7 @@ const CreateList = ({user}) => {
     }
 
     const isEmpty = () =>{
-        return stocks.isEmpty
+        return true ? stocks.length ==0 :false 
     }
 
     const isPresent = (stock) => {
@@ -168,37 +168,37 @@ const CreateList = ({user}) => {
     }
 
     return (
-        <div className='row justify-content-md-center create-list-wrapper'>
-            <div className='col-md-3'>
-                <h1>Create a List</h1>
-                {!title && 
-                    <AddTitle setTitle={setListTitle}/>
-                }
-                {title && finished == false &&  
-                    <AddStocks isEmpty={isEmpty} setStockList={setStocks} setFinished={setFinished} isPresent={isPresent}/>
-                }
-                {finished == true && title && 
-                    <div className='card'>
-                        <div className='card-body'>
-                            <p className='card-title'>Title: {title}</p>
-                            <label><b>Chosen stocks:</b></label>
-                            <ul>
-                                {stocks.map(stock=>{
-                                    return <li key={stock}>{stock}</li>
-                                })}
-                            </ul>
-                            <div className='d-flex justify-content-center'>
-                                <button onClick={()=>finishList()} className='btn btn-success'>Create List</button>
-                                <button onClick={()=>goBack()}className='btn btn-outline-danger goback-option'>Go Back</button>
+        <div className='row create-list-wrapper'>
+            <div className='col-md-6 card shadow p-3 mb-5 rounded add-list-data'>
+                <div className='card-body'>
+                    <h1>Create a List</h1>
+                    {!title && 
+                        <AddTitle setTitle={setListTitle}/>
+                    }
+                    {title && finished == false &&  
+                        <AddStocks isEmpty={isEmpty} setStockList={setStocks} setFinished={setFinished} isPresent={isPresent}/>
+                    }
+                    {finished == true && title && 
+                        <div className='card'>
+                            <div className='card-body'>
+                                <p className='card-title'>Title: {title}</p>
+                                <label><b>Chosen stocks:</b></label>
+                                <ul>
+                                    {stocks.map(stock=>{
+                                        return <li key={stock}>{stock}</li>
+                                    })}
+                                </ul>
+                                <div className='d-flex justify-content-center'>
+                                    <button onClick={()=>finishList()} className='btn btn-success'>Create List</button>
+                                    <button onClick={()=>goBack()}className='btn btn-outline-danger goback-option'>Go Back</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-            <div className='col-md-3'>
-            </div>
-            <div className='col-md-3'>
-                <div className='card'>
+            <div className='col-md-3 look-list-data'>
+                <div className='card shadow p-3 mb-5 rounded'>
                     <div className='card-body'>
                         <table class='table'>
                             <thead>
@@ -206,7 +206,7 @@ const CreateList = ({user}) => {
                             </thead>
                             <tbody>
                                 {stocks.length > 0 && stocks.map(stock=>{
-                                    return (<tr>
+                                    return (<tr key={stock}>
                                         <td className='row'>
                                             <div className='col-md-5'>{stock}</div>
                                             <div className='col-md-3'></div>
