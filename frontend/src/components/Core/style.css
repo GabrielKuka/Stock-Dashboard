@@ -3,14 +3,14 @@ nav {
 }
 
 .profile-wrapper {
-    padding: 2rem;
+    padding: 1rem;
     max-width: 100%;
 }
 
 .profile-data {
-    margin: 2rem 2rem 2rem 2rem;
+    margin: 2rem 1rem 2rem 2rem;
 }
 
 .trades-watchlists {
-    margin: 2rem 2rem 2rem 2rem;
+    margin: 2rem 1rem 2rem 1rem;
 }

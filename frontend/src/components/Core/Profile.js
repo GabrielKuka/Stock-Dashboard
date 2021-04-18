@@ -1,10 +1,25 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 
 import LoggedOut from './LoggedOut'
+import StockLists from '../Trade/StockLists/StockLists'
+
+import tradeService from '../../services/trade'
 
 import './style.css'
 
 const Profile = ({user})=>{
+
+    const [stockLists, setLists] = useState([])
+
+    useEffect(()=>{
+        const fetchData = async()=>{
+            const result = await tradeService.listAction('GET_ALL_LISTS')
+            console.log(result)
+            setLists(result)
+        }
+        fetchData()
+    }, [])
 
     if(!user){
         return <LoggedOut/>
@@ -44,25 +59,7 @@ const Profile = ({user})=>{
                         </div>
                     </div>
                 </div>
-                <div className='card trades-watchlists shadow p-3 mb-5 rounded'>
-                    <div className='card-body'>
-                        <p className='card-title'>Watchlists</p>
-                        <div>
-                            Cras sodales purus nibh, sit amet euismod orci mollis vitae. Nullam fringilla elit 
-                            ac venenatis ornare. Nulla ac euismod purus, sed finibus nisl. Nam lacinia tempor dolor, 
-                            sed volutpat massa sodales et. Fusce vitae blandit leo, a mollis dui. Sed sem nisl, pharetra ut 
-                            blandit at, ultricies iaculis velit. Donec ex sapien, pellentesque ut lectus sit amet, tincidunt 
-                            dapibus leo.
-
-                            Donec tincidunt auctor egestas. Suspendisse gravida metus eget nulla malesuada, in mattis 
-                            mauris vehicula. Suspendisse malesuada diam odio, non pulvinar dui fringilla at. 
-                            Cras ex sem, tempus et iaculis nec, aliquet ut ex. Donec augue augue, pellentesque id 
-                            feugiat a, euismod ac lorem. Aenean congue, mauris sed ullamcorper mattis, justo nulla 
-                            pulvinar sapien, non tristique ligula nisi non lacus. Quisque arcu lacus, congue vitae augue 
-                            vitae, hendrerit tempor justo.
-                        </div>
-                    </div>
-                </div>
+                <StockLists user={user} />
             </div>
         </div>
     )

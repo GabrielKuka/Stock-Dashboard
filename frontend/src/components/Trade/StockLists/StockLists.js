@@ -24,7 +24,7 @@ const StockLists = ({user})=>{
                 {stockLists && 
                     stockLists.map(list=>{
                         return(
-                            <div key={list.id} className='card' style={{width: '18rem'}}>
+                            <div key={list.id} className='card shadow p-3 mb-5 rounded' style={{width: '16em'}}>
                                 <Link className='card-body' to={'/stocklist/' + list.title}>
                                     <h2 className='card-title'>{list.title}</h2>
                                 </Link>
