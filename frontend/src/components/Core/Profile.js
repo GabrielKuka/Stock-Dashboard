@@ -28,7 +28,7 @@ const Profile = ({user})=>{
     return(
         <div className='row profile-wrapper'>
             <div className='col-md-4'>
-                <div className='card profile-data shadow p-3 mb-5'>
+                <div className='card profile-data shadow p-3 mb-5 '>
                     <div className='card-body'>
                         <h2 className='card-title'>{user.name}</h2>
                         <div>
