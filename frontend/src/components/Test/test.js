@@ -1,19 +1,22 @@
-import React, {useState, useEffect} from 'react'
-import {useDispatch} from 'react-redux'
-import {changeListen, setTickers} from '../../reducers/socketReducer'
+import React, {useEffect, useContext} from 'react'
+import {WebSocketContext} from '../../services/socket'
+import {useSelector} from 'react-redux'
+
+import socketReducer from '../../reducers/socketReducer'
 
 const Test = ()=>{
-    const dispatch = useDispatch()
-    const [price, setPrice] = useState()
-    const tickers = ['SPY', 'QQQ', 'DIA']
+    const ticker = 'SPY' 
+
+    const ws = useContext(WebSocketContext) 
+    const price = useSelector(({socket})=>socket.tickers.price)
+
+    console.log(price)
 
     useEffect(()=>{
-            dispatch(changeListen('listen'))
-            dispatch(setTickers(tickers))
+            ws.listen(ticker)
         return ()=>{
             // unlisten                
-            dispatch(changeListen('unlisten'))
-            dispatch(setTickers([]))
+            ws.unlisten(ticker)
         }
     },[])
 

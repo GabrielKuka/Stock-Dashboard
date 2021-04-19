@@ -17,7 +17,8 @@ import StockLists from './components/Trade/StockLists/StockLists'
 import StockList from './components/Trade/StockLists/StockList'
 import CreateList from './components/Trade/StockLists/CreateList'
 
-import {Socket} from './services/socket'
+
+import WebSocketProvider from './services/socket'
 
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
@@ -48,16 +49,18 @@ const App = () => {
 
   return (
     <div >
-      <Socket />
     <Router>
 
       <CustomAlert/>
       <NavBar user={user} handleLogout={handleLogout}/>
 
+
       <Switch>
         
         <Route exact path='/test'>
-          <Test />
+          <WebSocketProvider>
+            <Test />
+          </WebSocketProvider>
         </Route>
 
         <Route exact path='/profile/:name'>

@@ -1,26 +1,15 @@
 const initialState = {
-    logInState: false,
-    listenState: 'unlisten',
-    tickers: []
+    tickers: {
+        ticker: '',
+        price: 0
+    } 
 }
 
 const socketReducer = (state=initialState, action)=> {
 
     switch(action.type){
-        case 'SOCKET_LOGIN':
+        case 'UPDATE_DATA':
             return {
-                ...state,
-                logInState: action.data
-            }
-
-        case 'SOCKET_LISTEN':
-            return {
-                ...state,
-                listenState: action.data
-            }
-        case 'SET_TICKERS':
-            return {
-                ...state,
                 tickers: action.data
             }
         default:
@@ -28,23 +17,9 @@ const socketReducer = (state=initialState, action)=> {
     }
 }
 
-export const changeLogin = (status)=>{
+export const updateData = (tickers)=>{
     return {
-        type: 'SOCKET_LOGIN',
-        data: status
-    }
-}
-
-export const changeListen = (status)=>{
-    return {
-        type: 'SOCKET_LISTEN',
-        data: status
-    }
-}
-
-export const setTickers = (tickers)=>{
-    return {
-        type: 'SET_TICKERS',
+        type: 'UPDATE_DATA',
         data: tickers
     }
 }
