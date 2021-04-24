@@ -34,6 +34,16 @@ const addList = async (payload)=> {
     return response.data
 }
 
+const editList = async (payload)=>{
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const url = `${apiURL}lists/editlist`
+    const response = await axios.put(url, payload, config)
+    return response.data
+}
+
 const deleteList = async (id)=>{
     const url = `${apiURL}lists/delete/${id}`
     const response = await axios.delete(url)
@@ -64,6 +74,8 @@ const listAction = async (action, data) => {
             return addList(data)
         case 'DELETE':
             return deleteList(data)
+        case 'UPDATE':
+            return editList(data)
         case 'GET_ALL_LISTS':
             return getStockLists()
         case 'GET_LIST_DATA':

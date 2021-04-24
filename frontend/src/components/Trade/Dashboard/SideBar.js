@@ -23,10 +23,6 @@ const Side = (props) => {
 
     const [currentView, setView] = useState('Overview')
 
-    const onHandleChange = (e)=>{
-        setView(e.target.value)
-    }
-
     useEffect(()=>{
         if(typeof(props.ticker) !== 'undefined'){
             submitRequest({'ticker': props.ticker})
@@ -73,7 +69,7 @@ const Side = (props) => {
                         <Form>
                             <CustomTextInput name='ticker' label='Ticker'/>
                             <span>View</span><br/>
-                            <select onChange={(e)=>onHandleChange(e)} name='view' >
+                            <select onChange={(e)=>setView(e.target.value)} name='view' >
                                 <option>Overview</option>
                                 <option>Stats</option>
                                 <option>News</option>

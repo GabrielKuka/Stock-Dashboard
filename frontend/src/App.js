@@ -16,9 +16,8 @@ import Profile from './components/Core/Profile'
 import StockLists from './components/Trade/StockLists/StockLists'
 import StockList from './components/Trade/StockLists/StockList'
 import CreateList from './components/Trade/StockLists/CreateList'
+import EditList from './components/Trade/StockLists/EditList'
 
-
-import WebSocketProvider from './services/socket'
 
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
@@ -57,39 +56,41 @@ const App = () => {
 
       <Switch>
         
-        <Route exact path='/test'>
-          <WebSocketProvider>
-            <Test />
-          </WebSocketProvider>
-        </Route>
+            <Route exact path='/test'>
+                <Test />
+            </Route>
 
-        <Route exact path='/profile/:name'>
-          <Profile user={user} />
-        </Route>
+          <Route exact path='/profile/:name'>
+            <Profile user={user} />
+          </Route>
 
-        <Route exact path="/dashboard">
-          <Dashboard user={user} />
-        </Route>
+          <Route exact path="/dashboard">
+            <Dashboard user={user} />
+          </Route>
 
-        <Route exact path='/lists'>
-          <StockLists user={user} /> 
-        </Route>
+          <Route exact path='/lists'>
+            <StockLists user={user} /> 
+          </Route>
 
-        <Route exact path='/createlist'>
-          <CreateList user={user} /> 
-        </Route>
+          <Route exact path='/createlist'>
+            <CreateList user={user} /> 
+          </Route>
 
-        <Route exact path='/stocklist/:title'>
-          <StockList /> 
-        </Route>
+          <Route exact path='/editlist/:title'>
+            <EditList user={user} /> 
+          </Route>
 
-        <Route exact path="/register">
-          <Register />
-        </Route>
+          <Route exact path='/stocklist/:title'>
+            <StockList /> 
+          </Route>
 
-        <Route exact path="/login">
-          <Login />
-        </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+
+          <Route exact path="/login">
+            <Login />
+          </Route>
 
       </Switch>
     </Router>

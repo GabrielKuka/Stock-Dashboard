@@ -1,25 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react'
 
 import LoggedOut from './LoggedOut'
 import StockLists from '../Trade/StockLists/StockLists'
 
-import tradeService from '../../services/trade'
 
 import './style.css'
 
 const Profile = ({user})=>{
-
-    const [stockLists, setLists] = useState([])
-
-    useEffect(()=>{
-        const fetchData = async()=>{
-            const result = await tradeService.listAction('GET_ALL_LISTS')
-            console.log(result)
-            setLists(result)
-        }
-        fetchData()
-    }, [])
 
     if(!user){
         return <LoggedOut/>

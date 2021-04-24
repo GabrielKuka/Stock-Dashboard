@@ -8,7 +8,7 @@ const initialState = {
 const socketReducer = (state=initialState, action)=> {
 
     switch(action.type){
-        case 'UPDATE_DATA':
+        case 'DATA_UPDATED':
             return {
                 tickers: action.data
             }
@@ -19,7 +19,7 @@ const socketReducer = (state=initialState, action)=> {
 
 export const updateData = (tickers)=>{
     return {
-        type: 'UPDATE_DATA',
+        type: 'DATA_UPDATED',
         data: tickers
     }
 }

@@ -1,24 +1,28 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import tradeService from '../../../services/trade'
-
+import Helper from '../../../services/Helper'
 import './style.css'
+
 
 const StockRow = ({ticker}) => {
 
-    const [data, setPrice] = useState([])
+    const [initChange, setInitChange] = useState()
+    const [price, setPrice] = useState(0)
 
     useEffect(()=>{
-        const fetchPrice = async()=>{
-            // Make request here
-            const response = await tradeService.getTickerPrice(ticker) 
-            setPrice(response)
+        const fetchInitialPrice = async()=>{
+            
+            const response = await tradeService.getTickerPrice(ticker)
+            const price = response.price
+            setPrice(price)
+            setInitChange(response.changePercent)
         }
 
-        fetchPrice()
+        fetchInitialPrice()
     }, [])
 
     const changeStyle = ()=>{
-        const changeColor = data.changePercent > 0 ? 'green' : 'red'
+        const changeColor = initChange > 0 ? 'green' : 'red'
 
         return {
             color: changeColor, 
@@ -26,11 +30,13 @@ const StockRow = ({ticker}) => {
         }
     }
 
-    return (<div className='row stock-row'>
-        <div className='col-sm'>{ticker}</div>
-        <div className='col-sm'>${data.price}</div>
-        <div className='col-sm' style={changeStyle()}>{Number(100*data.changePercent).toFixed(2)}%</div>
-    </div>)
+    return (
+        <div className='row stock-row'>
+            <div className='col-sm'>{ticker}</div>
+            <div className='col-sm'>${Helper.formatPrice(price)}</div>
+            <div className='col-sm' style={changeStyle()}>{Number(100*initChange).toFixed(2)}%</div>
+        </div>
+    )
 } 
 
 export default StockRow

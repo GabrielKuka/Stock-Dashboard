@@ -6,6 +6,7 @@ from .views import (get_stock_data_view,
                     delete_list,
                     add_list,
                     check_title,
+                    edit_list
                      )
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
     path('lists/get_list/<str:title>', get_list, name='stock-list'),
     path('lists/delete/<int:id>', delete_list, name='delete-list'),
     path('lists/addlist', add_list, name='add-list'),
+    path('lists/editlist', edit_list, name='edit-list'),
     path('lists/checktitle/<str:title>', check_title, name='check-title'),
 ]

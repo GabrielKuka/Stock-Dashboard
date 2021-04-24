@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Formik, useField, Form} from 'formik'
-import * as Yup from 'yup'
 
-import cts from 'check-ticker-symbol'
+import Helper from '../../../services/Helper'
 
 import tradeService from '../../../services/trade'
 
@@ -67,7 +66,7 @@ const AddStocks = (props)=>{
 
     const addStock = () => {
         // Check whether the stock entered is valid and whether it already exists in the list
-        if(!isStockValid(fieldVal)){
+        if(!Helper.isStockValid(fieldVal)){
             window.alert('Ticker is not valid!')
         }else if(props.isPresent(fieldVal)){
             window.alert('This ticker is already on this list.')
@@ -75,14 +74,6 @@ const AddStocks = (props)=>{
             props.setStockList(oldStocks => [...oldStocks, fieldVal])
             setFieldVal('')
         }
-    }
-
-    const isStockValid = (stock) => {
-        return cts.valid(stock)
-    }
-
-    const handleChange = (e) => {
-        setFieldVal(e.target.value)
     }
 
     return (
@@ -103,7 +94,7 @@ const AddStocks = (props)=>{
         >
             {props => (
                 <Form>
-                    <CustomTextInput name='stock' label='Add Stock' value={fieldVal} onChange={(e)=>handleChange(e)}/>
+                    <CustomTextInput name='stock' label='Add Stock' value={fieldVal} onChange={(e)=>setFieldVal(e.target.value)}/>
                     <button type='button' className='btn btn-outline-info' onClick={()=>addStock()}>Add Stock</button> <span> </span>
                     <button type='submit' className='btn btn-primary'>{props.isSubmitting ? 'Creating' : 'Finish'}</button>
                 </Form>
@@ -123,27 +114,18 @@ const CreateList = ({user}) => {
         return <LoggedOut />
     }
 
-    function setListTitle(title){
-        setTitle(title)
-        console.log(title)
-    }
-
     const removeStock = (stock)=>{
         setStocks(stocks.filter(s=>s!==stock))
     }
 
     const isEmpty = () =>{
-        return true ? stocks.length ==0 :false 
+        return true ? stocks.length === 0 :false 
     }
 
     const isPresent = (stock) => {
-        var present = false
-        stocks.forEach(s => {
-            if(s == stock){
-                present = true
-            } 
-        });
-        return present 
+        for(let i = 0; i < stocks.length; i++)
+            if(stock === stocks[i]) return true
+        return false
     }
 
     const finishList = async ()=>{
@@ -173,12 +155,12 @@ const CreateList = ({user}) => {
                 <div className='card-body'>
                     <h1>Create a List</h1>
                     {!title && 
-                        <AddTitle setTitle={setListTitle}/>
+                        <AddTitle setTitle={setTitle}/>
                     }
-                    {title && finished == false &&  
+                    {title && !finished &&  
                         <AddStocks isEmpty={isEmpty} setStockList={setStocks} setFinished={setFinished} isPresent={isPresent}/>
                     }
-                    {finished == true && title && 
+                    {finished && title && 
                         <div className='card'>
                             <div className='card-body'>
                                 <p className='card-title'>Title: {title}</p>

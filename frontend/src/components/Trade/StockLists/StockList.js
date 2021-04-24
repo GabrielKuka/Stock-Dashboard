@@ -2,41 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {useParams, useHistory} from 'react-router-dom'
 import tradeService from '../../../services/trade'
-import Helper from '../../../services/Helper'
 import LoggedOut from '../../Core/LoggedOut'
+
+import TickerRow from './TickerRow'
 
 import './style.css'
 
-const TickerRow = ({ticker})=>{
-    const [tickerData, setTickerData] = useState([])
-
-    const changeStyle = () => {
-        const changeColor = tickerData.changePercent > 0 ? 'green' : 'red'
-        
-        return {
-            color: changeColor, 
-            fontSize: '0.8rem'
-        }
-    }
-
-    useEffect(()=>{
-        const fetchData = async ()=>{
-            // Retrieve ticker data
-            const response = await tradeService.getTickerPrice(ticker)
-            setTickerData(response) 
-        }
-
-        fetchData()
-    }, [])
-
-    return(
-        <tr style={{backgroundColor: 'white', color: 'black'}}>
-            <td>{ticker}</td>
-            <td>$<span> </span>{tickerData.price}</td>
-            <td style={changeStyle()}><span> </span>{Helper.formatChangePercent(tickerData.changePercent)}%</td>
-        </tr>
-    )
-}
 
 const StockList = ()=>{
 
@@ -72,7 +43,7 @@ const StockList = ()=>{
     }
 
     const handleEdit = () =>{
-        console.log('edit')
+        history.push(`/editlist/${title}`)
     }
 
     return (
@@ -90,7 +61,7 @@ const StockList = ()=>{
                         </thead>
                         <tbody>
                             {tickerList.stocks && tickerList.stocks.map(ticker=>{
-                               return <TickerRow ticker={ticker} key={ticker}/>
+                               return <TickerRow ticker={ticker} edit={false} key={ticker}/>
                             })}
                         </tbody>
                     </table>

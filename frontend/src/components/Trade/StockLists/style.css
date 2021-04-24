@@ -30,3 +30,8 @@
 .add-list-data {
     margin: 0 0 0 10rem;
 }
+
+.editlist-wrapper {
+    margin: 2rem 0 0 0;
+    padding: 1rem 1rem 1rem 1rem;
+}

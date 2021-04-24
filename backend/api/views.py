@@ -59,9 +59,38 @@ def add_list(request):
             new_stock = Stock().add_stock(ticker)
             new_list.stocks.add(new_stock)
     except:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Error creating list'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(status=status.HTTP_201_CREATED)
+
+@api_view(['PUT'])
+def edit_list(request):
+    # Retrieve user id
+    token = request.headers['Authorization']
+    user = Token.objects.get(key=token).user
+
+    payload = request.data
+    title = payload['title']
+    tickers = payload['tickers']
+
+    try:
+        list_item = StockList.objects.filter(user=user, title=title).first()
+    except StockList.DoesNotExist as e:
+        return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+    data = {}
+
+    # Update list 
+    serializer = StockListSerializer(list_item)
+
+    list_item.stocks.clear()
+    for ticker in tickers:
+        new_stock = Stock().add_stock(ticker)
+        list_item.stocks.add(new_stock) 
+    data['success'] = 'Update successful'
+
+    return Response(data=data)
+
 
 @api_view(['GET'])
 def check_title(request, title):

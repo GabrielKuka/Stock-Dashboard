@@ -1,24 +1,24 @@
-import React, {useEffect, useContext} from 'react'
-import {WebSocketContext} from '../../services/socket'
-import {useSelector} from 'react-redux'
-
-import socketReducer from '../../reducers/socketReducer'
+import React, {useState, useMemo, useCallback, useRef} from 'react'
+import tradeService from '../../services/trade'
+import {alpaca, auth_data} from '../../config/alpaca'
+import useWebSocket, {ReadyState} from 'react-use-websocket'
 
 const Test = ()=>{
-    const ticker = 'SPY' 
 
-    const ws = useContext(WebSocketContext) 
-    const price = useSelector(({socket})=>socket.tickers.price)
+    const [socketURL, setSocketURl] = useState(`${alpaca.baseStreamURL}`)
+    const messageHistory = useRef([])
 
-    console.log(price)
+    const {
+        sendMessage,
+        lastMessage,
+        readyState,
+    } = useWebSocket(socketURL, {
+        onOpen: ()=> console.log('Socket open'),
+        onMessage : (msg)=> console.log(JSON.parse(msg.data)),
+        onClose : () => console.log('Socket Closed'),
+        shouldReconnect: (closeEvent)=>true,
+    })
 
-    useEffect(()=>{
-            ws.listen(ticker)
-        return ()=>{
-            // unlisten                
-            ws.unlisten(ticker)
-        }
-    },[])
 
     return(<div>
     </div>)
