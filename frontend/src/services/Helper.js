@@ -1,4 +1,5 @@
 import cts from 'check-ticker-symbol'
+import tradeService from '../services/trade'
 
 const Helper = {
     formatChangePercent: (change) => {
@@ -9,6 +10,16 @@ const Helper = {
     },
     isStockValid: (stock)=>{
         return cts.valid(stock) 
+    },
+    isListEmpty: (list)=>{
+        return true ? list.length === 0 : false
+    },
+    isTitleValid: async (title)=>{
+        if(title.length === 0)
+            return false
+
+        const result = await tradeService.listAction('CHECK_TITLE', title)
+        return result.status
     }
 }
 

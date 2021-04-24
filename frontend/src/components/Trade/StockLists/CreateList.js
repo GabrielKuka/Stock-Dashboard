@@ -27,12 +27,6 @@ const CustomTextInput = ({label, ...props}) => {
 
 const AddTitle = (props)=>{
 
-    const isTitleValid = async (title) => {
-        // Make a request to server to see if this title exists
-        const response = await tradeService.listAction('CHECK_TITLE', title)
-        return response.status 
-    }
-
     return (
 
         <Formik
@@ -43,10 +37,10 @@ const AddTitle = (props)=>{
             onSubmit={async (values, {setSubmitting, resetForm})=>{
                 resetForm()
                 setSubmitting(false)
-                if(await isTitleValid(values.title)){
+                if(await Helper.isTitleValid(values.title)){
                     props.setTitle(values.title)
                 }else {
-                    window.alert('A list with this title already exists.')
+                    window.alert('Title is invalid or another list with this name exists.')
                 }
             }}
         >

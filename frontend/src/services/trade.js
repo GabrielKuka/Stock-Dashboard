@@ -39,7 +39,7 @@ const editList = async (payload)=>{
     const config = {
         headers: {Authorization: `${token}`}
     }
-    const url = `${apiURL}lists/editlist`
+    const url = `${apiURL}lists/editlist/${payload['id']}`
     const response = await axios.put(url, payload, config)
     return response.data
 }

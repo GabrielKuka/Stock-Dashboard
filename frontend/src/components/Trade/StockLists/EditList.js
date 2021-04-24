@@ -11,11 +11,15 @@ import TickerRow from './TickerRow'
 
 import './style.css'
 
+const contentStyle = {
+        marginLeft: '1.5rem'
+}
+
 const CustomTextInput = ({label, ...props}) => {
   const [field, meta] = useField(props)
   return(
     <>
-      {label} 
+      <b>{label}</b> 
       <input type='text' label={label}  {...field} {...props} />
 
     {meta.touched && meta.error ? (
@@ -27,12 +31,9 @@ const CustomTextInput = ({label, ...props}) => {
 
 const AddStocks = (props)=>{
 
-    const formStyle = {
-            marginLeft: '1.5rem'
-    }
 
     return (
-        <div className='card shadow p-2 mb-5 rounded'>
+        <div className='card shadow p-2 mb-5 rounded' style={contentStyle}>
             <div className='card-body'>
                 <Formik 
                     initialValues={{
@@ -54,8 +55,8 @@ const AddStocks = (props)=>{
                 >
                     {props=>(
                         <Form>
-                            <CustomTextInput style={formStyle} name='stock' label='Add Stock'/>
-                            <button type='submit' style={formStyle} className='btn btn-primary'>Add Stock</button>
+                            <CustomTextInput style={contentStyle} name='stock' label='Add Stock'/>
+                            <button type='submit' style={contentStyle} className='btn btn-primary'>Add Stock</button>
                         </Form>
                     )}
                 </Formik>
@@ -68,16 +69,16 @@ const EditList = ({user})=>{
 
     const history = useHistory()
 
-    const title = useParams().title
-    const initialList = useRef()
+    const [title, setTitle] = useState(useParams().title)
+    const listId = useRef()
     const [tickerList, setTickerList] = useState([])
 
     useEffect(()=>{
         const fetchData = async()=>{
-           // Retrieve stock list data 
+           // Retrieve list data 
            const response = await tradeService.listAction('GET_LIST_DATA', title)
            setTickerList(response.stocks)
-           initialList.current = response.stocks
+           listId.current = response.id
         }
 
         fetchData()
@@ -102,16 +103,23 @@ const EditList = ({user})=>{
     }
 
     const finishEdit = async ()=>{
-        // Check if the list is the same
-        if(initialList.current !== tickerList){
-            const payload = {
-                tickers: tickerList,
-                title: title
-            }
-            const result = await tradeService.listAction('UPDATE', payload)
-            console.log(result)
-            history.push(`/stocklist/${title}`) 
+        // Check if title is valid
+        if(!Helper.isTitleValid(title)){
+            window.alert('Invalid title')
         }
+        // Check if the list is empty
+        if(Helper.isListEmpty(tickerList)){
+            window.alert('List is empty.')
+            return 
+        }
+        const payload = {
+            id: listId.current, 
+            tickers: tickerList,
+            title: title
+        }
+        const result = await tradeService.listAction('UPDATE', payload)
+        console.log(result)
+        history.push(`/stocklist/${title}`) 
 
     }
 
@@ -121,7 +129,16 @@ const EditList = ({user})=>{
 
     return (
         <div className='container editlist-wrapper'>
-            <AddStocks addStock={addStock} isPresent={isPresent}/>
+            <div className='d-inline-flex'>
+                <div className='card shadow p-2 mb-5'>
+                    <div className='card-body'>
+                        <label ><b>Change Title</b></label>
+                        <input type='text' name='title' value={title} onChange={(e)=>setTitle(e.target.value)} style={contentStyle}/>
+                    </div>
+                </div>
+
+                <AddStocks addStock={addStock} isPresent={isPresent}/>
+            </div>
             <table className='table table-bordered table-sm '>
                 <thead className='table-dark'>
                     <tr key='header'>

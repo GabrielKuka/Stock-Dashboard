@@ -64,7 +64,7 @@ def add_list(request):
     return Response(status=status.HTTP_201_CREATED)
 
 @api_view(['PUT'])
-def edit_list(request):
+def edit_list(request, id):
     # Retrieve user id
     token = request.headers['Authorization']
     user = Token.objects.get(key=token).user
@@ -74,19 +74,19 @@ def edit_list(request):
     tickers = payload['tickers']
 
     try:
-        list_item = StockList.objects.filter(user=user, title=title).first()
+        list_item = StockList.objects.filter(user=user, id=id).first()
     except StockList.DoesNotExist as e:
         return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     data = {}
 
     # Update list 
-    serializer = StockListSerializer(list_item)
-
     list_item.stocks.clear()
+    list_item.title = title
     for ticker in tickers:
         new_stock = Stock().add_stock(ticker)
         list_item.stocks.add(new_stock) 
+    list_item.save()
     data['success'] = 'Update successful'
 
     return Response(data=data)

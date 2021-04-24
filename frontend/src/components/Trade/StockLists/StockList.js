@@ -51,7 +51,7 @@ const StockList = ()=>{
             <div className='card' style={{marginTop: '2rem'}}>
                 <div className='card-body'>
                     <h2 className='card-title'>{title}</h2>
-                    <table className='table table-bordered table-sm table-hover'>
+                    <table className='table table-bordered table-sm '>
                         <thead className='table-dark'>
                             <tr key='header'>
                                 <td>Stock</td>

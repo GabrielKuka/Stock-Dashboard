@@ -15,6 +15,6 @@ urlpatterns = [
     path('lists/get_list/<str:title>', get_list, name='stock-list'),
     path('lists/delete/<int:id>', delete_list, name='delete-list'),
     path('lists/addlist', add_list, name='add-list'),
-    path('lists/editlist', edit_list, name='edit-list'),
+    path('lists/editlist/<int:id>', edit_list, name='edit-list'),
     path('lists/checktitle/<str:title>', check_title, name='check-title'),
 ]
