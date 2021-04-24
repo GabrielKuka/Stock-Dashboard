@@ -8,6 +8,13 @@ const Helper = {
     formatPrice: (price)=>{
         return Number(price).toFixed(2)
     },
+    formatDateTime: (date)=>{
+        return new Intl.DateTimeFormat("en-GB", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit"
+        }).format(date)
+    },
     isStockValid: (stock)=>{
         return cts.valid(stock) 
     },
