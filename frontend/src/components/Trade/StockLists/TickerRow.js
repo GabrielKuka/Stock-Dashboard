@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import Helper from '../../../services/Helper'
 import tradeService from '../../../services/trade'
 
-const TickerRow = ({ticker, edit, handleDelete})=>{
+const TickerRow = ({ticker, edit, listAction})=>{
     const [tickerData, setTickerData] = useState([])
 
     const changeStyle = () => {
@@ -31,7 +31,7 @@ const TickerRow = ({ticker, edit, handleDelete})=>{
             <td style={changeStyle()}><span> </span>{Helper.formatChangePercent(tickerData.changePercent)}%</td>
             {edit &&
                 <td>
-                    <button onClick={()=>handleDelete(ticker)} className='btn btn-danger'>Delete</button>
+                    <button onClick={()=>listAction({type:'REMOVE_STOCK', data:ticker})} className='btn btn-danger'>Delete</button>
                 </td>
             }
         </tr>

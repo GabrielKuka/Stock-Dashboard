@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {useParams, useHistory} from 'react-router-dom'
 import tradeService from '../../../services/trade'
@@ -7,7 +7,6 @@ import LoggedOut from '../../Core/LoggedOut'
 import TickerRow from './TickerRow'
 
 import './style.css'
-import Helper from '../../../services/Helper'
 import Moment from 'react-moment'
 
 

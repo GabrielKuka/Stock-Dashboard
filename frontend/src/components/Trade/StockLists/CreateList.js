@@ -3,10 +3,12 @@ import {useHistory} from 'react-router-dom'
 import {Formik, useField, Form} from 'formik'
 
 import Helper from '../../../services/Helper'
+import {useDispatch} from 'react-redux'
 
 import tradeService from '../../../services/trade'
 
 import LoggedOut from '../../Core/LoggedOut'
+import {errorModal} from '../../../reducers/modalReducer'
 
 import './style.css'
 
@@ -40,7 +42,7 @@ const AddTitle = (props)=>{
                 if(await Helper.isTitleValid(values.title)){
                     props.setTitle(values.title)
                 }else {
-                    window.alert('Title is invalid or another list with this name exists.')
+                    props.dispatch(errorModal('Title is invalid or another list with this name exists.', true))
                 }
             }}
         >
@@ -54,18 +56,18 @@ const AddTitle = (props)=>{
     )
 }
 
-const AddStocks = (props)=>{
+const AddStocks = ({dispatch, listAction})=>{
 
     const [fieldVal, setFieldVal] = useState('')
 
     const addStock = () => {
         // Check whether the stock entered is valid and whether it already exists in the list
         if(!Helper.isStockValid(fieldVal)){
-            window.alert('Ticker is not valid!')
-        }else if(props.isPresent(fieldVal)){
-            window.alert('This ticker is already on this list.')
+            dispatch(errorModal('Ticker is not valid!', true))
+        }else if(listAction({type:'IS_PRESENT', data: fieldVal})){
+            dispatch(errorModal('This ticker is already on this list.', true))
         }else {
-            props.setStockList(oldStocks => [...oldStocks, fieldVal])
+            listAction({type:'ADD_STOCK', data:fieldVal})
             setFieldVal('')
         }
     }
@@ -79,10 +81,10 @@ const AddStocks = (props)=>{
             onSubmit={(values, {setSubmitting, resetForm})=>{
                 resetForm()
                 setSubmitting(false)
-                if(!props.isEmpty()){
-                    props.setFinished(true)
+                if(!listAction({type:'IS_EMPTY'})){
+                    listAction({type:'FINISHED', data: true})
                 }else{
-                    window.alert('No stocks have been selected so far.')
+                    dispatch(errorModal('No stocks have been selected so far.', true))
                 }
             }}
         >
@@ -100,6 +102,7 @@ const AddStocks = (props)=>{
 const CreateList = ({user}) => {
 
     const history = useHistory()
+    const dispatch = useDispatch()
     const [title, setTitle] = useState()
     const [stocks, setStocks] = useState([])
     const [finished, setFinished] = useState(false)
@@ -108,8 +111,29 @@ const CreateList = ({user}) => {
         return <LoggedOut />
     }
 
+    const listAction = (action)=>{
+        switch(action.type){
+            case 'REMOVE_STOCK':
+                removeStock(action.data)
+            case 'ADD_STOCK':
+                addStock(action.data)
+            case 'IS_EMPTY':
+                return isEmpty()
+            case 'IS_PRESENT':
+                return isPresent(action.data)
+            case 'FINISHED':
+                setFinished(action.data)
+            default:
+                return null
+        }
+    }
+
     const removeStock = (stock)=>{
         setStocks(stocks.filter(s=>s!==stock))
+    }
+
+    const addStock = (stock)=>{
+        setStocks(oldStocks=>[...oldStocks, stock])
     }
 
     const isEmpty = () =>{
@@ -149,10 +173,10 @@ const CreateList = ({user}) => {
                 <div className='card-body'>
                     <h1>Create a List</h1>
                     {!title && 
-                        <AddTitle setTitle={setTitle}/>
+                        <AddTitle setTitle={setTitle} dispatch={dispatch}/>
                     }
                     {title && !finished &&  
-                        <AddStocks isEmpty={isEmpty} setStockList={setStocks} setFinished={setFinished} isPresent={isPresent}/>
+                        <AddStocks dispatch={dispatch} listAction={listAction}/>
                     }
                     {finished && title && 
                         <div className='card'>
@@ -176,7 +200,7 @@ const CreateList = ({user}) => {
             <div className='col-md-3 look-list-data'>
                 <div className='card shadow p-3 mb-5 rounded'>
                     <div className='card-body'>
-                        <table class='table'>
+                        <table className='table'>
                             <thead>
                                 <tr key='list-title' className='card-title'><td>Current List</td></tr>
                             </thead>

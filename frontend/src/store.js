@@ -6,13 +6,15 @@ import userReducer from './reducers/userReducer'
 import alertReducer from './reducers/alertReducer'
 import tradeReducer from './reducers/tradeReducer'
 import socketReducer from './reducers/socketReducer'
+import modalReducer from './reducers/modalReducer'
 
 
 const reducer = combineReducers({
   user: userReducer,
   trade: tradeReducer,
   alert: alertReducer,
-  socket: socketReducer
+  socket: socketReducer,
+  modal: modalReducer
 })
 
 const store = createStore(

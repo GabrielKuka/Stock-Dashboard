@@ -22,7 +22,9 @@ import EditList from './components/Trade/StockLists/EditList'
 import Test from './components/Test/test'
 import { useDispatch, useSelector } from 'react-redux'
 import { set_user_from_ls, logout } from './reducers/userReducer'
+
 import CustomAlert from './components/Core/CustomAlert'
+import CustomModal from './components/Core/modals/CustomModal'
 
 import Cookies from 'js-cookie'
 
@@ -51,6 +53,7 @@ const App = () => {
     <Router>
 
       <CustomAlert/>
+      <CustomModal />
       <NavBar user={user} handleLogout={handleLogout}/>
 
 

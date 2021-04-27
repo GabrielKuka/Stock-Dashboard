@@ -3,6 +3,9 @@ import {Formik, Form, useField} from 'formik'
 import { useParams } from 'react-router'
 import {useHistory} from 'react-router-dom'
 
+import {errorModal} from '../../../reducers/modalReducer'
+import {useDispatch} from 'react-redux'
+
 import Helper from '../../../services/Helper'
 import tradeService from '../../../services/trade'
 
@@ -29,7 +32,7 @@ const CustomTextInput = ({label, ...props}) => {
   );
 }
 
-const AddStocks = (props)=>{
+const AddStocks = ({dispatch, listAction})=>{
 
 
     return (
@@ -43,13 +46,14 @@ const AddStocks = (props)=>{
                     onSubmit={(values, {setSubmitting, resetForm})=>{
                         resetForm()
                         setSubmitting(false)
+                        const stock = values.stock
                         // Add the stock here
-                        if(!Helper.isStockValid(values.stock)){
-                            window.alert(`${values.stock} is not a valid ticker.`)
-                        }else if(props.isPresent(values.stock)){
-                            window.alert(`Ticker ${values.stock} is already in the list.`)
+                        if(!Helper.isStockValid(stock)){
+                            dispatch(errorModal(`Ticker ${stock} is not valid.`, true))
+                        }else if(listAction({type:'IS_PRESENT', data:stock})){
+                            dispatch(errorModal(`Ticker ${stock} is already in the list.`, true))
                         }else {
-                            props.addStock(values.stock) 
+                            listAction({type:'ADD_STOCK', data:stock})
                         }
                     }}
                 >
@@ -68,7 +72,7 @@ const AddStocks = (props)=>{
 const EditList = ({user})=>{
 
     const history = useHistory()
-
+    const dispatch = useDispatch()
     const [title, setTitle] = useState(useParams().title)
     const listId = useRef()
     const [tickerList, setTickerList] = useState([])
@@ -84,8 +88,19 @@ const EditList = ({user})=>{
         fetchData()
     }, [])
 
+    const listAction = (action)=>{
+        switch(action.type){
+            case 'ADD_STOCK':
+                addStock(action.data)
+            case 'REMOVE_STOCK':
+                removeStock(action.data)
+            case 'IS_PRESENT':
+                return isPresent(action.data)
+        }
+    }
+
     const addStock = (stock)=>{
-        setTickerList(prevState=>[...prevState, stock])
+        setTickerList(oldStocks=>[...oldStocks, stock])
     }
 
     const removeStock = (stock)=>{
@@ -105,11 +120,11 @@ const EditList = ({user})=>{
     const finishEdit = async ()=>{
         // Check if title is valid
         if(!Helper.isTitleValid(title)){
-            window.alert('Invalid title')
+            dispatch(errorModal(`Title ${title} is invalid.`, true))
         }
         // Check if the list is empty
         if(Helper.isListEmpty(tickerList)){
-            window.alert('List is empty.')
+            dispatch(errorModal('List is empty.', true))
             return 
         }
         const payload = {
@@ -137,7 +152,7 @@ const EditList = ({user})=>{
                     </div>
                 </div>
 
-                <AddStocks addStock={addStock} isPresent={isPresent}/>
+                <AddStocks dispatch={dispatch} listAction={listAction}/>
             </div>
             <table className='table table-bordered table-sm '>
                 <thead className='table-dark'>
@@ -153,7 +168,7 @@ const EditList = ({user})=>{
                 <tbody>
                     {tickerList.map(stonk=>{
                         return(
-                            <TickerRow key={stonk} ticker={stonk} edit={true} handleDelete={removeStock}/>
+                            <TickerRow key={stonk} ticker={stonk} edit={true} listAction={listAction}/>
                         )
                     })}
                 </tbody>
