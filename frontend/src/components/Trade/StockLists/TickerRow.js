@@ -22,6 +22,9 @@ const TickerRow = ({ticker, edit, listAction})=>{
         }
 
         fetchData()
+        return ()=>{
+            setTickerData([])
+        }
     }, [])
 
     return(
@@ -31,7 +34,7 @@ const TickerRow = ({ticker, edit, listAction})=>{
             <td style={changeStyle()}><span> </span>{Helper.formatChangePercent(tickerData.changePercent)}%</td>
             {edit &&
                 <td>
-                    <button onClick={()=>listAction({type:'REMOVE_STOCK', data:ticker})} className='btn btn-danger'>Delete</button>
+                    <button onClick={()=>listAction({type:'REMOVE_STOCK', data:ticker})} className='btn btn-danger'>X</button>
                 </td>
             }
         </tr>

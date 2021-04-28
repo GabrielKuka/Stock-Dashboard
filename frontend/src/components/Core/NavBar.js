@@ -29,6 +29,12 @@ const NavBar = ({user, handleLogout}) => {
       ?
         <ul className="navbar-nav ml-auto">
           <li className="nav-item active">
+          <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
+             Stock Lists 
+          </Link>
+          </li>
+
+          <li className="nav-item active">
           <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
               My Profile
           </Link>

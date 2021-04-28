@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import tradeService from '../../../services/trade'
 import Helper from '../../../services/Helper'
 import './style.css'

@@ -27,7 +27,7 @@ const CustomTextInput = ({label, ...props}) => {
   );
 }
 
-const AddTitle = (props)=>{
+const AddTitle = ({setTitle, dispatch})=>{
 
     return (
 
@@ -40,9 +40,9 @@ const AddTitle = (props)=>{
                 resetForm()
                 setSubmitting(false)
                 if(await Helper.isTitleValid(values.title)){
-                    props.setTitle(values.title)
+                    setTitle(values.title)
                 }else {
-                    props.dispatch(errorModal('Title is invalid or another list with this name exists.', true))
+                    dispatch(errorModal('Title is invalid or another list with this name exists.'))
                 }
             }}
         >
@@ -63,9 +63,9 @@ const AddStocks = ({dispatch, listAction})=>{
     const addStock = () => {
         // Check whether the stock entered is valid and whether it already exists in the list
         if(!Helper.isStockValid(fieldVal)){
-            dispatch(errorModal('Ticker is not valid!', true))
+            dispatch(errorModal('Ticker is not valid!'))
         }else if(listAction({type:'IS_PRESENT', data: fieldVal})){
-            dispatch(errorModal('This ticker is already on this list.', true))
+            dispatch(errorModal('This ticker is already on this list.'))
         }else {
             listAction({type:'ADD_STOCK', data:fieldVal})
             setFieldVal('')
@@ -84,7 +84,7 @@ const AddStocks = ({dispatch, listAction})=>{
                 if(!listAction({type:'IS_EMPTY'})){
                     listAction({type:'FINISHED', data: true})
                 }else{
-                    dispatch(errorModal('No stocks have been selected so far.', true))
+                    dispatch(errorModal('No stocks have been selected so far.'))
                 }
             }}
         >
@@ -115,14 +115,17 @@ const CreateList = ({user}) => {
         switch(action.type){
             case 'REMOVE_STOCK':
                 removeStock(action.data)
+                break;
             case 'ADD_STOCK':
                 addStock(action.data)
+                break;
             case 'IS_EMPTY':
                 return isEmpty()
             case 'IS_PRESENT':
                 return isPresent(action.data)
             case 'FINISHED':
                 setFinished(action.data)
+                break;
             default:
                 return null
         }

@@ -49,9 +49,9 @@ const AddStocks = ({dispatch, listAction})=>{
                         const stock = values.stock
                         // Add the stock here
                         if(!Helper.isStockValid(stock)){
-                            dispatch(errorModal(`Ticker ${stock} is not valid.`, true))
+                            dispatch(errorModal(`Ticker ${stock} is not valid.`))
                         }else if(listAction({type:'IS_PRESENT', data:stock})){
-                            dispatch(errorModal(`Ticker ${stock} is already in the list.`, true))
+                            dispatch(errorModal(`Ticker ${stock} is already in the list.`))
                         }else {
                             listAction({type:'ADD_STOCK', data:stock})
                         }
@@ -73,7 +73,9 @@ const EditList = ({user})=>{
 
     const history = useHistory()
     const dispatch = useDispatch()
-    const [title, setTitle] = useState(useParams().title)
+
+    const initialTitle = useParams().title
+    const [title, setTitle] = useState(initialTitle)
     const listId = useRef()
     const [tickerList, setTickerList] = useState([])
 
@@ -92,10 +94,14 @@ const EditList = ({user})=>{
         switch(action.type){
             case 'ADD_STOCK':
                 addStock(action.data)
+                break;
             case 'REMOVE_STOCK':
                 removeStock(action.data)
+                break;
             case 'IS_PRESENT':
                 return isPresent(action.data)
+            default:
+                return null
         }
     }
 
@@ -119,12 +125,13 @@ const EditList = ({user})=>{
 
     const finishEdit = async ()=>{
         // Check if title is valid
-        if(!Helper.isTitleValid(title)){
-            dispatch(errorModal(`Title ${title} is invalid.`, true))
+        if(initialTitle !== title && await Helper.isTitleValid(title) === false){
+            dispatch(errorModal(`Title ${title} is invalid.`))
+            return
         }
-        // Check if the list is empty
+        // Check  if the list is empty
         if(Helper.isListEmpty(tickerList)){
-            dispatch(errorModal('List is empty.', true))
+            dispatch(errorModal('List is empty.'))
             return 
         }
         const payload = {

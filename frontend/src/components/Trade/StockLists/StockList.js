@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {useParams, useHistory} from 'react-router-dom'
 import tradeService from '../../../services/trade'
 
@@ -8,12 +8,15 @@ import TickerRow from './TickerRow'
 
 import './style.css'
 import Moment from 'react-moment'
+import { errorModal, promptModal } from '../../../reducers/modalReducer'
 
 
 const StockList = ()=>{
 
     const history = useHistory()
+    const dispatch = useDispatch()
     const user = useSelector(({user})=>user)
+    const confirmPrompt = useSelector(({modal})=>modal.data.confirm)
 
     const title = useParams().title
     const [listDates, setListDates] = useState({})
@@ -34,20 +37,28 @@ const StockList = ()=>{
         fetchData()
     }, [])
 
+    useEffect(()=>{
+        const deleteList = async()=>{
+            if(confirmPrompt){
+                try{
+                    await tradeService.listAction('DELETE', tickerList.id)
+                    history.push('/lists')
+                }catch(exception){
+                    dispatch(errorModal('An Error Occurred'))
+                }
+                dispatch(promptModal('', false, false))
+            }
+        }
+
+        deleteList()
+    }, [confirmPrompt])
+
     if(!user){
         return <LoggedOut />
     }
 
-    const handleDelete = async ()=>{
-        const answer = window.confirm('Are you sure you want to delete the list?')
-        if(answer){
-            try{
-                await tradeService.listAction('DELETE', tickerList.id)
-                history.push('/lists')
-            }catch(exception){
-                window.alert('An Error Occurred')
-            }
-        }
+    const promptDelete = async ()=>{
+        dispatch(promptModal('Are you sure you want to delete the list?'))
     }
 
     const handleEdit = () =>{
@@ -74,7 +85,7 @@ const StockList = ()=>{
                         </tbody>
                     </table>
                     <div className='d-grid'>
-                        <button className='btn btn-danger' onClick={()=>handleDelete()}>
+                        <button className='btn btn-danger' onClick={()=>promptDelete()}>
                             Delete List
                         </button>
 
