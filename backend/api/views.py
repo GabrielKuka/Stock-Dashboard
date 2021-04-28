@@ -95,8 +95,9 @@ def edit_list(request, id):
 @api_view(['GET'])
 def check_title(request, title):
 
+
     try:
-        title = StockList.objects.get(title=title)
+        query = StockList.objects.get(title=title)
     except:
         return Response({'status': True}, status=status.HTTP_200_OK)
     
