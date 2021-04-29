@@ -22,26 +22,26 @@ const NavBar = ({user, handleLogout}) => {
 
     
     return(
-      <nav id='nav'className="navbar navbar-expand-lg sticky-top">
+      <nav id='nav'className="navbar pt-4 pb-4 navbar-expand-lg sticky-top">
         <a className="navbar-brand" style={styles.link} href="/">Pernet</a>
       {
       user
       ?
         <ul className="navbar-nav ml-auto">
           <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
-             Stock Lists 
-          </Link>
+            <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
+              Stock Lists 
+            </Link>
           </li>
 
           <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
-              My Profile
-          </Link>
+            <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
+                My Profile
+            </Link>
           </li>
 
           <li className="nav-item">
-          <button  className="btn btn-danger" style={styles.link} onClick={handleLogout}>Logout</button>
+            <button  className="btn btn-danger" style={styles.link} onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       :

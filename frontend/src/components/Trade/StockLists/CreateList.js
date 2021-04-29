@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Formik, useField, Form} from 'formik'
 
@@ -60,14 +60,15 @@ const AddStocks = ({dispatch, listAction})=>{
 
     const [fieldVal, setFieldVal] = useState('')
 
-    const addStock = () => {
+    const addStock = async () => {
         // Check whether the stock entered is valid and whether it already exists in the list
         if(!Helper.isStockValid(fieldVal)){
             dispatch(errorModal('Ticker is not valid!'))
         }else if(listAction({type:'IS_PRESENT', data: fieldVal})){
             dispatch(errorModal('This ticker is already on this list.'))
         }else {
-            listAction({type:'ADD_STOCK', data:fieldVal})
+            const etf = await Helper.isStockETF(fieldVal)
+            listAction({type:'ADD_STOCK', data:{'ticker': fieldVal, 'isETF': etf}})
             setFieldVal('')
         }
     }
@@ -135,17 +136,17 @@ const CreateList = ({user}) => {
         setStocks(stocks.filter(s=>s!==stock))
     }
 
-    const addStock = (stock)=>{
-        setStocks(oldStocks=>[...oldStocks, stock])
+    const addStock = (data)=>{
+        setStocks(oldStocks=>[...oldStocks, data])
     }
 
     const isEmpty = () =>{
         return true ? stocks.length === 0 :false 
     }
 
-    const isPresent = (stock) => {
+    const isPresent = (ticker) => {
         for(let i = 0; i < stocks.length; i++)
-            if(stock === stocks[i]) return true
+            if(ticker === stocks[i].ticker) return true
         return false
     }
 
@@ -188,7 +189,7 @@ const CreateList = ({user}) => {
                                 <label><b>Chosen stocks:</b></label>
                                 <ul>
                                     {stocks.map(stock=>{
-                                        return <li key={stock}>{stock}</li>
+                                        return <li key={stock.ticker}>{stock.ticker}</li>
                                     })}
                                 </ul>
                                 <div className='d-flex justify-content-center'>
@@ -208,11 +209,11 @@ const CreateList = ({user}) => {
                                 <tr key='list-title' className='card-title'><td>Current List</td></tr>
                             </thead>
                             <tbody>
-                                {stocks.length > 0 && stocks.map(stock=>{
-                                    return (<tr key={stock}>
+                                {stocks && stocks.map(stock=>{
+                                    return (<tr key={stock.ticker}>
                                         <td className='row'>
-                                            <div className='col-md-5'>{stock}</div>
-                                            <div className='col-md-3'></div>
+                                            <div className='col-md-4'>{stock.ticker}</div>
+                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{stock.isETF ? 'ETF' : ''}</div>
                                             <div className='col-md-2'></div>
                                             <button onClick={()=>removeStock(stock)} className='col-md-2 btn btn-danger btn-sm'> X </button>
                                         </td>

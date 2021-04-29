@@ -55,8 +55,8 @@ def add_list(request):
     try:
         new_list = StockList(user=user, title=payload['title'])
         new_list.save()
-        for ticker in payload['stocks']:
-            new_stock = Stock().add_stock(ticker)
+        for stock in payload['stocks']:
+            new_stock = Stock().add_stock(stock)
             new_list.stocks.add(new_stock)
     except:
         return Response({'error': 'Error creating list'}, status=status.HTTP_400_BAD_REQUEST)
@@ -94,7 +94,6 @@ def edit_list(request, id):
 
 @api_view(['GET'])
 def check_title(request, title):
-
 
     try:
         query = StockList.objects.get(title=title)

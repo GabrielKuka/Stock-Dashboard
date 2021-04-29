@@ -20,6 +20,7 @@ const getListData = async (title) => {
     const config = {
         headers: {Authorization: `${token}`}
     }
+    console.log(response.data)
     const response = await axios.get(`${apiURL}lists/get_list/${title}`, config)
     return response.data
 }
@@ -60,6 +61,12 @@ const getTickerPrice = async (ticker) => {
     }
 
     return data 
+}
+
+const getTickerIssueType = async(ticker)=>{
+    const data = await getTickerOverview(ticker)
+
+    return data.issueType 
 }
 
 const isTitleValid = async (title)=>{
@@ -134,4 +141,4 @@ const getTickerNews = async (ticker) => {
     return response.data
 }
 
-export default {getTickerData, listAction, getTickerPrice, getHeader}
+export default {getTickerData, getTickerIssueType, listAction, getTickerPrice, getHeader}
