@@ -15,6 +15,31 @@ const Helper = {
             day: "2-digit"
         }).format(date)
     },
+    formatBirthday: date => {
+        let p = new Intl.DateTimeFormat("en-US", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        }).formatToParts(date).reduce((acc, part)=>{
+            acc[part.type] = part.value
+            return acc
+        }, {})
+
+        return `${p.year}-${p.month}-${p.day}`
+    },
+    getYear: date=>{
+        return new Intl.DateTimeFormat("en-GB", {
+            year: "numeric"
+        }).format(date)
+    },
+    getMonth: date=>{
+        return new Intl.DateTimeFormat("en-GB", {
+            month: "long"
+        }).format(date)
+    },
+    range: (start, stop, step=1)=>{
+        return Array(stop-start).fill(start).map((x,y)=>x+y*step)
+    },
     isStockValid: (stock)=>{
         return cts.valid(stock) 
     },
