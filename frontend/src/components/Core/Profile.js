@@ -6,6 +6,25 @@ import StockLists from '../Trade/StockLists/StockLists'
 
 import './style.css'
 
+const ProfileItem = ({data, label})=>{
+    const itemStyle = {
+        label: {
+            color: 'gray',
+            textDecoration: 'underline',
+            fontSize: '0.8rem'
+        }, 
+        data: {
+            fontSize: '1.3rem',
+        }
+    }
+    return(
+        <div className='list-group-item' >
+            <span style={itemStyle.label}>{label}</span>
+            <p style={itemStyle.data}>{data}</p>
+        </div>
+    )
+}
+
 const Profile = ({user})=>{
 
     if(!user){
@@ -18,9 +37,10 @@ const Profile = ({user})=>{
                 <div className='card profile-data shadow p-3 mb-5 '>
                     <div className='card-body'>
                         <h2 className='card-title'>{user.name}</h2>
-                        <div>
-                            {user.email}<br/>
-                            Here, we are going to find user data
+                        <div className='list-group list-group-flush'>
+                                <ProfileItem data={user.email} label="Email"/>
+                                <ProfileItem data={user.phone} label="Phone Number"/>
+                                <ProfileItem data={user.birthday} label="Date of Birth"/>
                         </div>
                     </div>
                 </div>
