@@ -4,11 +4,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
-import requests
 from .config import IEX_API_KEY, IEX_BASE_URL
 
-from .models import StockList, Stock
-from .serializers import StockListSerializer, StockSerializer
+from .models import StockList, Stock, TopList
+from .serializers import StockListSerializer, StockSerializer, TopListSerializer
+
+from accounts.models import User
+
+import requests
 
 @api_view(['GET'])
 def get_stock_lists(request):
@@ -30,8 +33,6 @@ def get_list(request, title):
     # Retrieve token
     token = request.headers['Authorization']
     user_id = Token.objects.get(key=token).user_id
-
-    print(title, user_id)
 
     try:
         my_list = StockList.objects.get(title=title, user=user_id)
@@ -148,3 +149,66 @@ def get_stock_data_view(request, stonk):
     } 
 
     return Response(company)
+
+# Top List Views
+@api_view(['GET'])
+def get_top_list(request):
+     
+    # Retrieve token
+    token = request.headers['Authorization']
+    user = Token.objects.get(key=token).user
+
+    try:
+        toplist = TopList.objects.get(user=user)
+        serializer = TopListSerializer(toplist)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except TopList.DoesNotExist as e:
+        return Response({"Error":str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PUT'])
+def edit_top_list(request):
+
+    # Retrieve token
+    token = request.headers['Authorization']
+    user_id = Token.objects.get(key=token).user_id
+
+    payload = request.data
+
+    # Edit list here
+    return Response({"status": 'Not ready'}, status=status.HTTP_200_OK)
+        
+@api_view(['DELETE'])
+def delete_top_list(request):
+
+    # Retrieve token
+    token = request.headers['Authorization']
+    user_id = Token.objects.get(key=token).user_id
+
+    # Delete list here
+    return Response({"status": 'Not ready'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def create_top_list(request):
+
+    user_email = request.data['user_email']
+    user = User.objects.get(email=user_email)
+
+    try:
+
+        toplist = TopList(user=user)
+        toplist.save()
+
+        stonks = []
+
+        stonks.append(Stock().add_stock({'ticker': 'SPY', 'issueType': 'et'}))
+        stonks.append(Stock().add_stock({'ticker': 'QQQ', 'issueType': 'et'}))
+        stonks.append(Stock().add_stock({'ticker': 'DIA', 'issueType': 'et'}))
+
+        for stonk in stonks:
+            stonk.toplist = toplist
+            stonk.save()
+
+        return Response({"status":'Created'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({"status":str(e)}, status=status.HTTP_400_BAD_REQUEST) 

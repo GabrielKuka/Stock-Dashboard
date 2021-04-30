@@ -25,7 +25,7 @@ class Stock(models.Model):
         ('Other', ('')),
     ]
 
-    toplist = models.ForeignKey(TopList, models.SET_NULL, null=True)
+    toplist = models.ForeignKey(TopList, models.SET_NULL, null=True, related_name='stocks')
     ticker = models.CharField(max_length=5, primary_key=True)
     issueType = models.CharField(max_length=50, choices=ISSUETYPES, default='')
 

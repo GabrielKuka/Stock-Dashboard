@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import './style.css'
+
+import TopList from '../Trade/StockLists/TopList'
  
 const styles = {
     root: {
@@ -17,6 +19,49 @@ const styles = {
  
 }
 
+const LoggedInNav = ({user, handleLogout})=>{
+
+  return(
+    <>
+      <TopList user={user}/>
+
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item active">
+          <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
+            Stock Lists 
+          </Link>
+        </li>
+
+        <li className="nav-item active">
+          <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
+              My Profile
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <button  className="btn btn-danger" style={styles.link} onClick={handleLogout}>Logout</button>
+        </li>
+      </ul>
+    </>
+  )
+
+}
+
+const LoggedOutNav = ()=>{
+
+  return (
+
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+          <Link  to="/register"><button style={styles.link} className='btn'>Register</button></Link>
+          </li>
+
+          <li className="nav-item">
+          <Link  to="/login"><button style={styles.link} className='btn'>Login</button></Link>
+          </li>
+        </ul>
+  )
+}
 
 const NavBar = ({user, handleLogout}) => {
 
@@ -27,33 +72,9 @@ const NavBar = ({user, handleLogout}) => {
       {
       user
       ?
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item active">
-            <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
-              Stock Lists 
-            </Link>
-          </li>
-
-          <li className="nav-item active">
-            <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
-                My Profile
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <button  className="btn btn-danger" style={styles.link} onClick={handleLogout}>Logout</button>
-          </li>
-        </ul>
+        <LoggedInNav user={user} handleLogout={handleLogout}/>
       :
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-          <Link  to="/register"><button style={styles.link} className='btn'>Register</button></Link>
-          </li>
-
-          <li className="nav-item">
-          <Link  to="/login"><button style={styles.link} className='btn'>Login</button></Link>
-          </li>
-        </ul>
+        <LoggedOutNav />
       }
       </nav>
     )

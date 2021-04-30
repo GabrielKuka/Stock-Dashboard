@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 
+import requests
+
 
 class UserSerializer(serializers.ModelSerializer):
     """ Serializer for the user object """
@@ -14,8 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """ Create a new user with encrypted password and return it """
-        return get_user_model().objects.create_user(**validated_data) 
-    
+        user =  get_user_model().objects.create_user(**validated_data) 
+
+        r = requests.post(url='http://localhost:8000/api/lists/toplist/createtoplist', data={'user_email':user})
+        print(r.json()['status'])
+
+        return user
+
     def update(self, instance, validated_data):
         """ Update a user, setting the password correctly and return it """
         password = validated_data.pop('password', None)

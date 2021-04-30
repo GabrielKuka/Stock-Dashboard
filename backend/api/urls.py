@@ -1,20 +1,18 @@
 from django.urls import path, include
 
-from .views import (get_stock_data_view,
-                    get_stock_lists,
-                    get_list,
-                    delete_list,
-                    add_list,
-                    check_title,
-                    edit_list
-                     )
+from . import views
 
 urlpatterns = [
-    path('data/<str:stonk>', get_stock_data_view, name='stock-data'),
-    path('lists/get_lists', get_stock_lists, name='stock-lists'),
-    path('lists/get_list/<str:title>', get_list, name='stock-list'),
-    path('lists/delete/<int:id>', delete_list, name='delete-list'),
-    path('lists/addlist', add_list, name='add-list'),
-    path('lists/editlist/<int:id>', edit_list, name='edit-list'),
-    path('lists/checktitle/<str:title>', check_title, name='check-title'),
+    path('data/<str:stonk>', views.get_stock_data_view, name='stock-data'),
+    path('lists/get_lists', views.get_stock_lists, name='stock-lists'),
+    path('lists/get_list/<str:title>', views.get_list, name='stock-list'),
+    path('lists/delete/<int:id>', views.delete_list, name='delete-list'),
+    path('lists/addlist', views.add_list, name='add-list'),
+    path('lists/editlist/<int:id>', views.edit_list, name='edit-list'),
+    path('lists/checktitle/<str:title>', views.check_title, name='check-title'),
+
+    path('lists/toplist/gettoplist', views.get_top_list, name='get-top-list'),
+    path('lists/toplist/edittoplist', views.edit_top_list, name='edit-top-list'),
+    path('lists/toplist/deletetoplist', views.delete_top_list, name='delete-top-list'),
+    path('lists/toplist/createtoplist', views.create_top_list, name='create-top-list')
 ]

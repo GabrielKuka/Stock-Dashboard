@@ -5,6 +5,25 @@ import {iex} from '../config/iex'
 const baseURL = 'http://localhost:8000/'
 const apiURL = `${baseURL}api/`
 
+// ~+~+~+~+~+~++~+~+~+~+~+~ List action functions
+const listAction = async (action, data) => {
+    switch(action){
+        case 'ADD':
+            return addList(data)
+        case 'DELETE':
+            return deleteList(data)
+        case 'UPDATE':
+            return editList(data)
+        case 'GET_ALL_LISTS':
+            return getStockLists()
+        case 'GET_LIST_DATA':
+            return getListData(data)
+        case 'CHECK_TITLE':
+            return isTitleValid(data)
+        default:
+            return null;
+    }
+}
 
 const getStockLists = async () => {
     const token = JSON.parse(Cookies.get('user'))['token']
@@ -50,6 +69,52 @@ const deleteList = async (id)=>{
     return response.data
 }
 
+// ~+~+~+~+~+~++~+~+~+~+~+~ Top List functions
+const topListAction = (action, data)=>{
+    switch(action){
+        case 'GET':
+            return getTopList()
+        case 'UPDATE':
+            return editTopList(data)
+        case 'DELETE':
+            return deleteTopList()
+        default:
+            return null
+    }
+}
+
+const getTopList = async ()=>{
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+
+    const url = `${apiURL}lists/toplist/gettoplist`
+    const response = await axios.get(url, config)
+    return response.data
+}
+
+const editTopList = async (payload)=>{
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const url = `${apiURL}lists/toplist/edittoplist`
+    const response = await axios.put(url, config, payload)
+    return response.data
+}
+
+const deleteTopList = async ()=>{
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
+    const url = `${apiURL}lists/toplist/deletetoplist`
+    const response = axios.delete(url, config)
+    return response.data
+}
+
+// ~+~+~+~+~+~++~+~+~+~+~+~ Ticker functions
 const getTickerPrice = async (ticker) => {
     const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
     const response = await axios.get(url)
@@ -74,25 +139,7 @@ const isTitleValid = async (title)=>{
     return response.data
 }
 
-const listAction = async (action, data) => {
-    switch(action){
-        case 'ADD':
-            return addList(data)
-        case 'DELETE':
-            return deleteList(data)
-        case 'UPDATE':
-            return editList(data)
-        case 'GET_ALL_LISTS':
-            return getStockLists()
-        case 'GET_LIST_DATA':
-            return getListData(data)
-        case 'CHECK_TITLE':
-            return isTitleValid(data)
-        default:
-            return null;
-    }
-}
-
+// ~+~+~+~+~+~++~+~+~+~+~+~ Dashboard functions
 const getTickerData = async (ticker, tickerView) => {
     switch(tickerView){
         case 'Overview':
@@ -106,9 +153,22 @@ const getTickerData = async (ticker, tickerView) => {
     }
 }
 
+const getTickerOverview = async (ticker) => {
+    const url = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_token}`
+    const response = await axios.get(url)
+    return response.data
+}
+
 const getTickerStats = async(ticker)=>{
     const url = `${iex.baseURL}/stock/${ticker}/stats?token=${iex.api_token}`
     const response = await axios.get(url)
+    return response.data
+}
+
+const getTickerNews = async (ticker) => {
+    const url = `${iex.baseURL}/stock/${ticker}/news/last/10?token=${iex.api_token}`
+    const response = await axios.get(url)
+    console.log(response.data)
     return response.data
 }
 
@@ -127,17 +187,4 @@ const getHeader = async (ticker) => {
     return data
 }
 
-const getTickerOverview = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_token}`
-    const response = await axios.get(url)
-    return response.data
-}
-
-const getTickerNews = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/news/last/10?token=${iex.api_token}`
-    const response = await axios.get(url)
-    console.log(response.data)
-    return response.data
-}
-
-export default {getTickerData, getTickerIssueType, listAction, getTickerPrice, getHeader}
+export default {getTickerData, getTickerIssueType, topListAction, listAction, getTickerPrice, getHeader}

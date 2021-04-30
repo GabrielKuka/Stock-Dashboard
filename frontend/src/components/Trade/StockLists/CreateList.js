@@ -213,7 +213,7 @@ const CreateList = ({user}) => {
                                     return (<tr key={stock.ticker}>
                                         <td className='row'>
                                             <div className='col-md-4'>{stock.ticker}</div>
-                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{stock.issueType}</div>
+                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{Helper.formatIssueType(stock.issueType)}</div>
                                             <div className='col-md-2'></div>
                                             <button onClick={()=>removeStock(stock)} className='col-md-2 btn btn-danger btn-sm'> X </button>
                                         </td>

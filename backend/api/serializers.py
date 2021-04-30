@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import StockList, Stock
+from .models import StockList, Stock, TopList
 
 
 class StockListSerializer(serializers.ModelSerializer):
@@ -11,4 +11,10 @@ class StockListSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
+        fields = ('__all__')
+
+class TopListSerializer(serializers.ModelSerializer):
+    stocks = StockSerializer(many=True) 
+    class Meta:
+        model = TopList 
         fields = ('__all__')

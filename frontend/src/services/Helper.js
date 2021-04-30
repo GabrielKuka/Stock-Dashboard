@@ -56,6 +56,32 @@ const Helper = {
 
         const result = await tradeService.listAction('CHECK_TITLE', title)
         return result.status
+    },
+    formatIssueType: issueType =>{
+        switch(issueType){
+            case 'et':
+                return 'ETF'
+            case 'cs':
+                return 'Common Stock'
+            case 'ps':
+                return 'Preferred Stock'
+            case 'wt':
+                return 'Warrant'
+            case 'struct':
+                return 'Structured Product'
+            case 'ut':
+                return 'Unit'
+            case 'ad':
+                return 'ADR'
+            case 'cef':
+                return 'Closed End Fund'
+            case 'oef':
+                return 'Open Ended Fund'
+            case 'rt':
+                return 'Right'
+            default:
+                return ''
+        }
     }
 }
 
