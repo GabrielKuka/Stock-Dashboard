@@ -79,8 +79,8 @@ const StockList = ()=>{
                             </tr>
                         </thead>
                         <tbody>
-                            {tickerList.stocks && tickerList.stocks.map(ticker=>{
-                               return <TickerRow ticker={ticker} edit={false} key={ticker}/>
+                            {tickerList.stocks && tickerList.stocks.map(stock=>{
+                               return <TickerRow ticker={stock.ticker} edit={false} key={stock.ticker}/>
                             })}
                         </tbody>
                     </table>

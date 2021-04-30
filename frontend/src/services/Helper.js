@@ -43,8 +43,9 @@ const Helper = {
     isStockValid: (stock)=>{
         return cts.valid(stock) 
     },
-    isStockETF: async (stock)=> {
-        return true ? await tradeService.getTickerIssueType(stock) === 'et' : false 
+    getStockIssueType: async (ticker)=> {
+        const response = await tradeService.getTickerIssueType(ticker)
+        return response
     },
     isListEmpty: (list)=>{
         return true ? list.length === 0 : false

@@ -43,7 +43,7 @@ const AddStocks = ({dispatch, listAction})=>{
                         stock: ''
                     }}
 
-                    onSubmit={(values, {setSubmitting, resetForm})=>{
+                    onSubmit={async (values, {setSubmitting, resetForm})=>{
                         resetForm()
                         setSubmitting(false)
                         const stock = values.stock
@@ -53,7 +53,8 @@ const AddStocks = ({dispatch, listAction})=>{
                         }else if(listAction({type:'IS_PRESENT', data:stock})){
                             dispatch(errorModal(`Ticker ${stock} is already in the list.`))
                         }else {
-                            listAction({type:'ADD_STOCK', data:stock})
+                            const iT = await Helper.getStockIssueType(stock)
+                            listAction({type:'ADD_STOCK', data:{'ticker': stock, 'issueType':iT}})
                         }
                     }}
                 >
@@ -83,6 +84,7 @@ const EditList = ({user})=>{
         const fetchData = async()=>{
            // Retrieve list data 
            const response = await tradeService.listAction('GET_LIST_DATA', title)
+           console.log(response.stocks)
            setTickerList(response.stocks)
            listId.current = response.id
         }
@@ -109,13 +111,13 @@ const EditList = ({user})=>{
         setTickerList(oldStocks=>[...oldStocks, stock])
     }
 
-    const removeStock = (stock)=>{
-        setTickerList(tickerList.filter(t=>t!==stock))
+    const removeStock = (ticker)=>{
+        setTickerList(tickerList.filter(t=>t.ticker!==ticker))
     }
 
-    const isPresent = (stock)=>{
+    const isPresent = (ticker)=>{
         for(let i = 0; i < tickerList.length; i++){
-            if(tickerList[i] === stock){
+            if(tickerList[i].ticker === ticker){
                 return true
             }
         }
@@ -173,9 +175,9 @@ const EditList = ({user})=>{
                     </tr>
                 </thead>
                 <tbody>
-                    {tickerList.map(stonk=>{
+                    {tickerList && tickerList.map(stonk=>{
                         return(
-                            <TickerRow key={stonk} ticker={stonk} edit={true} listAction={listAction}/>
+                            <TickerRow key={stonk.ticker} ticker={stonk.ticker} edit={true} listAction={listAction}/>
                         )
                     })}
                 </tbody>

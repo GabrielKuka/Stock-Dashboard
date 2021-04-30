@@ -67,8 +67,8 @@ const AddStocks = ({dispatch, listAction})=>{
         }else if(listAction({type:'IS_PRESENT', data: fieldVal})){
             dispatch(errorModal('This ticker is already on this list.'))
         }else {
-            const etf = await Helper.isStockETF(fieldVal)
-            listAction({type:'ADD_STOCK', data:{'ticker': fieldVal, 'isETF': etf}})
+            const iT = await Helper.getStockIssueType(fieldVal)
+            listAction({type:'ADD_STOCK', data:{'ticker': fieldVal, 'issueType': iT}})
             setFieldVal('')
         }
     }
@@ -213,7 +213,7 @@ const CreateList = ({user}) => {
                                     return (<tr key={stock.ticker}>
                                         <td className='row'>
                                             <div className='col-md-4'>{stock.ticker}</div>
-                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{stock.isETF ? 'ETF' : ''}</div>
+                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{stock.issueType}</div>
                                             <div className='col-md-2'></div>
                                             <button onClick={()=>removeStock(stock)} className='col-md-2 btn btn-danger btn-sm'> X </button>
                                         </td>

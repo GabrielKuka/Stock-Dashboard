@@ -10,18 +10,33 @@ class TopList(models.Model):
 
 class Stock(models.Model):
 
+    ISSUETYPES = [
+        ('Common Stock', ('cs')),
+        ('ETF', ('et')),
+        ('Preferred Stock', ('ps')),
+        ('Unit', ('ut')),
+        ('Warrant', ('wt')),
+        ('ADR', ('ad')),
+        ('Closed End Fund', ('cef')),
+        ('Open Ended Fund', ('oef')),
+        ('Right', ('rt')),
+        ('Structured Product', ('struct')),
+        ('When Issued', ('wi')),
+        ('Other', ('')),
+    ]
+
     toplist = models.ForeignKey(TopList, models.SET_NULL, null=True)
     ticker = models.CharField(max_length=5, primary_key=True)
-    isETF = models.BooleanField(False)
+    issueType = models.CharField(max_length=50, choices=ISSUETYPES, default='')
 
     def add_stock(self, stock):
         exists = Stock.objects.filter(ticker=stock['ticker'])
         if(exists.count() > 0):
             # Stock already exists
-            print('it already exists')
+            print('It already exists')
             return exists.first()
         else:
-            new_stock = Stock(ticker=stock['ticker'], isETF=stock['isETF']) 
+            new_stock = Stock(ticker=stock['ticker'], issueType=stock['issueType']) 
             new_stock.save()
             return new_stock
 

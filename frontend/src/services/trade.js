@@ -20,7 +20,6 @@ const getListData = async (title) => {
     const config = {
         headers: {Authorization: `${token}`}
     }
-    console.log(response.data)
     const response = await axios.get(`${apiURL}lists/get_list/${title}`, config)
     return response.data
 }

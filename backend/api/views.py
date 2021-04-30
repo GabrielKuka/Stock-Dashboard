@@ -8,7 +8,7 @@ import requests
 from .config import IEX_API_KEY, IEX_BASE_URL
 
 from .models import StockList, Stock
-from .serializers import StockListSerializer
+from .serializers import StockListSerializer, StockSerializer
 
 @api_view(['GET'])
 def get_stock_lists(request):
@@ -37,6 +37,14 @@ def get_list(request, title):
         my_list = StockList.objects.get(title=title, user=user_id)
 
         serializer = StockListSerializer(my_list)
+        stonks = serializer.data['stocks']
+        serializer.data.pop('stocks')
+
+        for i in range(0, len(stonks)):
+            s = Stock.objects.get(ticker=stonks[i])
+            stonks[i] = {'ticker': s.ticker, 'issueType': s.issueType}
+
+        serializer.data['stocks'] = stonks
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
