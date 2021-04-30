@@ -24,7 +24,6 @@ const LoggedInNav = ({user, handleLogout})=>{
   return(
     <>
       <TopList user={user}/>
-
       <ul className="navbar-nav ml-auto">
         <li className="nav-item active">
           <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
@@ -67,12 +66,14 @@ const NavBar = ({user, handleLogout}) => {
 
     
     return(
-      <nav id='nav'className="navbar pt-4 pb-4 navbar-expand-lg sticky-top">
+      <nav id='nav'className="navbar pt-2 pb-2 navbar-expand-lg sticky-top">
         <a className="navbar-brand" style={styles.link} href="/">Pernet</a>
       {
       user
       ?
+      <div className='collapse navbar-collapse'>
         <LoggedInNav user={user} handleLogout={handleLogout}/>
+      </div>
       :
         <LoggedOutNav />
       }

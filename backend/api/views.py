@@ -206,8 +206,7 @@ def create_top_list(request):
         stonks.append(Stock().add_stock({'ticker': 'DIA', 'issueType': 'et'}))
 
         for stonk in stonks:
-            stonk.toplist = toplist
-            stonk.save()
+            toplist.stocks.add(stonk)
 
         return Response({"status":'Created'}, status=status.HTTP_201_CREATED)
     except Exception as e:

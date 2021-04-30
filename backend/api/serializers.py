@@ -14,7 +14,7 @@ class StockSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 class TopListSerializer(serializers.ModelSerializer):
-    stocks = StockSerializer(many=True) 
+    stocks = StockSerializer(many=True)
     class Meta:
         model = TopList 
         fields = ('__all__')

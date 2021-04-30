@@ -3,11 +3,6 @@ from django.conf import settings
 
 from accounts.models import User
 
-class TopList(models.Model):
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    updated_on = models.DateTimeField(auto_now=True)
-
 class Stock(models.Model):
 
     ISSUETYPES = [
@@ -25,7 +20,6 @@ class Stock(models.Model):
         ('Other', ('')),
     ]
 
-    toplist = models.ForeignKey(TopList, models.SET_NULL, null=True, related_name='stocks')
     ticker = models.CharField(max_length=5, primary_key=True)
     issueType = models.CharField(max_length=50, choices=ISSUETYPES, default='')
 
@@ -42,6 +36,12 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.ticker
+
+class TopList(models.Model):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    stocks = models.ManyToManyField(Stock)
+    updated_on = models.DateTimeField(auto_now=True)
 
 class StockList(models.Model):
 

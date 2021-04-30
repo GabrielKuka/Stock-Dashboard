@@ -18,17 +18,6 @@ const TopListItem = ({ticker, issueType})=>{
         fetchPrice()
     },[])
 
-    const itemStyle={
-        color: 'white',
-        border: '1px solid yellow',
-        borderRadius: '0.7rem',
-        title:{
-        },
-        issueType: {
-            fontSize: '0.8rem',
-        }
-    }
-
     const changeStyle = ()=>{
         const changeColor = initChange > 0 ? 'green' : 'red'
         return {
@@ -38,16 +27,15 @@ const TopListItem = ({ticker, issueType})=>{
     }
 
     return(
-        <div className='col-md-4' style={itemStyle}>
-                <div className='row'>
-                    <span className='col-md-6'>{ticker}</span>
-                    <span className='col-md-4'></span>
-                    <span className='col-md-2' style={itemStyle.issueType}>{Helper.formatIssueType(issueType)}</span>
+        <div className='nav-item active toplist-item'>
+                <div className='container toplist-item-container'>
+                    <span className='ticker'>{ticker}</span>
+                    <span className='toplist-issuetype'>{Helper.formatIssueType(issueType)}</span>
                 </div>
-                <div className='row'>
-                    <span className='col-md-6'>${stockData && stockData.price}</span>
-                    <span className='col-md-3'></span>
-                    <span className='col-md-3' style={changeStyle()}>{stockData && Helper.formatChangePercent(stockData.changePercent)}%</span>
+                <div className='container toplist-item-container'>
+                    <span>${stockData && stockData.price}</span>
+                    <p></p>
+                    <span style={changeStyle()}>{stockData && Helper.formatChangePercent(stockData.changePercent)}%</span>
                 </div>
         </div>
     )
@@ -68,9 +56,9 @@ const TopList = ({user})=>{
     },[])
 
     return(
-        <div className='navbar-nav ml-auto row toplist-wrapper'>
+        <div className='navbar-nav ml-auto mr-auto toplist-wrapper'>
             {listItems && listItems.map(stock=>{
-                return <TopListItem ticker={stock.ticker} issueType={stock.issueType} />
+                return <TopListItem key={stock.ticker} ticker={stock.ticker} issueType={stock.issueType} />
             })}
         </div>
     )   
