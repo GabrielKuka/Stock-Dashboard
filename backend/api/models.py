@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from api import helper
 
 from accounts.models import User
 
@@ -29,20 +30,21 @@ class Stock(models.Model):
     issueType = models.CharField(max_length=50, choices=ISSUETYPES, default='')
     sector = models.CharField(max_length=100)
 
-    def add_stock(self, stock):
-        exists = Stock.objects.filter(ticker=stock['ticker'])
+    def add_stock(self, ticker):
+        exists = Stock.objects.filter(ticker=ticker)
         if(exists.count() > 0):
             # Stock already exists
             return exists.first()
         else:
+            stock_data = helper.get_stock_data(ticker)
             # Add stock to db
-            new_stock = Stock(ticker=stock['ticker'], 
-                              issueType=stock['issueType'], 
-                              company=stock['name'], 
-                              industry=stock['industry'], 
-                              logo=stock['logo'], 
-                              ceo=stock['ceo'], 
-                              sector=stock['sector']) 
+            new_stock = Stock(ticker=stock_data['ticker'], 
+                              issueType=stock_data['issueType'], 
+                              company=stock_data['name'], 
+                              industry=stock_data['industry'], 
+                              logo=stock_data['logo'], 
+                              ceo=stock_data['ceo'], 
+                              sector=stock_data['sector']) 
             new_stock.save()
             return new_stock
 
@@ -58,7 +60,7 @@ class TopList(models.Model):
 class StockList(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=20, unique=True) 
+    title = models.CharField(max_length=20) 
     stocks = models.ManyToManyField(Stock)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

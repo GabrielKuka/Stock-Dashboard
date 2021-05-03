@@ -19,7 +19,11 @@ class TestApi(TestCase):
 
     def test_create_top_list(self):
         view_url = reverse('create-top-list')
-        User.objects.create(email='test@test.com', name='test', phone='0698567596', birthday='1998-03-24', password='test')
+        test_user = User.objects.create(email='test@test.com', 
+                                            name='test', 
+                                            phone='0698567596', 
+                                            birthday='1998-03-24', 
+                                            password='test')
         data = {'user_email':'test@test.com'}
 
         response = self.client.post(view_url, data)

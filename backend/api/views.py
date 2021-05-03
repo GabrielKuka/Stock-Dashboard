@@ -63,15 +63,16 @@ def add_list(request):
 
     payload = request.data
 
+    print(payload)
+
     try:
         new_list = StockList(user=user, title=payload['title'])
         new_list.save()
         for stock in payload['stocks']:
-            stock_data = get_stock_data_view(request, stock) 
-            new_stock = Stock().add_stock(stock_data)
+            new_stock = Stock().add_stock(stock)
             new_list.stocks.add(new_stock)
     except:
-        return Response({'error': 'Error creating list'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'status': 'Error creating list'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(status=status.HTTP_201_CREATED)
 
@@ -86,30 +87,39 @@ def edit_list(request, id):
     tickers = payload['tickers']
 
     try:
+        # Get the list
         list_item = StockList.objects.filter(user=user, id=id).first()
+
+        # Store result
+        data = {}
+
+        # Update list 
+        list_item.stocks.clear()
+        list_item.title = title
+
+        # Add new stocks
+        for ticker in tickers:
+            new_stock = Stock().add_stock(ticker)
+            list_item.stocks.add(new_stock) 
+
+        # Save list
+        list_item.save()
+        data['status'] = 'Update successful'
+
+        return Response(data=data)
     except StockList.DoesNotExist as e:
-        return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
-
-    data = {}
-
-    # Update list 
-    list_item.stocks.clear()
-    list_item.title = title
-    for ticker in tickers:
-        stock_data = get_stock_data_view(request, ticker)
-        new_stock = Stock().add_stock(stock_data)
-        list_item.stocks.add(new_stock) 
-    list_item.save()
-    data['success'] = 'Update successful'
-
-    return Response(data=data)
+        return Response({'status': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
 def check_title(request, title):
 
+    # Retrieve user id
+    token = request.headers['Authorization']
+    user = Token.objects.get(key=token).user
+
     try:
-        query = StockList.objects.get(title=title)
+        query = StockList.objects.get(title=title, user=user)
     except:
         return Response({'status': True}, status=status.HTTP_200_OK)
     
@@ -179,16 +189,18 @@ def create_top_list(request):
     user = User.objects.get(email=user_email)
 
     try:
+        # Create toplist
         toplist = TopList(user=user)
         toplist.save()
 
+        # Create the list of stocks
         stonks = []
-        stonks.append(Stock().add_stock(helper.get_stock_data('SPY')))
-        stonks.append(Stock().add_stock(helper.get_stock_data('QQQ')))
-        stonks.append(Stock().add_stock(helper.get_stock_data('DIA')))
+        stonks.append(Stock().add_stock('SPY'))
+        stonks.append(Stock().add_stock('QQQ'))
+        stonks.append(Stock().add_stock('DIA'))
 
-        for stonk in stonks:
-            toplist.stocks.add(stonk)
+        # Add them to toplist
+        toplist.stocks.add(*stonks)
 
         return Response({"status":'Created'}, status=status.HTTP_201_CREATED)
     except Exception as e:
