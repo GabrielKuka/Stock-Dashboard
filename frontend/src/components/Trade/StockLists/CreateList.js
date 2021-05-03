@@ -67,8 +67,7 @@ const AddStocks = ({dispatch, listAction})=>{
         }else if(listAction({type:'IS_PRESENT', data: fieldVal})){
             dispatch(errorModal('This ticker is already on this list.'))
         }else {
-            const iT = await Helper.getStockIssueType(fieldVal)
-            listAction({type:'ADD_STOCK', data:{'ticker': fieldVal, 'issueType': iT}})
+            listAction({type:'ADD_STOCK', data:fieldVal})
             setFieldVal('')
         }
     }
@@ -146,7 +145,7 @@ const CreateList = ({user}) => {
 
     const isPresent = (ticker) => {
         for(let i = 0; i < stocks.length; i++)
-            if(ticker === stocks[i].ticker) return true
+            if(ticker === stocks[i]) return true
         return false
     }
 
@@ -173,7 +172,7 @@ const CreateList = ({user}) => {
 
     return (
         <div className='row create-list-wrapper'>
-            <div className='col-md-6 card shadow p-3 mb-5 rounded add-list-data'>
+            <div className='col-md-4 card shadow p-3 mb-5 rounded add-list-data'>
                 <div className='card-body'>
                     <h1>Create a List</h1>
                     {!title && 
@@ -189,7 +188,7 @@ const CreateList = ({user}) => {
                                 <label><b>Chosen stocks:</b></label>
                                 <ul>
                                     {stocks.map(stock=>{
-                                        return <li key={stock.ticker}>{stock.ticker}</li>
+                                        return <li key={stock}>{stock}</li>
                                     })}
                                 </ul>
                                 <div className='d-flex justify-content-center'>
@@ -201,7 +200,7 @@ const CreateList = ({user}) => {
                     }
                 </div>
             </div>
-            <div className='col-md-3 look-list-data'>
+            <div className='col-md-5 look-list-data'>
                 <div className='card shadow p-3 mb-5 rounded'>
                     <div className='card-body'>
                         <table className='table'>
@@ -210,11 +209,10 @@ const CreateList = ({user}) => {
                             </thead>
                             <tbody>
                                 {stocks && stocks.map(stock=>{
-                                    return (<tr key={stock.ticker}>
+                                    return (<tr key={stock}>
                                         <td className='row'>
-                                            <div className='col-md-4'>{stock.ticker}</div>
-                                            <div className='col-md-3' style={{fontSize:"0.8rem"}}>{Helper.formatIssueType(stock.issueType)}</div>
-                                            <div className='col-md-2'></div>
+                                            <div className='col-md-4'>{stock}</div>
+                                            <div className='col-md-4'></div>
                                             <button onClick={()=>removeStock(stock)} className='col-md-2 btn btn-danger btn-sm'> X </button>
                                         </td>
                                         </tr>)

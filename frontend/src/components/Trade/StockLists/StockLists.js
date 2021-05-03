@@ -32,11 +32,11 @@ const StockLists = ({user})=>{
                                     {list.stocks.map(stonk=>{
                                         const dest = {
                                             pathname: '/dashboard',
-                                            param1: `${stonk}`
+                                            param1: `${stonk.ticker}`
                                         }
                                         return(
-                                            <Link key={stonk} to={dest} className='list-group-item list-group-item-action'>
-                                                <StockRow ticker={stonk} /> 
+                                            <Link key={stonk.ticker} to={dest} className='list-group-item list-group-item-action'>
+                                                <StockRow ticker={stonk.ticker} /> 
                                             </Link>
                                     )})}
                                 </div>

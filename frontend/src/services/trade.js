@@ -127,6 +127,13 @@ const getTickerPrice = async (ticker) => {
     return data 
 }
 
+const getTickerQuote = async (ticker) => {
+    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
+    const response = await axios.get(url)
+
+    return response.data
+}
+
 const getTickerIssueType = async(ticker)=>{
     const data = await getTickerOverview(ticker)
 
@@ -134,8 +141,12 @@ const getTickerIssueType = async(ticker)=>{
 }
 
 const isTitleValid = async (title)=>{
+    const token = JSON.parse(Cookies.get('user'))['token']
+    const config = {
+        headers: {Authorization: `${token}`}
+    }
     const url = `${apiURL}lists/checktitle/${title}`
-    const response = await axios.get(url)
+    const response = await axios.get(url, config)
     return response.data
 }
 
@@ -187,4 +198,10 @@ const getHeader = async (ticker) => {
     return data
 }
 
-export default {getTickerData, getTickerIssueType, topListAction, listAction, getTickerPrice, getHeader}
+export default {getTickerData, 
+    getTickerIssueType, 
+    getTickerQuote,
+    topListAction, 
+    listAction, 
+    getTickerPrice, 
+    getHeader}

@@ -53,8 +53,7 @@ const AddStocks = ({dispatch, listAction})=>{
                         }else if(listAction({type:'IS_PRESENT', data:stock})){
                             dispatch(errorModal(`Ticker ${stock} is already in the list.`))
                         }else {
-                            const iT = await Helper.getStockIssueType(stock)
-                            listAction({type:'ADD_STOCK', data:{'ticker': stock, 'issueType':iT}})
+                            listAction({type:'ADD_STOCK', data:{'ticker':stock}})
                         }
                     }}
                 >
@@ -136,9 +135,11 @@ const EditList = ({user})=>{
             dispatch(errorModal('List is empty.'))
             return 
         }
+        let tickers = []
+        tickerList.map(stock=>tickers.push(stock.ticker))
         const payload = {
             id: listId.current, 
-            tickers: tickerList,
+            tickers: tickers,
             title: title
         }
         const result = await tradeService.listAction('UPDATE', payload)
