@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from django.http import HttpResponse
 
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -10,6 +11,7 @@ from .models import StockList, Stock, TopList
 from .serializers import StockListSerializer, StockSerializer, TopListSerializer
 
 from accounts.models import User
+from api import helper
 
 import requests
 
@@ -65,7 +67,8 @@ def add_list(request):
         new_list = StockList(user=user, title=payload['title'])
         new_list.save()
         for stock in payload['stocks']:
-            new_stock = Stock().add_stock(stock)
+            stock_data = get_stock_data_view(request, stock) 
+            new_stock = Stock().add_stock(stock_data)
             new_list.stocks.add(new_stock)
     except:
         return Response({'error': 'Error creating list'}, status=status.HTTP_400_BAD_REQUEST)
@@ -93,7 +96,8 @@ def edit_list(request, id):
     list_item.stocks.clear()
     list_item.title = title
     for ticker in tickers:
-        new_stock = Stock().add_stock(ticker)
+        stock_data = get_stock_data_view(request, ticker)
+        new_stock = Stock().add_stock(stock_data)
         list_item.stocks.add(new_stock) 
     list_item.save()
     data['success'] = 'Update successful'
@@ -129,26 +133,6 @@ def delete_list(request, id):
         data['failure'] = 'Delete failed'
     
     return Response(data=data, status=status.HTTP_204_NO_CONTENT)
-
-@api_view(['GET'])
-def get_stock_data_view(request, stonk):
-
-    url = '{}stable/stock/{}/company?token={}'.format(IEX_BASE_URL, stonk, IEX_API_KEY)
-    url_for_logo = '{}stable/stock/{}/logo?token={}'.format(IEX_BASE_URL, stonk, IEX_API_KEY)
-
-    logo = requests.get(url_for_logo).json()['url']
-
-    data_response = requests.get(url).json()
-
-    company = {
-        'name': data_response['companyName'],
-        'logo': logo,
-        'description': data_response['description'],
-        'industry': data_response['industry'],
-        'ceo': data_response['CEO'],
-    } 
-
-    return Response(company)
 
 # Top List Views
 @api_view(['GET'])
@@ -195,15 +179,13 @@ def create_top_list(request):
     user = User.objects.get(email=user_email)
 
     try:
-
         toplist = TopList(user=user)
         toplist.save()
 
         stonks = []
-
-        stonks.append(Stock().add_stock({'ticker': 'SPY', 'issueType': 'et'}))
-        stonks.append(Stock().add_stock({'ticker': 'QQQ', 'issueType': 'et'}))
-        stonks.append(Stock().add_stock({'ticker': 'DIA', 'issueType': 'et'}))
+        stonks.append(Stock().add_stock(helper.get_stock_data('SPY')))
+        stonks.append(Stock().add_stock(helper.get_stock_data('QQQ')))
+        stonks.append(Stock().add_stock(helper.get_stock_data('DIA')))
 
         for stonk in stonks:
             toplist.stocks.add(stonk)

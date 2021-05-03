@@ -19,18 +19,30 @@ class Stock(models.Model):
         ('When Issued', ('wi')),
         ('Other', ('')),
     ]
-
+    
+    company = models.CharField(max_length=150, default='')
+    description = models.TextField(default='')
+    industry = models.CharField(max_length=300, default='')
+    ceo = models.CharField(max_length=200, default='')
+    logo = models.URLField(default='')
     ticker = models.CharField(max_length=5, primary_key=True)
     issueType = models.CharField(max_length=50, choices=ISSUETYPES, default='')
+    sector = models.CharField(max_length=100)
 
     def add_stock(self, stock):
         exists = Stock.objects.filter(ticker=stock['ticker'])
         if(exists.count() > 0):
             # Stock already exists
-            print('It already exists')
             return exists.first()
         else:
-            new_stock = Stock(ticker=stock['ticker'], issueType=stock['issueType']) 
+            # Add stock to db
+            new_stock = Stock(ticker=stock['ticker'], 
+                              issueType=stock['issueType'], 
+                              company=stock['name'], 
+                              industry=stock['industry'], 
+                              logo=stock['logo'], 
+                              ceo=stock['ceo'], 
+                              sector=stock['sector']) 
             new_stock.save()
             return new_stock
 
