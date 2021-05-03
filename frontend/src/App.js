@@ -13,6 +13,8 @@ import Dashboard from './components/Trade/Dashboard/Dashboard'
 import NavBar from './components/Core/NavBar'
 import Profile from './components/Core/Profile'
 
+import Homepage from './components/Homepage/Homepage'
+
 import StockLists from './components/Trade/StockLists/StockLists'
 import StockList from './components/Trade/StockLists/StockList'
 import CreateList from './components/Trade/StockLists/CreateList'
@@ -59,9 +61,13 @@ const App = () => {
 
       <Switch>
         
-            <Route exact path='/test'>
-                <Test />
-            </Route>
+          <Route exact path='/homepage' >
+              <Homepage user={user} />
+          </Route>
+
+          <Route exact path='/test'>
+              <Test />
+          </Route>
 
           <Route exact path='/profile/:name'>
             <Profile user={user} />

@@ -23,7 +23,7 @@ const Login = () => {
   const user = useSelector( ({user}) => user )
 
   if (user)
-    return <Redirect push to="/"/> 
+    return <Redirect push to="/homepage"/> 
 
   return(
     <>

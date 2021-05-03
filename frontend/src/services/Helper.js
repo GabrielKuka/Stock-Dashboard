@@ -1,6 +1,9 @@
 import cts from 'check-ticker-symbol'
 import tradeService from '../services/trade'
 
+const Alpaca = require('@alpacahq/alpaca-trade-api')
+
+
 const Helper = {
     formatChangePercent: (change) => {
         return Number(100*change).toFixed(2)
@@ -81,6 +84,14 @@ const Helper = {
                 return 'Right'
             default:
                 return ''
+        }
+    },
+    Market: {
+        isMarketOpen: ()=>{
+            const alpaca = new Alpaca()
+            alpaca.getClock().then((clock)=>{
+                return clock.is_open
+            })
         }
     }
 }
