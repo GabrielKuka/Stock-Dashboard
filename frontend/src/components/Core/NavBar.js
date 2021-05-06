@@ -67,7 +67,7 @@ const NavBar = ({user, handleLogout}) => {
     
     return(
       <nav id='nav'className="navbar pt-2 pb-2 navbar-expand-lg sticky-top">
-        <a className="navbar-brand" style={styles.link} href="/">Pernet</a>
+        <a className="navbar-brand" style={styles.link} href="/homepage">Pernet</a>
       {
       user
       ?

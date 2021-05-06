@@ -21,7 +21,9 @@ import CreateList from './components/Trade/StockLists/CreateList'
 import EditList from './components/Trade/StockLists/EditList'
 
 
+import WebSocketProvider, {WebSocketContext} from './components/Test/websocket'
 import Test from './components/Test/test'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { set_user_from_ls, logout } from './reducers/userReducer'
 
@@ -56,52 +58,52 @@ const App = () => {
 
       <CustomAlert/>
       <CustomModal />
-      <NavBar user={user} handleLogout={handleLogout}/>
+      <WebSocketProvider>
+        <NavBar user={user} handleLogout={handleLogout}/>
 
+        <Switch>
+            <Route exact path='/homepage' >
+                <Homepage user={user} />
+            </Route>
 
-      <Switch>
-        
-          <Route exact path='/homepage' >
-              <Homepage user={user} />
-          </Route>
+            <Route exact path='/test'>
+                <Test />
+            </Route>
 
-          <Route exact path='/test'>
-              <Test />
-          </Route>
+            <Route exact path='/profile/:name'>
+              <Profile user={user} />
+            </Route>
 
-          <Route exact path='/profile/:name'>
-            <Profile user={user} />
-          </Route>
+            <Route exact path="/dashboard">
+              <Dashboard user={user} />
+            </Route>
 
-          <Route exact path="/dashboard">
-            <Dashboard user={user} />
-          </Route>
+            <Route exact path='/lists'>
+              <StockLists user={user} /> 
+            </Route>
 
-          <Route exact path='/lists'>
-            <StockLists user={user} /> 
-          </Route>
+            <Route exact path='/createlist'>
+              <CreateList user={user} /> 
+            </Route>
 
-          <Route exact path='/createlist'>
-            <CreateList user={user} /> 
-          </Route>
+            <Route exact path='/editlist/:title'>
+              <EditList user={user} /> 
+            </Route>
 
-          <Route exact path='/editlist/:title'>
-            <EditList user={user} /> 
-          </Route>
+            <Route exact path='/stocklist/:title'>
+              <StockList /> 
+            </Route>
 
-          <Route exact path='/stocklist/:title'>
-            <StockList /> 
-          </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
 
-          <Route exact path="/register">
-            <Register />
-          </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
 
-          <Route exact path="/login">
-            <Login />
-          </Route>
-
-      </Switch>
+        </Switch>
+      </WebSocketProvider>
     </Router>
     </div>
   )

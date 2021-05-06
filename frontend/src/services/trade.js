@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import {iex} from '../config/iex'
+import Helper from './Helper'
 
 const baseURL = 'http://localhost:8000/'
 const apiURL = `${baseURL}api/`
@@ -114,21 +115,29 @@ const deleteTopList = async ()=>{
     return response.data
 }
 
-// ~+~+~+~+~+~++~+~+~+~+~+~ Ticker functions
-const getTickerPrice = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
-    const response = await axios.get(url)
 
+// ~+~+~+~+~+~++~+~+~+~+~+~ Ticker functions
+const getPreviousDayPrice = async(ticker)=>{
+    const url = `${iex.baseURL}/stock/${ticker}/previous?token=${iex.api_key}`
+
+    const response = await axios.get(url)
+    return response.data
+}
+const getTickerPrice = async (ticker) => {
+    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_key}`
+    const response = await axios.get(url)
     const data = {
         price: response.data.latestPrice,
-        changePercent: response.data.changePercent
+        changePercent: Helper.formatChangePercent(response.data.changePercent),
+        previousClose: response.data.previousClose,
+        change: Helper.formatPrice(response.data.latestPrice - response.data.previousClose)
     }
 
     return data 
 }
 
 const getTickerQuote = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_token}`
+    const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_key}`
     const response = await axios.get(url)
 
     return response.data
@@ -165,27 +174,27 @@ const getTickerData = async (ticker, tickerView) => {
 }
 
 const getTickerOverview = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_token}`
+    const url = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_key}`
     const response = await axios.get(url)
     return response.data
 }
 
 const getTickerStats = async(ticker)=>{
-    const url = `${iex.baseURL}/stock/${ticker}/stats?token=${iex.api_token}`
+    const url = `${iex.baseURL}/stock/${ticker}/stats?token=${iex.api_key}`
     const response = await axios.get(url)
     return response.data
 }
 
 const getTickerNews = async (ticker) => {
-    const url = `${iex.baseURL}/stock/${ticker}/news/last/10?token=${iex.api_token}`
+    const url = `${iex.baseURL}/stock/${ticker}/news/last/10?token=${iex.api_key}`
     const response = await axios.get(url)
     console.log(response.data)
     return response.data
 }
 
 const getHeader = async (ticker) => {
-    const logoURL = `${iex.baseURL}/stock/${ticker}/logo?token=${iex.api_token}`
-    const companyName = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_token}`
+    const logoURL = `${iex.baseURL}/stock/${ticker}/logo?token=${iex.api_key}`
+    const companyName = `${iex.baseURL}/stock/${ticker}/company?token=${iex.api_key}`
 
     const logoResponse = await axios.get(logoURL)
     const nameResponse = await axios.get(companyName)
@@ -200,6 +209,7 @@ const getHeader = async (ticker) => {
 
 export default {getTickerData, 
     getTickerIssueType, 
+    getPreviousDayPrice,
     getTickerQuote,
     topListAction, 
     listAction, 

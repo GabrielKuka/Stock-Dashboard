@@ -6,7 +6,7 @@ const Alpaca = require('@alpacahq/alpaca-trade-api')
 
 const Helper = {
     formatChangePercent: (change) => {
-        return Number(100*change).toFixed(2)
+        return Number(100*(change)).toFixed(2)
     }, 
     formatPrice: (price)=>{
         return Number(price).toFixed(2)
@@ -29,6 +29,9 @@ const Helper = {
         }, {})
 
         return `${p.year}-${p.month}-${p.day}`
+    },
+    getChange: (currPrice, prevPrice)=>{
+        return currPrice - prevPrice
     },
     getYear: date=>{
         return new Intl.DateTimeFormat("en-GB", {

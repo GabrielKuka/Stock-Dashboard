@@ -1,30 +1,45 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+import {useSelector} from 'react-redux'
 import tradeService from '../../../services/trade'
+import {WebSocketContext} from '../../Test/websocket'
 import Helper from '../../../services/Helper'
 import './style.css'
 
-const TopListItem = ({ticker, issueType})=>{
-    const [initChange, setInitChange] = useState()
-    const [stockData, setStockData] = useState()
 
-    // Retrieve stock data like price
+const TopListItem = ({ticker, issueType})=>{
+    const [tickerData, setTickerData] = useState()
+
+    const ws = useContext(WebSocketContext)
+
+    const stock = useSelector(({socket})=>socket)
+
+    const changeStyle = ()=>{
+        const changeColor = tickerData.changePercent > 0 ? 'green' : 'red'
+        return { color: changeColor, fontSize: '0.9rem',}
+    }
+
+    // Retrieve initial data
     useEffect(()=>{
         const fetchPrice = async ()=>{
             const response = await tradeService.getTickerPrice(ticker)
-            setInitChange(response.changePercent)
-            setStockData(response)
+            setTickerData(response)
         }
 
         fetchPrice()
+
+        ws.subscribe(ticker)
+
+        return ()=> {
+            setTickerData([]) 
+            ws.unsubscribe(ticker)}
     },[])
 
-    const changeStyle = ()=>{
-        const changeColor = initChange > 0 ? 'green' : 'red'
-        return {
-            color: changeColor, 
-            fontSize: '0.9rem',
+    // Check socket updates
+    useEffect(()=>{
+        if(stock.ticker === ticker){
+            setTickerData(oldData=>({...oldData, price: stock.price}))
         }
-    }
+    },[stock.price])
 
     return(
         <div className='nav-item active toplist-item'>
@@ -32,11 +47,13 @@ const TopListItem = ({ticker, issueType})=>{
                     <span className='ticker'>{ticker}</span>
                     <span className='toplist-issuetype'>{Helper.formatIssueType(issueType)}</span>
                 </div>
-                <div className='container toplist-item-container'>
-                    <span>${stockData && stockData.price}</span>
-                    <p></p>
-                    <span style={changeStyle()}>{stockData && Helper.formatChangePercent(stockData.changePercent)}%</span>
-                </div>
+                {tickerData && 
+                    <div className='container toplist-item-container'>
+                        <span>${tickerData && tickerData.price}</span>
+                        <p></p>
+                        <span style={changeStyle()}>{tickerData && tickerData.changePercent}%</span>
+                    </div>
+                }
         </div>
     )
 }
@@ -53,6 +70,7 @@ const TopList = ({user})=>{
         }
 
         fetchTopList()
+
     },[])
 
     return(
