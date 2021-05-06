@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useSelector} from 'react-redux'
 import tradeService from '../../../services/trade'
 import {WebSocketContext} from '../../Test/websocket'
@@ -7,11 +7,12 @@ import './style.css'
 
 
 const TopListItem = ({ticker, issueType})=>{
-    const [tickerData, setTickerData] = useState()
 
     const ws = useContext(WebSocketContext)
-
     const stock = useSelector(({socket})=>socket)
+
+    const [tickerData, setTickerData] = useState()
+    const prevClose = useRef()
 
     const changeStyle = ()=>{
         const changeColor = tickerData.changePercent > 0 ? 'green' : 'red'
@@ -23,6 +24,7 @@ const TopListItem = ({ticker, issueType})=>{
         const fetchPrice = async ()=>{
             const response = await tradeService.getTickerPrice(ticker)
             setTickerData(response)
+            prevClose.current = response.previousClose
         }
 
         fetchPrice()
@@ -37,7 +39,12 @@ const TopListItem = ({ticker, issueType})=>{
     // Check socket updates
     useEffect(()=>{
         if(stock.ticker === ticker){
-            setTickerData(oldData=>({...oldData, price: stock.price}))
+            const change = Helper.getChange(stock.price, prevClose.current)
+            setTickerData({
+                price: stock.price,
+                change: change,
+                changePercent: Helper.formatChangePercent(change/prevClose.current)
+            })
         }
     },[stock.price])
 
@@ -58,7 +65,7 @@ const TopListItem = ({ticker, issueType})=>{
     )
 }
 
-const TopList = ({user})=>{
+const TopList = ()=>{
 
     const [listItems, setListItems] = useState([])
 
@@ -68,9 +75,7 @@ const TopList = ({user})=>{
             const response = await tradeService.topListAction('GET')
             setListItems(response.stocks)
         }
-
         fetchTopList()
-
     },[])
 
     return(
