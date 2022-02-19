@@ -1,67 +1,75 @@
-import React, {useEffect, useState} from 'react'
-import tradeService from '../../../services/trade'
-import {Link} from 'react-router-dom'
-import './style.css'
+import React, { useEffect, useState } from "react";
+import tradeService from "../../../services/trade";
+import { Link } from "react-router-dom";
+import "./style.css";
 
-import StockRow from './StockRow'
+import StockRow from "./StockRow";
+import { useDispatch } from "react-redux";
+import { changeTicker } from "../../../reducers/tradeReducer";
 
-const StockLists = ({user})=>{
+const StockLists = ({ user }) => {
+  const dispatch = useDispatch();
+  const [stockLists, setLists] = useState([]);
 
-    const [stockLists, setLists] = useState([])
-    
-    useEffect(()=>{
-        const fetchData = async()=>{
-            const result = await tradeService.listAction('GET_ALL_LISTS')
-            setLists(result)
-        }
-        fetchData()
-    }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await tradeService.listAction("GET_ALL_LISTS");
+      setLists(result);
+    };
+    fetchData();
+  }, []);
 
-    const Lists = ()=>{
-
-        return (
-            <div className='card-columns'>
-                {stockLists && 
-                    stockLists.map(list=>{
-                        return(
-                            <div key={list.id} className='card shadow p-3 mb-5 rounded' style={{width: '16em'}}>
-                                <Link className='card-body' to={'/stocklist/' + list.title}>
-                                    <h2 className='card-title'>{list.title}</h2>
-                                </Link>
-                                <div className='list-group list-group-flush'>
-                                    {list.stocks.map(stonk=>{
-                                        const dest = {
-                                            pathname: '/dashboard',
-                                            param1: `${stonk.ticker}`
-                                        }
-                                        return(
-                                            <Link key={stonk.ticker} to={dest} className='list-group-item list-group-item-action'>
-                                                <StockRow ticker={stonk.ticker} /> 
-                                            </Link>
-                                    )})}
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-            </div>
-        )
-    }
-
-    return(
-        <div className='main_wrapper body'>
-            {user &&
-                <div>
-                    <p className='header'>
-                       <Link className='btn btn-outline-dark' to='/createlist'>+</Link><span> </span>
-                        My stock lists:
-                        </p>
-                    <Lists />
+  const Lists = () => {
+    return (
+      <div className="card-columns">
+        {stockLists &&
+          stockLists.map((list) => {
+            return (
+              <div
+                key={list.id}
+                className="card shadow p-3 mb-5 rounded"
+                style={{ width: "16em" }}
+              >
+                <Link className="card-body" to={"/stocklist/" + list.title}>
+                  <h2 className="card-title">{list.title}</h2>
+                </Link>
+                <div className="list-group list-group-flush">
+                  {list.stocks.map((stonk) => {
+                    return (
+                      <Link
+                        onClick={() => dispatch(changeTicker(stonk.ticker))}
+                        key={stonk.ticker}
+                        to={{ pathname: "/dashboard" }}
+                        className="list-group-item list-group-item-action"
+                      >
+                        <StockRow ticker={stonk.ticker} />
+                      </Link>
+                    );
+                  })}
                 </div>
-            }
+              </div>
+            );
+          })}
+      </div>
+    );
+  };
 
+  return (
+    <div className="main_wrapper body">
+      {user && (
+        <div>
+          <p className="header">
+            <Link className="btn btn-outline-dark" to="/createlist">
+              +
+            </Link>
+            <span> </span>
+            My stock lists:
+          </p>
+          <Lists />
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};
 
-export default StockLists
+export default StockLists;
