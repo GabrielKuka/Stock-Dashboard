@@ -3,9 +3,10 @@ import { Nav } from "react-bootstrap";
 import "./dashboard.css";
 import { Formik, useField, Form } from "formik";
 import tradeService from "../../../services/trade";
-import { errorAlert } from "../../../reducers/alertReducer";
 import { useDispatch } from "react-redux";
 import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
+import Helper from "../../../services/Helper";
+import { errorModal } from "../../../reducers/modalReducer";
 
 const CustomTextInput = ({ label, ...props }) => {
   const [field] = useField(props);
@@ -24,7 +25,7 @@ const CustomTextInput = ({ label, ...props }) => {
   );
 };
 
-const Side = (props) => {
+const Sidebar = (props) => {
   const dispatch = useDispatch();
 
   const [currentView, setView] = useState("Overview");
@@ -38,23 +39,32 @@ const Side = (props) => {
   const submitRequest = async (values) => {
     try {
       if (values.ticker && values.ticker.length > 0) {
-        // Store current ticker and tickerView
-        dispatch(changeTickerView(currentView));
-        dispatch(changeTicker(values.ticker));
+        if (Helper.isStockValid(values.ticker)) {
+          // Store current ticker and tickerView
+          dispatch(changeTickerView(currentView));
+          dispatch(changeTicker(values.ticker));
 
-        // Get Stonk data
-        const result = await tradeService.getTickerData(
-          values.ticker,
-          currentView
-        );
-        const header = await tradeService.getHeader(values.ticker);
+          // Get Stonk data
+          const result = await tradeService.getTickerData(
+            values.ticker,
+            currentView
+          );
+          const header = await tradeService.getHeader(values.ticker);
 
-        // send data to dashboard
-        props.tickerData(result, header);
+          // send data to dashboard
+          props.tickerData(result, header);
+        } else {
+          dispatch(errorModal("That is not a valid ticker!"));
+        }
       }
     } catch (exception) {
-      dispatch(errorAlert("Something went wrong!"));
-      setTimeout(() => dispatch(errorAlert("")), 2000);
+      dispatch(
+        errorModal(
+          `Something went wrong? IEX Cloud does not recognize ${values.ticker} as valid ticker.`
+        )
+      );
+      //dispatch(errorAlert("Something went wrong!"));
+      //setTimeout(() => dispatch(errorAlert("")), 2000);
     }
   };
 
@@ -96,4 +106,4 @@ const Side = (props) => {
   );
 };
 
-export default Side;
+export default Sidebar;

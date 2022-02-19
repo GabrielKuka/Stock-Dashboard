@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 import LoggedOut from "../../Core/LoggedOut";
-import Side from "./SideBar";
+import Sidebar from "./Sidebar";
 
 import Header from "./Header";
 import Overview from "./Overview";
@@ -15,8 +14,6 @@ import Technicals from "./Technicals";
 import "./dashboard.css";
 
 const Dashboard = (props) => {
-  //var stonk = useLocation().param1;
-
   // Get stonk and the dashboard view: Overview, Technicals, News, or Stats
   let stonk = useSelector(({ trade }) => trade.ticker);
   let tickerView = useSelector(({ trade }) => trade.tickerView);
@@ -52,7 +49,7 @@ const Dashboard = (props) => {
     <Container fluid>
       <Row>
         <Col xs={4} id="sidebar-wrapper">
-          <Side tickerData={tickerData} ticker={stonk} />
+          <Sidebar tickerData={tickerData} ticker={stonk} />
         </Col>
         <Col xs={8} id="page-content-wrapper">
           {stonk && stonk.length > 0 && (
