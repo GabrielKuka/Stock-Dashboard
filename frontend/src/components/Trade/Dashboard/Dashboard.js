@@ -48,10 +48,10 @@ const Dashboard = (props) => {
   return (
     <Container fluid>
       <Row>
-        <Col xs={4} id="sidebar-wrapper">
+        <Col xs={3} id="sidebar-wrapper">
           <Sidebar tickerData={tickerData} ticker={stonk} />
         </Col>
-        <Col xs={8} id="page-content-wrapper">
+        <Col xs={9} id="page-content-wrapper">
           {stonk && stonk.length > 0 && (
             <div className="card content-card">
               <h5 style={{ textAlign: "center" }}>
