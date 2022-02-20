@@ -1,42 +1,38 @@
 .sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    min-height: 100vh !important;
-    color: white;
-    z-index: 100;
-    padding: 48px 0 0;
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  color: white;
 }
 
 .sidebar-heading {
-    font-size: 4rem;
-    text-align: center;
+  font-size: 4rem;
+  text-align: center;
 }
 
-#sidebar-wrapper{
-    min-height: 100vh !important;
-    background: forestgreen;
-    width: 100vw;
-    padding: 1rem;
-    -webkit-transition: margin .25s ease-out;
-    -moz-transition: margin .25s ease-out;
-    -o-transition: margin .25s ease-out;
-    transition: margin .25s ease-out;
+#sidebar-wrapper {
+  min-height: 87vh !important;
+  background: forestgreen;
+  width: 100vw;
+  padding: 1rem;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
 }
 
 #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
+  min-width: 0;
+  width: 100%;
 }
 
 .content-card {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
 }
 
 .company-name {
-    margin: 2rem;
+  margin: 2rem;
 }

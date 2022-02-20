@@ -126,10 +126,10 @@ const getTickerPrice = async (ticker) => {
   const url = `${iex.baseURL}/stock/${ticker}/quote?token=${iex.api_key}`;
   const response = await axios.get(url);
   const data = {
-    price: Helper.formatPrice(response.data.latestPrice),
+    price: Helper.formatNumber(response.data.latestPrice),
     changePercent: Helper.formatChangePercent(response.data.changePercent),
-    previousClose: Helper.formatPrice(response.data.previousClose),
-    change: Helper.formatPrice(
+    previousClose: Helper.formatNumber(response.data.previousClose),
+    change: Helper.formatNumber(
       response.data.latestPrice - response.data.previousClose
     ),
   };
