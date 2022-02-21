@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
 import "./dashboard.css";
-import { Formik, useField, Form } from "formik";
+import { Formik, useField, Form, Field } from "formik";
 import tradeService from "../../../services/trade";
 import { useDispatch } from "react-redux";
 import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
 import Helper from "../../../services/Helper";
 import { errorModal } from "../../../reducers/modalReducer";
+import "./sidebar.css";
 
 const CustomTextInput = ({ label, ...props }) => {
   const [field] = useField(props);
   return (
     <>
-      {label}
       <input
         type="text"
         className="form-control"
@@ -77,7 +77,7 @@ const Sidebar = (props) => {
       <Formik
         initialValues={{
           ticker: typeof props.ticker !== "undefined " ? props.ticker : "",
-          view: "Overview",
+          viewtype: "Overview",
         }}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(false);
@@ -86,19 +86,55 @@ const Sidebar = (props) => {
       >
         {(props) => (
           <Form>
-            <CustomTextInput name="ticker" label="Ticker" />
-            <span>View</span>
-            <br />
-            <select onChange={(e) => setView(e.target.value)} name="view">
-              <option>Overview</option>
-              <option>Stats</option>
-              <option>News</option>
-              <option>Technicals</option>
-            </select>
-            <span> </span>
-            <button className="btn btn-primary" name="submit" type="submit">
-              {props.isSubmitting ? "Loading" : "Search"}
-            </button>
+            <div className="ticker-input-submit-container">
+              <CustomTextInput
+                name="ticker"
+                label="Ticker"
+                id="ticker-input-field"
+                placeholder={"Enter ticker..."}
+              />
+              <button className="btn btn-primary" name="submit" type="submit">
+                {props.isSubmitting ? "Loading" : "Search"}
+              </button>
+            </div>
+            <div role="view-group" className={"view-group-container"}>
+              <label>
+                <Field
+                  type="radio"
+                  name="viewtype"
+                  value="Overview"
+                  onClick={() => setView("Overview")}
+                />
+                Overview
+              </label>
+              <label>
+                <Field
+                  type="radio"
+                  name="viewtype"
+                  value="Stats"
+                  onClick={() => setView("Stats")}
+                />
+                Stats
+              </label>
+              <label>
+                <Field
+                  type="radio"
+                  name="viewtype"
+                  value="News"
+                  onClick={() => setView("News")}
+                />
+                News
+              </label>
+              <label>
+                <Field
+                  type="radio"
+                  name="viewtype"
+                  value="Technicals"
+                  onClick={() => setView("Technicals")}
+                />
+                Technicals
+              </label>
+            </div>
           </Form>
         )}
       </Formik>
