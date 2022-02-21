@@ -3,7 +3,7 @@ import { Nav } from "react-bootstrap";
 import "./dashboard.css";
 import { Formik, useField, Form, Field } from "formik";
 import tradeService from "../../../services/trade";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
 import Helper from "../../../services/Helper";
 import { errorModal } from "../../../reducers/modalReducer";
@@ -28,6 +28,7 @@ const CustomTextInput = ({ label, ...props }) => {
 const Sidebar = (props) => {
   const dispatch = useDispatch();
 
+  const [currentTicker, setCurrentTicker] = useState("");
   const [currentView, setView] = useState("Overview");
 
   useEffect(() => {
@@ -36,23 +37,38 @@ const Sidebar = (props) => {
     }
   }, []);
 
+  const getDataAndUpdateUI = async (ticker, view) => {
+    // Make request to retrieve data
+    const result = await tradeService.getTickerData(ticker, view);
+    const header = await tradeService.getHeader(ticker);
+
+    // send data to dashboard
+    props.tickerData(result, header);
+  };
+
+  const handleViewChange = async (view) => {
+    if (currentTicker !== "") {
+      // Change viewtype
+      setView(view);
+      dispatch(changeTickerView(view));
+
+      getDataAndUpdateUI(currentTicker, view);
+    }
+  };
+
   const submitRequest = async (values) => {
     try {
       if (values.ticker && values.ticker.length > 0) {
         if (Helper.isStockValid(values.ticker)) {
-          // Store current ticker and tickerView
-          dispatch(changeTickerView(currentView));
+          //Change components state
+          setView(values.viewtype);
+          setCurrentTicker(values.ticker);
+
+          // Store current ticker and tickerView in redux
+          dispatch(changeTickerView(values.viewtype));
           dispatch(changeTicker(values.ticker));
 
-          // Get Stonk data
-          const result = await tradeService.getTickerData(
-            values.ticker,
-            currentView
-          );
-          const header = await tradeService.getHeader(values.ticker);
-
-          // send data to dashboard
-          props.tickerData(result, header);
+          getDataAndUpdateUI(values.ticker, values.viewtype);
         } else {
           dispatch(errorModal("That is not a valid ticker!"));
         }
@@ -63,8 +79,6 @@ const Sidebar = (props) => {
           `Something went wrong? IEX Cloud does not recognize ${values.ticker} as valid ticker.`
         )
       );
-      //dispatch(errorAlert("Something went wrong!"));
-      //setTimeout(() => dispatch(errorAlert("")), 2000);
     }
   };
 
@@ -103,7 +117,7 @@ const Sidebar = (props) => {
                   type="radio"
                   name="viewtype"
                   value="Overview"
-                  onClick={() => setView("Overview")}
+                  onClick={() => handleViewChange("Overview")}
                 />
                 Overview
               </label>
@@ -112,7 +126,7 @@ const Sidebar = (props) => {
                   type="radio"
                   name="viewtype"
                   value="Stats"
-                  onClick={() => setView("Stats")}
+                  onClick={() => handleViewChange("Stats")}
                 />
                 Stats
               </label>
@@ -121,7 +135,7 @@ const Sidebar = (props) => {
                   type="radio"
                   name="viewtype"
                   value="News"
-                  onClick={() => setView("News")}
+                  onClick={() => handleViewChange("News")}
                 />
                 News
               </label>
@@ -130,7 +144,7 @@ const Sidebar = (props) => {
                   type="radio"
                   name="viewtype"
                   value="Technicals"
-                  onClick={() => setView("Technicals")}
+                  onClick={() => handleViewChange("Technicals")}
                 />
                 Technicals
               </label>
