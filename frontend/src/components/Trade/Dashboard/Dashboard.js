@@ -48,7 +48,7 @@ const Dashboard = (props) => {
   return (
     <Container fluid>
       <Row>
-        <Col xs={3} id="sidebar-wrapper">
+        <Col xs={3} className={"sidebar-wrapper"}>
           <Sidebar tickerData={tickerData} ticker={stonk} />
         </Col>
         <Col xs={9} id="page-content-wrapper">

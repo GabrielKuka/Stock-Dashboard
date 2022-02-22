@@ -41,12 +41,14 @@ const Header = (props) => {
 
   // Check socket updates
   useEffect(() => {
-    const change = Helper.formatNumber(stock.price - prevClose.current);
-    setTickerData({
-      price: stock.price,
-      change: change,
-      changePercent: Helper.formatChangePercent(change / prevClose.current),
-    });
+    if (stock.ticker === ticker) {
+      const change = Helper.formatNumber(stock.price - prevClose.current);
+      setTickerData({
+        price: stock.price,
+        change: change,
+        changePercent: Helper.formatChangePercent(change / prevClose.current),
+      });
+    }
   }, [stock.price, ticker]);
 
   return (
