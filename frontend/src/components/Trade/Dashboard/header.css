@@ -1,8 +1,10 @@
 .logo {
-  max-width: 80px;
+  width: 80px;
+  height: 80px;
 }
 
 .realtime-price-container {
+  border: 1px solid brown;
   text-align: left;
 }
 

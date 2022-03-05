@@ -12,14 +12,8 @@
 #page-content-wrapper {
   min-width: 0;
   width: 100%;
-}
-
-.content-card {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-}
-
-.company-name {
-  margin: 2rem;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
