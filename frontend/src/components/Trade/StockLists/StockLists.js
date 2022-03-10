@@ -19,11 +19,6 @@ const StockLists = ({ user }) => {
     fetchData();
   }, []);
 
-  const setupDashboard = (ticker) => {
-    dispatch(changeTickerView("Overview"));
-    dispatch(changeTicker(ticker));
-  };
-
   const Lists = () => {
     return (
       <div className="card-columns">
@@ -45,7 +40,7 @@ const StockLists = ({ user }) => {
                     list.stocks.map((stonk) => {
                       return (
                         <Link
-                          onClick={() => setupDashboard(stonk.ticker)}
+                          onClick={() => dispatch(changeTicker(stonk.ticker))}
                           key={stonk.ticker}
                           to={{ pathname: "/dashboard" }}
                           className="list-group-item list-group-item-action"

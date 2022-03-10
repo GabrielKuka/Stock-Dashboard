@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import tradeService from "../../../services/trade";
 
 import LoggedOut from "../../Core/LoggedOut";
 import Sidebar from "./Sidebar";
@@ -12,13 +13,29 @@ import News from "./News";
 import Technicals from "./Technicals";
 
 import "./dashboard.css";
+import { changeTickerView } from "../../../reducers/tradeReducer";
 
 const Dashboard = (props) => {
+  const dispatch = useDispatch();
   // Get stonk and the dashboard view: Overview, Technicals, News, or Stats
   let stonk = useSelector(({ trade }) => trade.ticker);
   let tickerView = useSelector(({ trade }) => trade.tickerView);
 
-  console.log(useSelector(({ trade }) => trade));
+  useEffect(async () => {
+    // Initialize dashboard
+    if (typeof tickerView === "undefined") {
+      dispatch(changeTickerView("Overview"));
+      tickerView = "Overview";
+
+      // Make request to retrieve data
+      const result = await tradeService.getTickerData(stonk, tickerView);
+      const header = await tradeService.getHeader(stonk);
+
+      tickerData(result, header);
+    }
+
+    return () => {};
+  }, [tickerView]);
 
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([]);
