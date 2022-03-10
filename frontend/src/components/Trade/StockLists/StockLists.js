@@ -5,7 +5,7 @@ import "./style.css";
 
 import StockRow from "./StockRow";
 import { useDispatch } from "react-redux";
-import { changeTicker } from "../../../reducers/tradeReducer";
+import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
 
 const StockLists = ({ user }) => {
   const dispatch = useDispatch();
@@ -19,10 +19,16 @@ const StockLists = ({ user }) => {
     fetchData();
   }, []);
 
+  const setupDashboard = (ticker) => {
+    dispatch(changeTickerView("Overview"));
+    dispatch(changeTicker(ticker));
+  };
+
   const Lists = () => {
     return (
       <div className="card-columns">
         {stockLists &&
+          stockLists.length > 0 &&
           stockLists.map((list) => {
             return (
               <div
@@ -34,18 +40,20 @@ const StockLists = ({ user }) => {
                   <h2 className="card-title">{list.title}</h2>
                 </Link>
                 <div className="list-group list-group-flush">
-                  {list.stocks.map((stonk) => {
-                    return (
-                      <Link
-                        onClick={() => dispatch(changeTicker(stonk.ticker))}
-                        key={stonk.ticker}
-                        to={{ pathname: "/dashboard" }}
-                        className="list-group-item list-group-item-action"
-                      >
-                        <StockRow ticker={stonk.ticker} />
-                      </Link>
-                    );
-                  })}
+                  {list.stocks &&
+                    list.stocks.length > 0 &&
+                    list.stocks.map((stonk) => {
+                      return (
+                        <Link
+                          onClick={() => setupDashboard(stonk.ticker)}
+                          key={stonk.ticker}
+                          to={{ pathname: "/dashboard" }}
+                          className="list-group-item list-group-item-action"
+                        >
+                          <StockRow ticker={stonk.ticker} />
+                        </Link>
+                      );
+                    })}
                 </div>
               </div>
             );

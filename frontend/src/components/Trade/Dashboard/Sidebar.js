@@ -3,7 +3,7 @@ import { Nav } from "react-bootstrap";
 import "./dashboard.css";
 import { Formik, useField, Form, Field } from "formik";
 import tradeService from "../../../services/trade";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
 import Helper from "../../../services/Helper";
 import { errorModal } from "../../../reducers/modalReducer";

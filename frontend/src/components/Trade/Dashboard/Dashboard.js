@@ -18,6 +18,8 @@ const Dashboard = (props) => {
   let stonk = useSelector(({ trade }) => trade.ticker);
   let tickerView = useSelector(({ trade }) => trade.tickerView);
 
+  console.log(useSelector(({ trade }) => trade));
+
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([]);
 
@@ -52,7 +54,7 @@ const Dashboard = (props) => {
           <Sidebar tickerData={tickerData} ticker={stonk} />
         </Col>
         <Col xs={9} id="page-content-wrapper">
-          {stonk && stonk.length > 0 && (
+          {stonk && tickerView && (
             <div className="card content-card">
               <h5 style={{ textAlign: "center" }}>
                 <b>{tickerView}</b>
