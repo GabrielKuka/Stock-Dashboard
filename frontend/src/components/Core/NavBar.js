@@ -23,7 +23,11 @@ const LoggedInNav = ({ user, handleLogout }) => {
       <TopList user={user} />
       <ul className="navbar-nav ml-auto">
         <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-success" to={"/lists"}>
+          <Link
+            style={styles.link}
+            className="btn btn-success"
+            to={"/dashboard"}
+          >
             Dashboard
           </Link>
         </li>
