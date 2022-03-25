@@ -1,5 +1,46 @@
 @import "../../styles/mixins";
 
-.navbar-wrapper {
-  background-color: red;
+.navigation-bar {
+  background-color: #537895;
+  background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 2% 5% 2% 5%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &__header {
+    color: white;
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+
+  &__header:hover:not(.active) {
+    display: block;
+    text-decoration: none;
+    color: white;
+  }
+
+  &__logged-in {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-left: auto;
+    width: 85%;
+
+    .menu-buttons {
+    }
+  }
+
+  &__logged-out {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }

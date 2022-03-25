@@ -19,9 +19,7 @@ import StockList from "./components/Trade/StockLists/StockList";
 import CreateList from "./components/Trade/StockLists/CreateList";
 import EditList from "./components/Trade/StockLists/EditList";
 
-import WebSocketProvider, {
-  WebSocketContext,
-} from "./components/Test/websocket";
+import WebSocketProvider from "./components/Test/websocket";
 import Test from "./components/Test/test";
 
 import { useDispatch, useSelector } from "react-redux";

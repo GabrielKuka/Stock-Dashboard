@@ -7,35 +7,36 @@ import TopList from "../Trade/StockLists/TopList";
 
 const LoggedInNav = ({ user, handleLogout }) => {
   return (
-    <>
+    <div className={"navigation-bar__logged-in"}>
       <TopList user={user} />
-      <Link className="" to={"/lists"}>
-        Stock Lists
-      </Link>
+      <div className={"menu-buttons"}>
+        <Link className="" to={"/lists"}>
+          <Button text={"Stock Lists"} />
+        </Link>
 
-      <Link className="" to={"/profile/" + user.name}>
-        My Profile
-      </Link>
+        <Link className="" to={"/profile/" + user.name}>
+          <Button text={"Profile"} />
+        </Link>
 
-      <Button
-        text={"Logout"}
-        type={"action"}
-        onClick={() => handleLogout}
-        testKey={"logout"}
-      />
-    </>
+        <Button
+          text={"Logout"}
+          onClick={(e) => handleLogout(e)}
+          testKey={"logout"}
+        />
+      </div>
+    </div>
   );
 };
 
 const LoggedOutNav = () => {
   return (
-    <div className="">
+    <div className={"navigation-bar__logged-out"}>
       <Link to="/register">
-        <button className="btn">Register</button>
+        <Button text={"Register"} />
       </Link>
 
       <Link to="/login">
-        <button className="btn">Login</button>
+        <Button text={"Login"} />
       </Link>
     </div>
   );
@@ -43,10 +44,11 @@ const LoggedOutNav = () => {
 
 const NavBar = ({ user, handleLogout }) => {
   return (
-    <nav className="navbar-wrapper">
-      <a className="navbar-wrapper__brand" href="/homepage">
+    <nav className="navigation-bar">
+      <Link to={"/homepage"} className={"navigation-bar__header"}>
         Pernet
-      </a>
+      </Link>
+
       {user ? (
         <LoggedInNav user={user} handleLogout={handleLogout} />
       ) : (

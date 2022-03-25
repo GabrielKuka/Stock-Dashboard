@@ -1,65 +1,39 @@
 .card-title {
-    color: black;
-    font-weight: bold;
-    font-family: 'Times New Roman', Times, serif;
-    text-align: center;
+  color: black;
+  font-weight: bold;
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
 }
 
 .list-options {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .main_wrapper {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .header {
-    font-weight: bold;
-    font-size: 2rem;
+  font-weight: bold;
+  font-size: 2rem;
 }
 
-.list-option, .goback-option, .list-badge {
-    margin-left: 1rem;
+.list-option,
+.goback-option,
+.list-badge {
+  margin-left: 1rem;
 }
-
 
 .create-list-wrapper {
-    margin-top: 3rem;
-    padding: 2rem 2rem 2rem 2rem
+  margin-top: 3rem;
+  padding: 2rem 2rem 2rem 2rem;
 }
 
 .add-list-data {
-    margin: 0 0 0 10rem;
+  margin: 0 0 0 10rem;
 }
 
 .editlist-wrapper {
-    margin: 2rem 0 0 0;
-    padding: 1rem 1rem 1rem 1rem;
-}
-
-.toplist-wrapper {
-    color: white;
-}
-
-.toplist-item {
-    margin-left: 1rem;
-    border: 1px solid aqua;
-    border-radius: 0.7rem;
-}
-
-.toplist-issuetype {
-    font-size: 0.8rem;
-    color: darkgray 
-}
-
-.toplist-item-container {
-    padding: 0.3rem 0.5rem 0.3rem 0.5rem
-}
-
-.toplist-item-container p {
-    margin-left: 4rem;
-}
-
-.toplist-item-container .ticker {
-    font-weight: bold;
+  margin: 2rem 0 0 0;
+  padding: 1rem 1rem 1rem 1rem;
 }
