@@ -1,84 +1,59 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
-import './style.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import "./navbar.scss";
+import Button from "../Core/button";
 
-import TopList from '../Trade/StockLists/TopList'
- 
-const styles = {
-    root: {
-      flexGrow: 1,
-    },
-    title: {
-      flexGrow: 1,
-    },
-    link: {
-      margin:'5px',
-      color:'white',
-      
-    },
- 
-}
+import TopList from "../Trade/StockLists/TopList";
 
-const LoggedInNav = ({user, handleLogout})=>{
-
-  return(
-    <>
-      <TopList user={user}/>
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-secondary" to={'/lists'}>
-            Stock Lists 
-          </Link>
-        </li>
-
-        <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-info" to={'/profile/' + user.name}>
-              My Profile
-          </Link>
-        </li>
-
-        <li className="nav-item">
-          <button  className="btn btn-danger" style={styles.link} onClick={handleLogout}>Logout</button>
-        </li>
-      </ul>
-    </>
-  )
-
-}
-
-const LoggedOutNav = ()=>{
-
+const LoggedInNav = ({ user, handleLogout }) => {
   return (
+    <>
+      <TopList user={user} />
+      <Link className="" to={"/lists"}>
+        Stock Lists
+      </Link>
 
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-          <Link  to="/register"><button style={styles.link} className='btn'>Register</button></Link>
-          </li>
+      <Link className="" to={"/profile/" + user.name}>
+        My Profile
+      </Link>
 
-          <li className="nav-item">
-          <Link  to="/login"><button style={styles.link} className='btn'>Login</button></Link>
-          </li>
-        </ul>
-  )
-}
+      <Button
+        text={"Logout"}
+        type={"action"}
+        onClick={() => handleLogout}
+        testKey={"logout"}
+      />
+    </>
+  );
+};
 
-const NavBar = ({user, handleLogout}) => {
+const LoggedOutNav = () => {
+  return (
+    <div className="">
+      <Link to="/register">
+        <button className="btn">Register</button>
+      </Link>
 
-    
-    return(
-      <nav id='nav'className="navbar pt-2 pb-2 navbar-expand-lg sticky-top">
-        <a className="navbar-brand" style={styles.link} href="/homepage">Pernet</a>
-      {
-      user
-      ?
-      <div className='collapse navbar-collapse'>
-        <LoggedInNav user={user} handleLogout={handleLogout}/>
-      </div>
-      :
+      <Link to="/login">
+        <button className="btn">Login</button>
+      </Link>
+    </div>
+  );
+};
+
+const NavBar = ({ user, handleLogout }) => {
+  return (
+    <nav className="navbar-wrapper">
+      <a className="navbar-wrapper__brand" href="/homepage">
+        Pernet
+      </a>
+      {user ? (
+        <LoggedInNav user={user} handleLogout={handleLogout} />
+      ) : (
         <LoggedOutNav />
-      }
-      </nav>
-    )
-}
+      )}
+    </nav>
+  );
+};
 
 export default NavBar;
