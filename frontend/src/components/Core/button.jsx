@@ -13,6 +13,7 @@ const Button = (props) => {
   return (
     <button
       type={buttonType}
+      className={buttonType}
       data-testid={
         props.testKey ? `${props.testKey}-${buttonType}` : `${buttonType}`
       }
