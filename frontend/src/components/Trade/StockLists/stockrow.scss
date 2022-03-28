@@ -1,0 +1,20 @@
+.stockrow-wrapper {
+  border-top: 1px solid black;
+  height: 50px;
+  display: grid;
+  grid-template-columns: 30% 45% 25%;
+
+  &__price {
+    text-align: left;
+    padding-top: 10%;
+  }
+
+  &__percent {
+    text-align: center;
+    padding-top: 20%;
+  }
+
+  &__ticker {
+    padding-top: 15%;
+  }
+}

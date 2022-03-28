@@ -3,10 +3,9 @@ import tradeService from "../../../services/trade";
 import Button from "../../Core/button";
 import { Link } from "react-router-dom";
 import "./stocklistspage.scss";
+import StockListCard from "./stocklistcard";
 
-import StockRow from "./StockRow";
 import { useDispatch } from "react-redux";
-import { changeTicker } from "../../../reducers/tradeReducer";
 
 const Lists = ({ stockLists }) => {
   const dispatch = useDispatch();
@@ -14,31 +13,7 @@ const Lists = ({ stockLists }) => {
     <div className="list-wrapper">
       {stockLists &&
         stockLists.map((list) => {
-          return (
-            <div
-              key={list.id}
-              className="card shadow p-3 mb-5 rounded"
-              style={{ width: "16em" }}
-            >
-              <Link className="card-body" to={"/stocklist/" + list.title}>
-                <h2 className="card-title">{list.title}</h2>
-              </Link>
-              <div className="list-group list-group-flush">
-                {list.stocks.map((stonk) => {
-                  return (
-                    <Link
-                      onClick={() => dispatch(changeTicker(stonk.ticker))}
-                      key={stonk.ticker}
-                      to={{ pathname: "/dashboard" }}
-                      className="list-group-item list-group-item-action"
-                    >
-                      <StockRow ticker={stonk.ticker} />
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          );
+          return <StockListCard list={list} />;
         })}
     </div>
   );
