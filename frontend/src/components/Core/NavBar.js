@@ -11,7 +11,7 @@ const LoggedInNav = ({ user, handleLogout }) => {
       <TopList user={user} />
       <div className={"menu-buttons"}>
         <Link className="" to={"/lists"}>
-          <Button text={"Stock Lists"} />
+          <Button text={"Lists"} />
         </Link>
 
         <Link className="" to={"/profile/" + user.name}>

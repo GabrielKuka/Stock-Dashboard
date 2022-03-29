@@ -5,16 +5,12 @@ import { Link } from "react-router-dom";
 import "./stocklistspage.scss";
 import StockListCard from "./stocklistcard";
 
-import { useDispatch } from "react-redux";
-
 const Lists = ({ stockLists }) => {
-  const dispatch = useDispatch();
   return (
     <div className="list-wrapper">
-      {stockLists &&
-        stockLists.map((list) => {
-          return <StockListCard list={list} />;
-        })}
+      {stockLists?.map((list) => {
+        return <StockListCard list={list} />;
+      })}
     </div>
   );
 };
