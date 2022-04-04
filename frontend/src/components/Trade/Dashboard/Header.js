@@ -56,8 +56,8 @@ const Header = (props) => {
       <img className={"logo"} alt="Logo" src={props.header.logo} />
       <span className="company-name">{props.header.name}</span>
       <div className={"realtime-price-container"}>
-        <b>${tickerData.price}</b>
-        <span style={changeStyle()}>{tickerData.changePercent}%</span>
+        <b>${tickerData?.price}</b>
+        <span style={changeStyle()}>{tickerData?.changePercent}%</span>
       </div>
     </div>
   );
