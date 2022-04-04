@@ -5,7 +5,7 @@ const Overview = ({ data }) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {data && data.CEO && (
+        {data?.CEO && (
           <div className="col-sm">
             <label>
               <b>CEO</b>
@@ -13,7 +13,7 @@ const Overview = ({ data }) => {
             <p>{data.CEO}</p>
           </div>
         )}
-        {data && data.industry && (
+        {data?.industry && (
           <div className="col-sm">
             <label>
               <b>Industry</b>
@@ -21,7 +21,7 @@ const Overview = ({ data }) => {
             <p>{data.industry}</p>
           </div>
         )}
-        {data && data.sector && (
+        {data?.sector && (
           <div className="col-sm">
             <label>
               <b>Sector</b>
@@ -32,7 +32,7 @@ const Overview = ({ data }) => {
       </div>
       <div className="row">
         <div className="col-sm">
-          {data && data.employees && (
+          {data?.employees && (
             <>
               <label>
                 <b>Employees</b>
@@ -41,7 +41,7 @@ const Overview = ({ data }) => {
             </>
           )}
         </div>
-        {data && data.city && data.country && data.state && (
+        {data?.city && data?.country && data?.state && (
           <div className="col-sm">
             <label>
               <b>Address</b>
@@ -51,7 +51,7 @@ const Overview = ({ data }) => {
             </p>
           </div>
         )}
-        {data && data.website && (
+        {data?.website && (
           <div className="col-sm">
             <label>
               <b>Website</b>
@@ -60,7 +60,7 @@ const Overview = ({ data }) => {
           </div>
         )}
       </div>
-      {data && data.description && (
+      {data?.description && (
         <div className="row">
           <div className="col-sm">
             <label>

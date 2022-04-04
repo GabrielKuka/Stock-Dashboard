@@ -5,7 +5,7 @@ const Stats = ({ data }) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {data && data.sharesOutstanding && (
+        {data?.sharesOutstanding && (
           <div className="col-sm">
             <label>
               <b>Shares Outstanding</b>
@@ -13,7 +13,7 @@ const Stats = ({ data }) => {
             <p>{Helper.formatNumber(data.sharesOutstanding)}</p>
           </div>
         )}
-        {data && data.peRatio && (
+        {data?.peRatio && (
           <div className="col-sm">
             <label>
               <b>PE Ratio</b>
@@ -21,7 +21,7 @@ const Stats = ({ data }) => {
             <p>{parseFloat(data.peRatio).toFixed(1)}</p>
           </div>
         )}
-        {data && data.ttmEPS && (
+        {data?.ttmEPS && (
           <div className="col-sm">
             <label>
               <b>EPS</b>
@@ -31,7 +31,7 @@ const Stats = ({ data }) => {
         )}
       </div>
       <div className="row">
-        {data && data.marketcap && (
+        {data?.marketcap && (
           <div className="col-sm">
             <label>
               <b>Market Cap</b>
@@ -39,7 +39,7 @@ const Stats = ({ data }) => {
             <p>${Helper.formatNumber(data.marketcap)}</p>
           </div>
         )}
-        {data && data.week52high && (
+        {data?.week52high && (
           <div className="col-sm">
             <label>
               <b>52 Week High</b>
@@ -47,7 +47,7 @@ const Stats = ({ data }) => {
             <p>${data.week52high}</p>
           </div>
         )}
-        {data && data.week52low && (
+        {data?.week52low && (
           <div className="col-sm">
             <label>
               <b>52 Week Low</b>
@@ -57,7 +57,7 @@ const Stats = ({ data }) => {
         )}
       </div>
       <div className="row">
-        {data && data.dividendYield && (
+        {data?.dividendYield && (
           <div className="col-sm">
             <label>
               <b>Divident Yield</b>
@@ -65,7 +65,7 @@ const Stats = ({ data }) => {
             <p>{parseFloat(data.dividendYield * 100).toFixed(3)}%</p>
           </div>
         )}
-        {data && data.nextDividendDate && (
+        {data?.nextDividendDate && (
           <div className="col-sm">
             <label>
               <b>Next Dividend Date</b>
@@ -73,7 +73,7 @@ const Stats = ({ data }) => {
             <p>{data.nextDividendDate}</p>
           </div>
         )}
-        {data && data.exDividendDate && (
+        {data.exDividendDate && (
           <div className="col-sm">
             <label>
               <b>exDividendDate</b>
@@ -83,7 +83,7 @@ const Stats = ({ data }) => {
         )}
       </div>
       <div className="row">
-        {data && data.day200MovingAvg && (
+        {data?.day200MovingAvg && (
           <div className="col-sm">
             <label>
               <b>200 Day Moving Avg</b>
@@ -91,7 +91,7 @@ const Stats = ({ data }) => {
             <p>${data.day200MovingAvg}</p>
           </div>
         )}
-        {data && data.day50MovingAvg && (
+        {data?.day50MovingAvg && (
           <div className="col-sm">
             <label>
               <b>50 Day Moving Avg</b>
@@ -99,7 +99,7 @@ const Stats = ({ data }) => {
             <p>${data.day50MovingAvg}</p>
           </div>
         )}
-        {data && data.ytdChangePercent && (
+        {data?.ytdChangePercent && (
           <div className="col-sm">
             <label>
               <b>Change YTD</b>
