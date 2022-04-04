@@ -13,7 +13,7 @@ const TopListItem = ({ ticker, issueType }) => {
   const prevClose = useRef();
 
   const changeStyle = () => {
-    const changeColor = tickerData.changePercent > 0 ? "green" : "red";
+    const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
     return { color: changeColor, fontSize: "0.9rem" };
   };
 
@@ -37,10 +37,10 @@ const TopListItem = ({ ticker, issueType }) => {
 
   // Check socket updates
   useEffect(() => {
-    if (stock.ticker === ticker) {
+    if (stock?.ticker === ticker) {
       const change = Helper.getChange(stock.price, prevClose.current);
       setTickerData({
-        price: stock.price,
+        price: stock?.price,
         change: change,
         changePercent: Helper.formatChangePercent(change / prevClose.current),
       });
@@ -74,23 +74,22 @@ const TopList = () => {
   useEffect(() => {
     const fetchTopList = async () => {
       const response = await tradeService.topListAction("GET");
-      setListItems(response.stocks);
+      setListItems(response?.stocks);
     };
     fetchTopList();
   }, []);
 
   return (
     <div className="toplist">
-      {listItems &&
-        listItems.map((stock) => {
-          return (
-            <TopListItem
-              key={stock.ticker}
-              ticker={stock.ticker}
-              issueType={stock.issueType}
-            />
-          );
-        })}
+      {listItems?.map?.((stock) => {
+        return (
+          <TopListItem
+            key={stock?.ticker}
+            ticker={stock?.ticker}
+            issueType={stock?.issueType}
+          />
+        );
+      })}
     </div>
   );
 };

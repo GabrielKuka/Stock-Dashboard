@@ -15,7 +15,7 @@ const StockList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(({ user }) => user);
-  const confirmPrompt = useSelector(({ modal }) => modal.data.confirm);
+  const confirmPrompt = useSelector(({ modal }) => modal?.data?.confirm);
 
   const title = useParams().title;
   const [listDates, setListDates] = useState({});
@@ -27,8 +27,8 @@ const StockList = () => {
       const response = await tradeService.listAction("GET_LIST_DATA", title);
       setTickerList(response);
       setListDates({
-        updated_on: response.updated_on,
-        created_on: response.created_on,
+        updated_on: response?.updated_on,
+        created_on: response?.created_on,
       });
     };
 
@@ -77,16 +77,15 @@ const StockList = () => {
               </tr>
             </thead>
             <tbody>
-              {tickerList.stocks &&
-                tickerList.stocks.map((stock) => {
-                  return (
-                    <TickerRow
-                      ticker={stock.ticker}
-                      edit={false}
-                      key={stock.ticker}
-                    />
-                  );
-                })}
+              {tickerList?.stocks?.map?.((stock) => {
+                return (
+                  <TickerRow
+                    ticker={stock?.ticker}
+                    edit={false}
+                    key={stock?.ticker}
+                  />
+                );
+              })}
             </tbody>
           </table>
           <div className="d-grid">
@@ -101,10 +100,10 @@ const StockList = () => {
               Edit List
             </button>
             <p className="badge bg-info text-light list-badge">
-              Created <Moment fromNow>{listDates.created_on}</Moment>
+              Created <Moment fromNow>{listDates?.created_on}</Moment>
             </p>
             <p className="badge bg-success text-light list-badge">
-              Updated <Moment fromNow>{listDates.updated_on}</Moment>
+              Updated <Moment fromNow>{listDates?.updated_on}</Moment>
             </p>
           </div>
         </div>

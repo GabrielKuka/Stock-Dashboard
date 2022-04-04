@@ -8,7 +8,7 @@ import StockListCard from "./stocklistcard";
 const Lists = ({ stockLists }) => {
   return (
     <div className="list-wrapper">
-      {stockLists?.map((list) => {
+      {stockLists?.map?.((list) => {
         return <StockListCard list={list} />;
       })}
     </div>

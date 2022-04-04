@@ -27,18 +27,18 @@ const StockRow = ({ ticker }) => {
 
   // Check socket updates
   useEffect(() => {
-    if (stock.ticker === ticker) {
+    if (stock?.ticker === ticker) {
       const change = Helper.getChange(stock.price, prevClose.current);
       setTickerData({
-        price: stock.price,
+        price: stock?.price,
         change: change,
-        changePercent: Helper.formatChangePercent(change / prevClose.current),
+        changePercent: Helper.formatChangePercent(change / prevClose?.current),
       });
     }
   }, [stock.price]);
 
   const changeStyle = () => {
-    const changeColor = tickerData.changePercent > 0 ? "green" : "red";
+    const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
 
     return { color: changeColor, fontSize: "0.8rem" };
   };

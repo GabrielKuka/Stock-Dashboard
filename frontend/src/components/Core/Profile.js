@@ -36,9 +36,9 @@ const Profile = ({ user }) => {
           <div className="card-body">
             <h2 className="card-title">{user.name}</h2>
             <div className="list-group list-group-flush">
-              <ProfileItem data={user.email} label="Email" />
-              <ProfileItem data={user.phone} label="Phone Number" />
-              <ProfileItem data={user.birthday} label="Date of Birth" />
+              <ProfileItem data={user?.email} label="Email" />
+              <ProfileItem data={user?.phone} label="Phone Number" />
+              <ProfileItem data={user?.birthday} label="Date of Birth" />
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ const TickerRow = ({ ticker, edit, listAction }) => {
   const prevClose = useRef();
 
   const changeStyle = () => {
-    const changeColor = tickerData.changePercent > 0 ? "green" : "red";
+    const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
 
     return { color: changeColor, fontSize: "0.8rem" };
   };
@@ -23,7 +23,7 @@ const TickerRow = ({ ticker, edit, listAction }) => {
       const response = await tradeService.getTickerPrice(ticker);
       // Save change percent, price, and prev price
       setTickerData(response);
-      prevClose.current = response.previousClose;
+      prevClose?.current = response?.previousClose;
     };
 
     fetchData();
@@ -38,10 +38,10 @@ const TickerRow = ({ ticker, edit, listAction }) => {
 
   // Check socket updates
   useEffect(() => {
-    if (stock.ticker === ticker) {
+    if (stock?.ticker === ticker) {
       const change = Helper.formatNumber(stock.price - prevClose.current);
       setTickerData({
-        price: stock.price,
+        price: stock?.price,
         change: change,
         changePercent: Helper.formatChangePercent(change / prevClose.current),
       });
