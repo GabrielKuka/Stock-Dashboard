@@ -68,12 +68,12 @@ const Dashboard = (props) => {
       <div className={"sidebar-wrapper"}>
         <Sidebar tickerData={tickerData} ticker={stonk} />
       </div>
-      <div id="page-content-wrapper">
+      <div className={"page-content-wrapper"}>
         {stonk && tickerView && (
           <>
             <Header header={header} tickerView={tickerView} />
             <hr />
-            <div className="card-text">{handleViewRendering()}</div>
+            <div className="main-content">{handleViewRendering()}</div>
           </>
         )}
       </div>

@@ -11,15 +11,16 @@
   min-height: 87vh !important;
   padding: 1rem;
   background: forestgreen;
-  -webkit-transition: margin 0.25s ease-out;
-  -moz-transition: margin 0.25s ease-out;
-  -o-transition: margin 0.25s ease-out;
-  transition: margin 0.25s ease-out;
 }
 
-#page-content-wrapper {
+.page-content-wrapper {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+
+  .main-content {
+    padding-top: 20px;
+    border-radius: 5px;
+    box-shadow: -3px 3px 10px 3px #c3c3c3;
+  }
 }
