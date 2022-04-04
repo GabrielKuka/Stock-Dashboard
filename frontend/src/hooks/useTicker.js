@@ -8,27 +8,28 @@ const useTicker = (ticker) => {
   const ws = useContext(WebSocketContext);
   const stock = useSelector(({ socket }) => socket);
 
+  const [tickerInput, setTickerInput] = useState(ticker);
   const [tickerData, setTickerData] = useState();
   const prevClose = useRef();
 
   useEffect(() => {
     const fetchInitialPrice = async () => {
-      const response = await tradeService.getTickerPrice(ticker);
+      const response = await tradeService.getTickerPrice(tickerInput);
       setTickerData(response);
       prevClose.current = response.previousClose;
     };
 
     fetchInitialPrice();
-    ws.subscribe(ticker);
+    ws.subscribe(tickerInput);
 
     return () => {
-      ws.unsubscribe(ticker);
+      ws.unsubscribe(tickerInput);
     };
-  }, []);
+  }, [tickerInput]);
 
   // Check socket updates
   useEffect(() => {
-    if (stock?.ticker === ticker) {
+    if (stock?.ticker === tickerInput) {
       const change = Helper.getChange(stock.price, prevClose.current);
       setTickerData({
         price: stock?.price,
@@ -38,7 +39,7 @@ const useTicker = (ticker) => {
     }
   }, [stock.price]);
 
-  return tickerData;
+  return [tickerData, setTickerInput];
 };
 
 export default useTicker;

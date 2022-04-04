@@ -1,12 +1,9 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-import { WebSocketContext } from "../../Test/websocket";
-import { useSelector } from "react-redux";
+import React from "react";
 import Helper from "../../../services/Helper";
-import tradeService from "../../../services/trade";
-import useTicker from "../../../hooks/useSocket";
+import useTicker from "../../../hooks/useTicker";
 
 const TickerRow = ({ ticker, edit, listAction }) => {
-  const tickerData = useTicker(ticker);
+  const [tickerData] = useTicker(ticker);
 
   const changeStyle = () => {
     const changeColor = tickerData?.changePercent > 0 ? "green" : "red";

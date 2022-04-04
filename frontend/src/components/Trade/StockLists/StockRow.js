@@ -1,10 +1,10 @@
 import React from "react";
 import Helper from "../../../services/Helper";
-import useTicker from "../../../hooks/useSocket";
+import useTicker from "../../../hooks/useTicker";
 import "./stockrow.scss";
 
 const StockRow = ({ ticker }) => {
-  const tickerData = useTicker(ticker);
+  const [tickerData] = useTicker(ticker);
 
   const changeStyle = () => {
     const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
