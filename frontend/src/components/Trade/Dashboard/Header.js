@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import useTicker from "../../../hooks/useTicker";
 
 import { useSelector } from "react-redux";
-import "./header.css";
+import "./header.scss";
 
 const Header = (props) => {
   const ticker = useSelector(({ trade }) => trade.ticker);
@@ -20,12 +20,19 @@ const Header = (props) => {
   };
 
   return (
-    <div className="card-title">
-      <img className={"logo"} alt="Logo" src={props.header.logo} />
-      <span className="company-name">{props.header.name}</span>
-      <div className={"realtime-price-container"}>
-        <b>${tickerData?.price}</b>
-        <span style={changeStyle()}>{tickerData?.changePercent}%</span>
+    <div className="header-wrapper">
+      <h3 className={"header-wrapper__tickerview"}>{props.tickerView}</h3>
+      <img
+        className={"header-wrapper__logo"}
+        alt="Logo"
+        src={props.header.logo}
+      />
+      <div className="header-wrapper__company-name">{props.header.name}</div>
+      <div className={"header-wrapper__realtime-price-container"}>
+        <span className={"price"}>${tickerData?.price}</span>
+        <span className={"percent"} style={changeStyle()}>
+          {tickerData?.changePercent}%
+        </span>
       </div>
     </div>
   );

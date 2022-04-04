@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
-import "./dashboard.css";
+import "./dashboard.scss";
 import { Formik, useField, Form, Field } from "formik";
 import tradeService from "../../../services/trade";
 import { useDispatch } from "react-redux";

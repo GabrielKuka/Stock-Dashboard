@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import tradeService from "../../../services/trade";
 
@@ -12,7 +11,7 @@ import Stats from "./Stats";
 import News from "./News";
 import Technicals from "./Technicals";
 
-import "./dashboard.css";
+import "./dashboard.scss";
 import { changeTickerView } from "../../../reducers/tradeReducer";
 
 const Dashboard = (props) => {
@@ -65,27 +64,20 @@ const Dashboard = (props) => {
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col xs={3} className={"sidebar-wrapper"}>
-          <Sidebar tickerData={tickerData} ticker={stonk} />
-        </Col>
-        <Col xs={9} id="page-content-wrapper">
-          {stonk && tickerView && (
-            <div className="card content-card">
-              <h5 style={{ textAlign: "center" }}>
-                <b>{tickerView}</b>
-              </h5>
-              <div className="card-body">
-                <Header header={header} />
-                <hr />
-                <div className="card-text">{handleViewRendering()}</div>
-              </div>
-            </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
+    <div className={"dashboard-wrapper"}>
+      <div className={"sidebar-wrapper"}>
+        <Sidebar tickerData={tickerData} ticker={stonk} />
+      </div>
+      <div id="page-content-wrapper">
+        {stonk && tickerView && (
+          <>
+            <Header header={header} tickerView={tickerView} />
+            <hr />
+            <div className="card-text">{handleViewRendering()}</div>
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 
