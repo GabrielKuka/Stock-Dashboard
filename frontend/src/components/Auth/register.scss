@@ -1,0 +1,26 @@
+.register-wrapper {
+  width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 7px solid rgb(13, 110, 253);
+  text-align: center;
+  margin-top: 10%;
+
+  input {
+    padding: 5px;
+  }
+
+  button {
+    margin-top: 20px;
+  }
+
+  .error {
+    font-size: 12px;
+    color: rgb(216, 47, 47);
+  }
+
+  .register-form {
+    padding: 10;
+    margin-top: 10;
+  }
+}

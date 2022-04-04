@@ -14,7 +14,7 @@ import Profile from "./components/Core/Profile";
 
 import Homepage from "./components/Homepage/Homepage";
 
-import StockLists from "./components/Trade/StockLists/StockLists";
+import StockListsPage from "./components/Trade/StockLists/StockListsPage";
 import StockList from "./components/Trade/StockLists/StockList";
 import CreateList from "./components/Trade/StockLists/CreateList";
 import EditList from "./components/Trade/StockLists/EditList";
@@ -76,7 +76,7 @@ const App = () => {
             </Route>
 
             <Route exact path="/lists">
-              <StockLists user={user} />
+              <StockListsPage user={user} />
             </Route>
 
             <Route exact path="/createlist">

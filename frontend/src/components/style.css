@@ -1,81 +1,61 @@
-.register{
-    width: 300px;
-    margin: auto;
-    padding: 20px;
-    border: 7px solid  rgb(13, 110, 253);
-    text-align: center;
-    margin-top: 50px;
-}
-.register input{
-    padding: 5px;
+.welcome {
+  padding: 60px;
+  text-align: center;
+  color: rgb(107, 105, 105);
+  font-size: 2.4vw;
 }
 
-.register button{
-    margin-top: 20px;
+.welcome h1 {
+  margin-bottom: 30px;
 }
 
-.welcome{
-    padding: 60px;
-    text-align: center;
-    /* background: #a8b1af; */
-    color: rgb(107, 105, 105);
-    font-size: 2.4vw;
+.error {
+  font-size: 12px;
+  color: rgb(216, 47, 47);
 }
 
-.welcome h1{
-    margin-bottom: 30px;
+.loggedOut {
+  text-align: center;
 }
 
-.error{
-    font-size: 12px;
-    color: rgb(216, 47, 47);
+.loggedOut h1 {
+  font-size: 42px;
+  padding: 50px;
+  font-style: italic;
 }
 
-
-.loggedOut{
-    text-align: center;
+.link {
+  padding-right: 20px;
+  text-decoration: none;
 }
 
-.loggedOut h1{
-    font-size: 42px;
-    padding: 50px;
-    font-style: italic;
+.greet {
+  border-left: 10px solid rgb(63, 81, 181);
 }
 
-.link{
-    padding-right: 20px;
-    text-decoration: none;
+.greet h3 {
+  font-size: 30px;
 }
 
-.greet{
-    border-left: 10px solid  rgb(63, 81, 181);
-}
-
-.greet h3{
-    font-size: 30px;
-}
-
-.greet p{
-    font-size: 22px;
-    
+.greet p {
+  font-size: 22px;
 }
 
 @media (max-width: 1000px) {
-	#nav{
-		display: block;
-		width: 100%;
-		text-align: center;
-        background: rgb(240, 255, 243);
-	}
-    .welcome{
-        width: 100%;
-        min-width: 400px;
-        background-color: bisque;
-        text-align: center;
-    }
+  #nav {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: rgb(240, 255, 243);
+  }
+  .welcome {
+    width: 100%;
+    min-width: 400px;
+    background-color: bisque;
+    text-align: center;
+  }
 
-    .createForm{
-        width: 400px;
-    }
-   
+  .createForm {
+    width: 400px;
+  }
 }

@@ -1,0 +1,26 @@
+//#region MEDIA_QUERIES
+$breakpoints: (
+  "phone": 415px,
+  "phone-wide": 480px,
+  "phablet": 680px,
+  "tablet-small": 640px,
+  "tablet": 768px,
+  "tablet-edge": 769px,
+  "tablet-wide": 1024px,
+  "desktop": 1248px,
+  "desktop-wide": 1440px,
+  "desktop-wide-helper": 1640px,
+  "tv": 1820px,
+);
+
+@mixin mq($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}
+
+//#endregion MEDIA_QUERIES

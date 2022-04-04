@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: var(--background-color);
+  color: #222;
+  border: none;
+  outline: none;
+  padding: 0.5em 0.7em;
+  position: relative;
+  margin-inline: 0.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  --background-color: white;
+  --border-size: 2px;
+  --accent-color: #0af;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: var(--border-size) solid var(--background-color);
+  border-radius: 5px;
+  transition: top, left, right, bottom, 200ms ease-in-out;
+}
+
+.button:hover::before,
+.button:focus::before {
+  top: calc(var(--border-size) * -2);
+  left: calc(var(--border-size) * -2);
+  right: calc(var(--border-size) * -2);
+  bottom: calc(var(--border-size) * -2);
+}

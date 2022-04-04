@@ -1,98 +1,56 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./style.css";
+import "./navbar.scss";
+import Button from "../Core/button";
 
 import TopList from "../Trade/StockLists/TopList";
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  link: {
-    margin: "5px",
-    color: "white",
-  },
-};
-
 const LoggedInNav = ({ user, handleLogout }) => {
   return (
-    <>
+    <div className={"navigation-bar__logged-in"}>
       <TopList user={user} />
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item active">
-          <Link
-            style={styles.link}
-            className="btn btn-success"
-            to={"/dashboard"}
-          >
-            Dashboard
-          </Link>
-        </li>
-        <li className="nav-item active">
-          <Link style={styles.link} className="btn btn-secondary" to={"/lists"}>
-            Stock Lists
-          </Link>
-        </li>
+      <div className={"menu-buttons"}>
+        <Link className="" to={"/lists"}>
+          <Button text={"Lists"} />
+        </Link>
 
-        <li className="nav-item active">
-          <Link
-            style={styles.link}
-            className="btn btn-info"
-            to={"/profile/" + user.name}
-          >
-            Profile
-          </Link>
-        </li>
+        <Link className="" to={"/profile/" + user.name}>
+          <Button text={"Profile"} />
+        </Link>
 
-        <li className="nav-item">
-          <button
-            className="btn btn-danger"
-            style={styles.link}
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </li>
-      </ul>
-    </>
+        <Button
+          text={"Logout"}
+          onClick={(e) => handleLogout(e)}
+          testKey={"logout"}
+        />
+      </div>
+    </div>
   );
 };
 
 const LoggedOutNav = () => {
   return (
-    <ul className="navbar-nav ml-auto">
-      <li className="nav-item">
-        <Link to="/register">
-          <button style={styles.link} className="btn">
-            Register
-          </button>
-        </Link>
-      </li>
+    <div className={"navigation-bar__logged-out"}>
+      <Link to="/register">
+        <Button text={"Register"} />
+      </Link>
 
-      <li className="nav-item">
-        <Link to="/login">
-          <button style={styles.link} className="btn">
-            Login
-          </button>
-        </Link>
-      </li>
-    </ul>
+      <Link to="/login">
+        <Button text={"Login"} />
+      </Link>
+    </div>
   );
 };
 
 const NavBar = ({ user, handleLogout }) => {
   return (
-    <nav id="nav" className="navbar pt-2 pb-2 navbar-expand-lg sticky-top">
-      <a className="navbar-brand" style={styles.link} href="/homepage">
+    <nav className="navigation-bar">
+      <Link to={"/homepage"} className={"navigation-bar__header"}>
         Pernet
-      </a>
+      </Link>
+
       {user ? (
-        <div className="collapse navbar-collapse">
-          <LoggedInNav user={user} handleLogout={handleLogout} />
-        </div>
+        <LoggedInNav user={user} handleLogout={handleLogout} />
       ) : (
         <LoggedOutNav />
       )}

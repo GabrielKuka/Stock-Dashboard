@@ -1,0 +1,75 @@
+@import "../../styles/mixins";
+
+.navigation-bar {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: #537895;
+  background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0.5% 2% 0.5% 2%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  min-width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  @include mq("tablet-wide", max) {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  &__header {
+    color: white;
+    font-size: 2rem;
+    align-self: center;
+    text-transform: uppercase;
+  }
+
+  &__header:hover:not(.active) {
+    display: block;
+    text-decoration: none;
+    color: white;
+  }
+
+  &__logged-in {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-left: auto;
+    justify-content: center;
+    column-gap: 20px;
+    width: 85%;
+
+    @include mq("tablet-wide", max) {
+      display: none;
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: row;
+      column-gap: 5px;
+      flex-wrap: wrap;
+      row-gap: 5px;
+      min-width: 100px;
+      @include mq("tablet-wide", max) {
+        display: none;
+      }
+    }
+  }
+
+  &__logged-out {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+
+    @include mq("tablet", max) {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

@@ -1,25 +1,19 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from "react";
 
-import tradeService from '../../services/trade'
+import tradeService from "../../services/trade";
 
-import './style.css'
+import "./style.css";
 
-const Homepage = ({user})=>{
+const Homepage = ({ user }) => {
+  useEffect(() => {
+    const fetchQuote = async () => {
+      const data = await tradeService.getTickerQuote("AAPL");
+    };
 
-    useEffect(()=>{
-        const fetchQuote = async ()=>{
-            const data = await tradeService.getTickerQuote('AAPL')
-            console.log(data)
-        }
+    fetchQuote();
+  }, []);
 
-        fetchQuote()
-    }, [])
+  return <div>Hey</div>;
+};
 
-    return (
-        <div>
-            Hey
-        </div>
-    )
-}
-
-export default Homepage
+export default Homepage;

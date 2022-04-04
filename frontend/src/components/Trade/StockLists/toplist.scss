@@ -1,0 +1,37 @@
+@import "../../../styles/mixins";
+
+.toplist {
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  column-gap: 10px;
+  padding: 5px 5px 5px 5px;
+
+  &__item {
+    padding: 5px 5px 5px 5px;
+    border: 1px solid gray;
+    border-radius: 0.2rem;
+    width: 170px;
+
+    height: 60px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .item-container {
+      font-weight: bold;
+      border-radius: 5px;
+      display: grid;
+      grid-template-columns: repeat(2, 45%);
+      column-gap: 5px;
+
+      .issuetype,
+      .percent-change {
+        justify-self: end;
+        text-align: right;
+      }
+    }
+  }
+}

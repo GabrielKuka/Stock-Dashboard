@@ -11,7 +11,7 @@ const Helper = {
     if (typeof number === "undefined") {
       return "-";
     } else {
-      return number.toLocaleString();
+      return Number(number).toFixed(2).toLocaleString();
     }
   },
   formatDateTime: (date) => {
