@@ -1,0 +1,49 @@
+@import "../../../styles/mixins";
+
+.create-list-wrapper {
+  border: 1px solid black;
+  margin-top: 7%;
+  @include flex(row, center, flex-start);
+  gap: 50px;
+
+  @include mq("tablet-edge", max) {
+    @include flex(column, flex-start, center);
+  }
+
+  &__add-list-section {
+    box-shadow: -3px 2px 15px 2px #c3c3c3;
+    border-radius: 5px;
+    padding: 16px 48px 16px 48px;
+
+    .finished-state {
+      margin-top: 16px;
+      padding: 8px 0 8px 0;
+      @include flex(row);
+    }
+  }
+
+  &__result-list-section {
+    min-width: 420px;
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    gap: 20px 20px;
+
+    .result-item {
+      @include flex(row, flex-start);
+      gap: 32px;
+
+      box-shadow: -3px 2px 15px 2px #c3c3c3;
+      border-radius: 5px;
+      padding: 12px 32px 12px 32px;
+
+      span {
+        align-self: center;
+      }
+
+      button {
+        justify-self: flex-end;
+        border: 1px solid red;
+      }
+    }
+  }
+}

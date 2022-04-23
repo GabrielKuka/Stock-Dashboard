@@ -10,7 +10,7 @@ Props:
 */
 const Button = (props) => {
   const buttonType =
-    !props.type || props.type === "button" ? "button" : "submit";
+    !props.type || props.type === "button" ? "button" : props.type;
   return (
     <button
       type={buttonType}
