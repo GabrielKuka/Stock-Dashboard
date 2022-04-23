@@ -1,7 +1,6 @@
 @import "../../../styles/mixins";
 
 .create-list-wrapper {
-  border: 1px solid black;
   margin-top: 7%;
   @include flex(row, center, flex-start);
   gap: 50px;
@@ -42,7 +41,6 @@
 
       button {
         justify-self: flex-end;
-        border: 1px solid red;
       }
     }
   }

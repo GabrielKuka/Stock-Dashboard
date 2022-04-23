@@ -58,6 +58,7 @@ const AddTitle = ({ setTitle, dispatch }) => {
           <CustomTextInput name="title" label="Title" />
           <Button
             type={"submit"}
+            className={"info"}
             text={props.isSubmitting ? "Wait.." : "Next"}
           />
         </Form>
@@ -104,10 +105,16 @@ const AddStocks = ({ dispatch, listAction }) => {
             value={fieldVal}
             onChange={(e) => setFieldVal(e.target.value)}
           />
-          <Button type="button" onClick={() => addStock()} text={"Add Stock"} />
+          <Button
+            type="button"
+            className={"ternary"}
+            onClick={() => addStock()}
+            text={"Add Stock"}
+          />
           <span> </span>
           <Button
             type={"submit"}
+            className={"success"}
             text={props.isSubmitting ? "Creating" : "Finish"}
           />
         </Form>
@@ -196,8 +203,16 @@ const CreateList = ({ user }) => {
         )}
         {finished && title && (
           <div className="finished-state">
-            <Button onClick={() => finishList()} text={"Create List"} />
-            <Button onClick={() => goBack()} text={"Go Back"} />
+            <Button
+              className={"success"}
+              onClick={() => finishList()}
+              text={"Create List"}
+            />
+            <Button
+              className={"danger"}
+              onClick={() => goBack()}
+              text={"Go Back"}
+            />
           </div>
         )}
       </div>
@@ -206,7 +221,11 @@ const CreateList = ({ user }) => {
           return (
             <div key={stock} className={"result-item"}>
               <span className="">{stock}</span>
-              <Button onClick={() => removeStock(stock)} text={"X"} />
+              <Button
+                className={"danger"}
+                onClick={() => removeStock(stock)}
+                text={"X"}
+              />
             </div>
           );
         })}

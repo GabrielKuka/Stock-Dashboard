@@ -25,7 +25,10 @@ const Profile = ({ user }) => {
     <section className={"profile-wrapper"}>
       <div className={"profile-wrapper__side"}>
         <div className={"edit-wrapper"}>
-          <Button className={"edit-wrapper__edit-button"} text={"Edit"} />
+          <Button
+            className={"edit-wrapper__edit-button ternary"}
+            text={"Edit"}
+          />
         </div>
         <ProfileItem data={user?.name} label={"Username:"} />
         <ProfileItem data={user?.email} label={"Email:"} />

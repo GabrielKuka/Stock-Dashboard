@@ -34,10 +34,10 @@ const StockListsPage = ({ user }) => {
     <div className="main-wrapper">
       <p className="main-wrapper__header">
         <Link to="/createlist">
-          <Button text={"+"} className={"add-list-button"} />
+          <Button text={"+"} className={"add-list-button ternary"} />
         </Link>
         <span> </span>
-        My stock lists:
+        <span>My stock lists:</span>
       </p>
       <Lists stockLists={stockLists} />
     </div>

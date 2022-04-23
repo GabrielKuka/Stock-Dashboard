@@ -11,17 +11,18 @@ const LoggedInNav = ({ user, handleLogout }) => {
       <TopList user={user} />
       <div className={"menu-buttons"}>
         <Link className="" to={"/lists"}>
-          <Button text={"Lists"} />
+          <Button className={"nav-button"} text={"Lists"} />
         </Link>
 
         <Link className="" to={"/profile/" + user.name}>
-          <Button text={"Profile"} />
+          <Button className={"nav-button"} text={"Profile"} />
         </Link>
 
         <Button
           text={"Logout"}
           onClick={(e) => handleLogout(e)}
           testKey={"logout"}
+          className={"nav-button"}
         />
       </div>
     </div>
