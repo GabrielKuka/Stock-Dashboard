@@ -9,7 +9,7 @@ const Lists = ({ stockLists }) => {
   return (
     <div className="list-wrapper">
       {stockLists?.map?.((list) => {
-        return <StockListCard list={list} />;
+        return <StockListCard key={list.title} list={list} />;
       })}
     </div>
   );

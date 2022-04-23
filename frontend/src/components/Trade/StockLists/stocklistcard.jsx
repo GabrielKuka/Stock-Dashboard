@@ -11,7 +11,7 @@ const StockListCard = ({ list }) => {
     <div className={"card-wrapper"}>
       <div className={"card-wrapper__header"}>
         <Link className={"link header-link"} to={"/stocklist/" + list?.title}>
-          <h2>{list?.title}</h2>
+          <h2 className={"list-title"}>{list?.title}</h2>
         </Link>
       </div>
       <div className={"card-wrapper__list"}>

@@ -1,7 +1,7 @@
 .card-wrapper {
   width: 265px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  padding: 2%;
+  padding: 20px;
   border-radius: 10px;
 
   .link {
@@ -10,6 +10,22 @@
   }
 
   &__header {
-    text-transform: uppercase;
+    .list-title {
+      font-weight: bold;
+      font-size: 17px;
+      text-transform: uppercase;
+      background-color: #0073cf;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+      color: white;
+      margin-left: -20px;
+      padding: 5px 10px;
+      width: min-content;
+      transition: all 0.2s ease-in;
+
+      &:hover {
+        padding-left: 20px;
+      }
+    }
   }
 }

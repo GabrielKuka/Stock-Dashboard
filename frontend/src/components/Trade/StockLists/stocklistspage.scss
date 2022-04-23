@@ -1,18 +1,13 @@
 @import "../../../styles/mixins";
 
 .main-wrapper {
-  margin-top: 5%;
+  margin-top: 6%;
   padding: 1rem;
-  display: grid;
-  grid-template-rows: 10% 90%;
-  margin-bottom: 50px;
 
   &__header {
     border-bottom: 1px solid green;
 
-    align-self: center;
     font-weight: bold;
-
     .add-list-button {
       margin-top: 0.3rem;
       margin-bottom: 0.3rem;
@@ -23,9 +18,8 @@
   }
 
   .list-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    margin-top: 30px;
+    @include flex(row, center, flex-start, wrap);
     column-gap: 40px;
     row-gap: 50px;
 
