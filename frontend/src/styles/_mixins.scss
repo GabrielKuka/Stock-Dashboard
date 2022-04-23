@@ -1,8 +1,8 @@
 //#region FLEX
 @mixin flex(
   $direction: row,
-  $justify: center,
-  $align: center,
+  $justify: flex-start,
+  $align: stretch,
   $flex-wrap: nowrap
 ) {
   display: flex;

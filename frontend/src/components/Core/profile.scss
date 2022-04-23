@@ -1,0 +1,38 @@
+@import "../../styles/mixins";
+.profile-wrapper {
+  margin-top: 8%;
+  display: grid;
+  grid-template-columns: 20% 70%;
+  column-gap: 5%;
+
+  &__side {
+    box-shadow: -3px 3px 10px 3px #c3c3c3;
+    border-radius: 5px;
+    align-self: start;
+    position: sticky;
+    top: 15%;
+    left: 2%;
+    padding: 16px;
+
+    @include flex(column);
+    gap: 10px;
+
+    .user-data-item {
+      border-bottom: 1px solid #c3c3c3;
+      @include flex(column);
+      &__label {
+        font-size: 12px;
+      }
+      &__data {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__main {
+    box-shadow: -3px 3px 10px 3px #c3c3c3;
+    padding: 16px;
+    border-radius: 5px;
+  }
+}
