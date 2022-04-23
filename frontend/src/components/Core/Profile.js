@@ -5,6 +5,7 @@ import StockListsPage from "../Trade/StockLists/StockListsPage";
 
 import "./style.css";
 import "./profile.scss";
+import Button from "./button";
 
 const ProfileItem = ({ data, label }) => {
   return (
@@ -23,6 +24,9 @@ const Profile = ({ user }) => {
   return (
     <section className={"profile-wrapper"}>
       <div className={"profile-wrapper__side"}>
+        <div className={"edit-wrapper"}>
+          <Button className={"edit-wrapper__edit-button"} text={"Edit"} />
+        </div>
         <ProfileItem data={user?.name} label={"Username:"} />
         <ProfileItem data={user?.email} label={"Email:"} />
         <ProfileItem data={user?.birthday} label={"Birthdate:"} />

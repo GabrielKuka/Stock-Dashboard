@@ -17,6 +17,13 @@
     @include flex(column);
     gap: 10px;
 
+    .edit-wrapper {
+      &__edit-button {
+        border: 1px solid black;
+        margin-left: 0;
+      }
+    }
+
     .user-data-item {
       border-bottom: 1px solid #c3c3c3;
       @include flex(column);
