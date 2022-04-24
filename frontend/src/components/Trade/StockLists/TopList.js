@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import tradeService from "../../../services/trade";
-import { WebSocketContext } from "../../Test/websocket";
 import Helper from "../../../services/Helper";
 import useTicker from "../../../hooks/useTicker";
 import "./toplist.scss";
@@ -11,7 +9,7 @@ const TopListItem = ({ ticker, issueType }) => {
 
   const changeStyle = () => {
     const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
-    return { color: changeColor, fontSize: "0.9rem" };
+    return { color: changeColor, fontSize: "0.7rem" };
   };
 
   return (
@@ -26,7 +24,7 @@ const TopListItem = ({ ticker, issueType }) => {
             ${tickerData && tickerData.price}
           </span>
           <span className={"percent-change"} style={changeStyle()}>
-            {tickerData && tickerData.changePercent}%
+            {tickerData.changePercent}%
           </span>
         </div>
       )}

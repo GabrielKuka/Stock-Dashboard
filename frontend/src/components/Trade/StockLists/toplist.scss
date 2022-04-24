@@ -2,9 +2,7 @@
 
 .toplist {
   color: white;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
+  @include flex(row, space-around);
   column-gap: 10px;
   padding: 5px 5px 5px 5px;
 
@@ -13,12 +11,9 @@
     border: 1px solid gray;
     border-radius: 0.2rem;
     width: 170px;
-
     height: 60px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @include flex(column, center);
 
     .item-container {
       font-weight: bold;
@@ -31,6 +26,10 @@
       .percent-change {
         justify-self: end;
         text-align: right;
+      }
+
+      .percent-change {
+        align-self: center;
       }
     }
   }
