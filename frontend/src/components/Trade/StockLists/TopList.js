@@ -8,12 +8,17 @@ const TopListItem = ({ ticker, issueType }) => {
   const [tickerData] = useTicker(ticker);
 
   const changeStyle = () => {
-    const changeColor = tickerData?.changePercent > 0 ? "green" : "red";
+    const changeColor = tickerData?.changePercent > 0 ? "#4cbb17" : "red";
     return { color: changeColor, fontSize: "0.7rem" };
   };
 
+  const itemBorder = () => {
+    const color = tickerData?.changePercent > 0 ? "#4cbb17" : "red";
+    return { border: `1px solid ${color}` };
+  };
+
   return (
-    <div className="toplist__item">
+    <div className="toplist__item" style={itemBorder()}>
       <div className="item-container">
         <span className="ticker">{ticker}</span>
         <span className="issuetype">{Helper.formatIssueType(issueType)}</span>
