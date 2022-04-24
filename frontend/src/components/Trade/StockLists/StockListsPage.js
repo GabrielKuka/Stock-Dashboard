@@ -15,7 +15,7 @@ const Lists = ({ stockLists }) => {
   );
 };
 
-const StockListsPage = ({ user }) => {
+const StockListsPage = ({ user, inProfile }) => {
   const [stockLists, setLists] = useState([]);
 
   useEffect(() => {
