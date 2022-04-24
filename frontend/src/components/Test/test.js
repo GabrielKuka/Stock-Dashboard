@@ -1,42 +1,39 @@
-import React, {useContext, useEffect, useState} from 'react'
-import { WebSocketContext } from './websocket'
+import React from "react";
+import { LineChart, Line, XAxis, YAxis } from "recharts";
 
-const Test = ()=>{
+const Test = () => {
+  const data = [
+    {
+      name: "MSFT",
+      price: 280,
+    },
+    {
+      name: "AAPL",
+      price: 160,
+    },
+    {
+      name: "TSLA",
+      price: 1000,
+    },
+    {
+      name: "TWTR",
+      price: 50,
+    },
+    {
+      name: "AAL",
+      price: 20,
+    },
+  ];
 
-    const ticker = 'AAPL'
-    const [price, setPrice] = useState(0)
+  return (
+    <div style={{ marginTop: "8%" }}>
+      <LineChart width={600} height={300} data={data}>
+        <Line type="monotone" dataKey="price" stroke="#8884d8" />
+        <XAxis dataKey="name" />
+        <YAxis dataKey="price" />
+      </LineChart>
+    </div>
+  );
+};
 
-    const ws = useContext(WebSocketContext)
-
-    useEffect(()=>{
-        const subscribe = async ()=>{
-            ws.subscribe(ticker)
-        }
-
-        subscribe()
-        ws.socket.onmessage = (msg)=>{
-            const message = JSON.parse(msg.data)
-            //console.log(message.data)
-            if(typeof message.data !== 'undefined'){
-                const symbol = message.data[0].s
-                setPrice(price)
-                if(symbol===ticker){
-                    const price = message.data[0].p
-                    setPrice(price)
-                }
-            }
-        }
-
-        return ()=>{
-            ws.unsubscribe(ticker)
-        }
-    }, [])
-
-    return (
-        <div>
-           {price} 
-        </div>
-    )
-}
-
-export default Test
+export default Test;
