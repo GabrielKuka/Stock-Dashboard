@@ -33,11 +33,11 @@ const LoggedOutNav = () => {
   return (
     <div className={"navigation-bar__logged-out"}>
       <Link to="/register">
-        <Button text={"Register"} />
+        <Button className={"nav-button"} text={"Register"} />
       </Link>
 
       <Link to="/login">
-        <Button text={"Login"} />
+        <Button className={"nav-button"} text={"Login"} />
       </Link>
     </div>
   );
