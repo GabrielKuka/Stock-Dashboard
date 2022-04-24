@@ -7,7 +7,9 @@ import { useDispatch } from "react-redux";
 import { changeTicker, changeTickerView } from "../../../reducers/tradeReducer";
 import Helper from "../../../services/Helper";
 import { errorModal } from "../../../reducers/modalReducer";
-import "./sidebar.css";
+import "./sidebar.scss";
+
+import Button from "../../Core/button";
 
 const CustomTextInput = ({ label, ...props }) => {
   const [field] = useField(props);
@@ -107,9 +109,12 @@ const Sidebar = (props) => {
                 id="ticker-input-field"
                 placeholder={"Enter ticker..."}
               />
-              <button className="btn btn-primary" name="submit" type="submit">
-                {props.isSubmitting ? "Loading" : "Search"}
-              </button>
+              <Button
+                className="info"
+                text={props.isSubmitting ? "Loading" : "Search"}
+                name="submit"
+                type="submit"
+              />
             </div>
             <div role="view-group" className={"view-group-container"}>
               <label>

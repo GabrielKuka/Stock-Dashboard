@@ -3,24 +3,30 @@
 .dashboard-wrapper {
   margin-top: 6.5%;
   display: grid;
-  grid-template-columns: 30% 70%;
-  align-items: stretch;
-}
+  grid-template-columns: 25% 75%;
+  align-items: start;
 
-.sidebar-wrapper {
-  min-height: 87vh !important;
-  padding: 1rem;
-  background: forestgreen;
-}
+  @include mq("tablet-edge", max) {
+    grid-template-columns: 40% 60%;
+  }
 
-.page-content-wrapper {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  .sidebar-wrapper {
+    position: sticky;
+    top: 13.2%;
+    height: 86.6vh !important;
+    z-index: 1;
+    padding: 1rem;
+    background: forestgreen;
+  }
 
-  .main-content {
-    padding-top: 20px;
-    border-radius: 5px;
-    box-shadow: -3px 3px 10px 3px #c3c3c3;
+  .page-content-wrapper {
+    padding: 20px;
+    @include flex(column);
+
+    .main-content {
+      padding-top: 20px;
+      border-radius: 5px;
+      box-shadow: -3px 3px 10px 3px #c3c3c3;
+    }
   }
 }
