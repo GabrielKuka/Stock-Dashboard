@@ -6,17 +6,39 @@
   grid-template-columns: 25% 75%;
   align-items: start;
 
-  @include mq("tablet-edge", max) {
+  @include mq("tablet-wide", max) {
     grid-template-columns: 40% 60%;
   }
 
-  .sidebar-wrapper {
+  @include mq("phone-wide", max) {
+    align-items: unset;
+    grid-template-columns: unset;
+    grid-template-rows: 10% 90%;
+    gap: 13%;
+  }
+
+  .sidebar {
     position: sticky;
     top: 13.2%;
-    height: 86.6vh !important;
+    height: 86.7vh !important;
     z-index: 1;
     padding: 1rem;
-    background: forestgreen;
+
+    @include mq("tablet-wide", max) {
+      top: 10%;
+      height: 90vh !important;
+    }
+
+    @include mq("phone-wide", max) {
+      position: static;
+      top: unset;
+      z-index: unset;
+      height: min-content !important;
+      padding-bottom: 0;
+      margin: 40px 20px 0 20px;
+      border-radius: 5px;
+      box-shadow: -3px 3px 10px 3px #c3c3c3;
+    }
   }
 
   .page-content-wrapper {

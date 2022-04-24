@@ -65,18 +65,14 @@ const Dashboard = (props) => {
 
   return (
     <div className={"dashboard-wrapper"}>
-      <div className={"sidebar-wrapper"}>
-        <Sidebar tickerData={tickerData} ticker={stonk} />
-      </div>
-      <div className={"page-content-wrapper"}>
-        {stonk && tickerView && (
-          <>
-            <Header header={header} tickerView={tickerView} />
-            <hr />
-            <div className="main-content">{handleViewRendering()}</div>
-          </>
-        )}
-      </div>
+      <Sidebar tickerData={tickerData} ticker={stonk} />
+      {stonk && tickerView && (
+        <div className={"page-content-wrapper"}>
+          <Header header={header} tickerView={tickerView} />
+          <hr />
+          <div className="main-content">{handleViewRendering()}</div>
+        </div>
+      )}
     </div>
   );
 };

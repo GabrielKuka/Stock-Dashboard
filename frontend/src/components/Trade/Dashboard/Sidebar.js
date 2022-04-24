@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Nav } from "react-bootstrap";
 import "./dashboard.scss";
 import { Formik, useField, Form, Field } from "formik";
 import tradeService from "../../../services/trade";
@@ -85,10 +84,8 @@ const Sidebar = (props) => {
   };
 
   return (
-    <Nav className="col-md-12 d-none d-md-block sidebar">
-      <Nav.Item>
-        <h3 className="sidebar-heading">Pernet</h3>
-      </Nav.Item>
+    <div className="sidebar">
+      <h3 className="sidebar-heading">Pernet</h3>
 
       <Formik
         initialValues={{
@@ -157,7 +154,7 @@ const Sidebar = (props) => {
           </Form>
         )}
       </Formik>
-    </Nav>
+    </div>
   );
 };
 
