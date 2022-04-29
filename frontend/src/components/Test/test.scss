@@ -1,0 +1,29 @@
+@import "../../styles/mixins";
+
+.wrapper {
+  padding-left: 20px;
+
+  &__header {
+    @include flex(row, flex-start);
+    column-gap: 10px;
+    div {
+      @include flex(row, flex-start, flex-end);
+    }
+    .ticker {
+      font-weight: 800;
+    }
+    .changePercent {
+      font-size: 14px;
+    }
+  }
+  &__timeframe-buttons {
+    .ternary,
+    .info {
+      transform: scale(0.7, 0.7);
+    }
+  }
+  &__chart {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+}

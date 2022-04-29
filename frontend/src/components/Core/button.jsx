@@ -6,7 +6,7 @@ Props:
 1. text: The text that appears in the button
 2. testKey: Used for uniqely identifying buttons in unit-tests (optional)
 3. onClick: onclick functionality
-4. className: succcess, info, danger
+4. className: succcess, info, danger,ternary
 */
 const Button = (props) => {
   const buttonType =

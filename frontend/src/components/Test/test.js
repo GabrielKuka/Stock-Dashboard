@@ -10,6 +10,9 @@ import {
 } from "recharts";
 import { alpaca } from "../../config/alpaca";
 import Button from "../Core/button";
+import "./test.scss";
+import useTicker from "../../hooks/useTicker";
+import Helper from "../../services/Helper";
 
 const Alpaca = require("@alpacahq/alpaca-trade-api");
 
@@ -38,8 +41,67 @@ const getMax = (data) => {
 };
 
 const CustomTooltip = ({ active, payload, label }) => {
+  const data = payload?.[0]?.payload;
+
+  const tooltipStyle = {
+    border: `1px solid ${data?.openPrice > data?.price ? "red" : "green"}`,
+    borderRadius: "4px",
+    display: "grid",
+    gridTemplateColumns: "80px 80px 80px 80px 80px 80px",
+    justifyItems: "center",
+    fontSize: "11px",
+  };
+  const ochlStyle = {
+    margin: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: 0,
+  };
   if (active && payload && payload.length) {
-    return <div>${payload[0].value}</div>;
+    return (
+      <div style={tooltipStyle}>
+        <div style={ochlStyle}>
+          <span>
+            <b>Open</b>
+          </span>
+          <span> ${Helper.formatNumber(data.openPrice)}</span>
+        </div>
+        <div style={ochlStyle}>
+          <span>
+            <b>Close</b>
+          </span>
+          <span>${Helper.formatNumber(data.price)}</span>
+        </div>
+        <div style={ochlStyle}>
+          <span>
+            <b>Low</b>
+          </span>
+          <span style={{ color: "red" }}>
+            ${Helper.formatNumber(data?.lowPrice)}
+          </span>
+        </div>
+        <div style={ochlStyle}>
+          <span>
+            <b>High</b>
+          </span>
+          <span style={{ color: "green" }}>
+            ${Helper.formatNumber(data?.highPrice)}
+          </span>
+        </div>
+        <div style={ochlStyle}>
+          <span>
+            <b>Volume</b>
+          </span>
+          <span>{data?.volume}</span>
+        </div>
+        <div style={ochlStyle}>
+          <span>
+            <b>Date</b>
+          </span>
+          <span>{data?.date}</span>
+        </div>
+      </div>
+    );
   }
   return null;
 };
@@ -85,6 +147,8 @@ const Test = () => {
   const [ticker, setTicker] = useState("");
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame);
 
+  const [tickerData, setTickerInput] = useTicker(ticker);
+
   const getPeriod = (period) => {
     if (!period) {
       return;
@@ -105,6 +169,7 @@ const Test = () => {
   const makeCall = async (t, timeFrame = defaultTimeFrame) => {
     if (t.length > 0) {
       setTicker(t);
+      setTickerInput(t);
       let resp = client.getBarsV2(
         t,
         {
@@ -120,6 +185,10 @@ const Test = () => {
 
       for await (let b of resp) {
         prices.push({
+          highPrice: b.HighPrice,
+          lowPrice: b.LowPrice,
+          openPrice: b.OpenPrice,
+          volume: b.Volume,
           price: b.ClosePrice,
           date: new Date(b.Timestamp).toLocaleDateString("en-US"),
         });
@@ -152,26 +221,39 @@ const Test = () => {
     await makeCall(ticker, timeFrame);
   }, [timeFrame]);
 
+  const percentColor = () => {
+    return {
+      color: tickerData?.changePercent > 0 ? "green" : "red",
+    };
+  };
+
   return (
-    <div style={{ marginTop: "8%" }}>
+    <div className={"wrapper"} style={{ marginTop: "8%" }}>
       {ticker && timeFrame && (
-        <div>
-          <h1>{ticker}</h1>
-          <span>{getPeriod(timeFrame[3])}</span>
+        <div className={"wrapper__header"}>
+          <div className={"ticker"}>{ticker}</div>
+          <div className={"price"}>${tickerData?.price}</div>
+          <div className={"changePercent"} style={percentColor()}>
+            {tickerData?.changePercent}%
+          </div>
         </div>
       )}
       {data?.length > 0 && (
-        <LineChart width={800} height={300} data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+        <LineChart
+          className={"wrapper__chart"}
+          width={800}
+          height={300}
+          data={data}
+        >
           <Line dot={false} dataKey="price" stroke="#8884d8" />
           <XAxis
             dataKey="date"
             height={60}
             angle={-60}
             dy={20}
-            hide={true}
             minTickGap={15}
             tickLine={false}
+            hide={true}
           />
           <YAxis
             hide={true}
@@ -180,28 +262,28 @@ const Test = () => {
             type="number"
             dataKey="price"
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip position={{ x: 200, y: -30 }} content={<CustomTooltip />} />
         </LineChart>
       )}
       {ticker && (
-        <div className={"buttons"}>
+        <div className={"wrapper__timeframe-buttons"}>
           <Button
-            className={"info"}
+            className={timeFrame[3] === "1w" ? "info" : "ternary"}
             text={"1w"}
             onClick={() => handleTimeFrame("1w")}
           />
           <Button
-            className={"info"}
+            className={timeFrame[3] === "1m" ? "info" : "ternary"}
             text={"1m"}
             onClick={() => handleTimeFrame("1m")}
           />
           <Button
-            className={"info"}
+            className={timeFrame[3] === "3m" ? "info" : "ternary"}
             text={"3m"}
             onClick={() => handleTimeFrame("3m")}
           />
           <Button
-            className={"info"}
+            className={timeFrame[3] === "1y" ? "info" : "ternary"}
             text={"1y"}
             onClick={() => handleTimeFrame("1y")}
           />
