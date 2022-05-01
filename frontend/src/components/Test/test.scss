@@ -4,10 +4,26 @@
   padding-left: 20px;
 
   &__header {
-    @include flex(row, flex-start);
+    @include flex(row, flex-start, center);
+    height: 60px;
     column-gap: 10px;
+
     div {
       @include flex(row, flex-start, flex-end);
+    }
+    .tooltip-box {
+      border: 1px solid green;
+      border-radius: 4px;
+      display: grid;
+      grid-template-columns: repeat(6, 80px);
+      justify-items: center;
+      font-size: 11px;
+
+      div {
+        @include flex(column);
+        gap: 0;
+        margin: 0;
+      }
     }
     .ticker {
       font-weight: 800;
@@ -23,7 +39,7 @@
     }
   }
   &__chart {
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
+    border: 1px solid black;
+    border-radius: 5px;
   }
 }

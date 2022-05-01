@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { alpaca } from "../../config/alpaca";
 import Button from "../Core/button";
 import "./test.scss";
@@ -38,72 +31,6 @@ const getMax = (data) => {
       data.map((item) => item.price)
     )
   );
-};
-
-const CustomTooltip = ({ active, payload, label }) => {
-  const data = payload?.[0]?.payload;
-
-  const tooltipStyle = {
-    border: `1px solid ${data?.openPrice > data?.price ? "red" : "green"}`,
-    borderRadius: "4px",
-    display: "grid",
-    gridTemplateColumns: "80px 80px 80px 80px 80px 80px",
-    justifyItems: "center",
-    fontSize: "11px",
-  };
-  const ochlStyle = {
-    margin: 0,
-    display: "flex",
-    flexDirection: "column",
-    gap: 0,
-  };
-  if (active && payload && payload.length) {
-    return (
-      <div style={tooltipStyle}>
-        <div style={ochlStyle}>
-          <span>
-            <b>Open</b>
-          </span>
-          <span> ${Helper.formatNumber(data.openPrice)}</span>
-        </div>
-        <div style={ochlStyle}>
-          <span>
-            <b>Close</b>
-          </span>
-          <span>${Helper.formatNumber(data.price)}</span>
-        </div>
-        <div style={ochlStyle}>
-          <span>
-            <b>Low</b>
-          </span>
-          <span style={{ color: "red" }}>
-            ${Helper.formatNumber(data?.lowPrice)}
-          </span>
-        </div>
-        <div style={ochlStyle}>
-          <span>
-            <b>High</b>
-          </span>
-          <span style={{ color: "green" }}>
-            ${Helper.formatNumber(data?.highPrice)}
-          </span>
-        </div>
-        <div style={ochlStyle}>
-          <span>
-            <b>Volume</b>
-          </span>
-          <span>{data?.volume}</span>
-        </div>
-        <div style={ochlStyle}>
-          <span>
-            <b>Date</b>
-          </span>
-          <span>{data?.date}</span>
-        </div>
-      </div>
-    );
-  }
-  return null;
 };
 
 const Searchfield = ({ makeCall }) => {
@@ -146,55 +73,39 @@ const Test = () => {
   const [data, setData] = useState([]);
   const [ticker, setTicker] = useState("");
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame);
+  const wrapper = useRef(null);
+
+  const [tooltipData, setTooltipData] = useState("");
 
   const [tickerData, setTickerInput] = useTicker(ticker);
 
-  const getPeriod = (period) => {
-    if (!period) {
-      return;
-    }
-
-    switch (period) {
-      case "1w":
-        return "1 Week";
-      case "1m":
-        return "1 Month";
-      case "3m":
-        return "3 Months";
-      case "1y":
-        return "1 Year";
-    }
-  };
-
   const makeCall = async (t, timeFrame = defaultTimeFrame) => {
-    if (t.length > 0) {
-      setTicker(t);
-      setTickerInput(t);
-      let resp = client.getBarsV2(
-        t,
-        {
-          start: timeFrame[0],
-          end: timeFrame[1],
-          timeframe: timeFrame[2],
-          adjustment: "all",
-        },
-        client.configuration
-      );
+    setTicker(t);
+    setTickerInput(t);
+    let resp = client.getBarsV2(
+      t,
+      {
+        start: timeFrame[0],
+        end: timeFrame[1],
+        timeframe: timeFrame[2],
+        adjustment: "all",
+      },
+      client.configuration
+    );
 
-      const prices = [];
+    const prices = [];
 
-      for await (let b of resp) {
-        prices.push({
-          highPrice: b.HighPrice,
-          lowPrice: b.LowPrice,
-          openPrice: b.OpenPrice,
-          volume: b.Volume,
-          price: b.ClosePrice,
-          date: new Date(b.Timestamp).toLocaleDateString("en-US"),
-        });
-      }
-      setData([...prices]);
+    for await (let b of resp) {
+      prices.push({
+        highPrice: b.HighPrice,
+        lowPrice: b.LowPrice,
+        openPrice: b.OpenPrice,
+        volume: b.Volume,
+        price: b.ClosePrice,
+        date: new Date(b.Timestamp).toLocaleDateString("en-US"),
+      });
     }
+    setData([...prices]);
   };
 
   const handleTimeFrame = (frame) => {
@@ -228,18 +139,63 @@ const Test = () => {
   };
 
   return (
-    <div className={"wrapper"} style={{ marginTop: "8%" }}>
+    <div ref={wrapper} className={"wrapper"} style={{ marginTop: "8%" }}>
       {ticker && timeFrame && (
         <div className={"wrapper__header"}>
-          <div className={"ticker"}>{ticker}</div>
+          <div className={"ticker"}>{ticker.toUpperCase()}</div>
           <div className={"price"}>${tickerData?.price}</div>
           <div className={"changePercent"} style={percentColor()}>
             {tickerData?.changePercent}%
           </div>
+          {tooltipData && (
+            <div className={"tooltip-box"}>
+              <div>
+                <span>
+                  <b>Open</b>
+                </span>
+                <span> ${Helper.formatNumber(tooltipData.openPrice)}</span>
+              </div>
+              <div>
+                <span>
+                  <b>Close</b>
+                </span>
+                <span>${Helper.formatNumber(tooltipData.price)}</span>
+              </div>
+              <div>
+                <span>
+                  <b>Low</b>
+                </span>
+                <span style={{ color: "red" }}>
+                  ${Helper.formatNumber(tooltipData?.lowPrice)}
+                </span>
+              </div>
+              <div>
+                <span>
+                  <b>High</b>
+                </span>
+                <span style={{ color: "green" }}>
+                  ${Helper.formatNumber(tooltipData?.highPrice)}
+                </span>
+              </div>
+              <div>
+                <span>
+                  <b>Volume</b>
+                </span>
+                <span>{tooltipData?.volume}</span>
+              </div>
+              <div>
+                <span>
+                  <b>Date</b>
+                </span>
+                <span>{tooltipData?.date}</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {data?.length > 0 && (
         <LineChart
+          onMouseLeave={() => setTooltipData("")}
           className={"wrapper__chart"}
           width={800}
           height={300}
@@ -262,7 +218,15 @@ const Test = () => {
             type="number"
             dataKey="price"
           />
-          <Tooltip position={{ x: 200, y: -30 }} content={<CustomTooltip />} />
+          <Tooltip
+            content={({ active, payload }) => {
+              const data = payload?.[0]?.payload;
+              if (active && payload) {
+                setTooltipData(data);
+              }
+              return null;
+            }}
+          />
         </LineChart>
       )}
       {ticker && (
