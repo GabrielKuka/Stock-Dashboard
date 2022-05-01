@@ -22,15 +22,17 @@ const Header = (props) => {
 
   return (
     <div className="wrapper">
+      <h3 className={"tickerview"}>{props.tickerView}</h3>
       <div className={"wrapper__info"}>
-        <h3 className={"tickerview"}>{props.tickerView}</h3>
-        <img className={"logo"} alt="Logo" src={props.header.logo} />
-        <div className="company-name">{props.header.name}</div>
-        <div className={"realtime-price-container"}>
-          <span className={"price"}>${tickerData?.price}</span>
-          <span className={"percent"} style={changeStyle()}>
-            {tickerData?.changePercent}%
-          </span>
+        <div className={"company-info"}>
+          <div className="company-name">{props.header.name}</div>
+          <span className={"ticker"}>{ticker}</span>
+          <div className={"realtime-price-container"}>
+            <span className={"price"}>${tickerData?.price}</span>
+            <span className={"percent"} style={changeStyle()}>
+              {tickerData?.changePercent}%
+            </span>
+          </div>
         </div>
       </div>
       <Chart ticker={ticker} />

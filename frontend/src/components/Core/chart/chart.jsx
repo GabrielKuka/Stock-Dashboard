@@ -170,16 +170,6 @@ const Chart = ({ ticker }) => {
 
   return (
     <div className={"chart-wrapper"}>
-      {ticker && timeFrame && (
-        <div className={"chart-wrapper__header"}>
-          <span className={"ticker"}>{ticker.toUpperCase()}</span>
-          <span className={"price"}>${tickerData?.price}</span>
-          <span className={"changePercent"} style={percentColor()}>
-            {tickerData?.changePercent}%
-          </span>
-          <TooltipData tooltipData={tooltipData} redOrGreen={redOrGreen} />
-        </div>
-      )}
       {prices?.length > 0 && (
         <LineChart
           onMouseLeave={() => setTooltipData("")}
@@ -218,19 +208,22 @@ const Chart = ({ ticker }) => {
         </LineChart>
       )}
       {ticker && (
-        <div className={"chart-wrapper__timeframe-buttons"}>
-          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1w")}>
-            {timeFrame[3] === "1w" ? "1 Week" : `1w`}
-          </span>
-          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1m")}>
-            {timeFrame[3] === "1m" ? "1 Month" : `1m`}
-          </span>
-          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("3m")}>
-            {timeFrame[3] === "3m" ? "3 Month" : `3m`}
-          </span>
-          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1y")}>
-            {timeFrame[3] === "1y" ? "1 Year" : `1y`}
-          </span>
+        <div className={"chart-wrapper__bottom-chart"}>
+          <div className={"timeframe-buttons"}>
+            <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1w")}>
+              {timeFrame[3] === "1w" ? "1 Week" : `1w`}
+            </span>
+            <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1m")}>
+              {timeFrame[3] === "1m" ? "1 Month" : `1m`}
+            </span>
+            <span style={tfButtonStyle()} onClick={() => handleTimeFrame("3m")}>
+              {timeFrame[3] === "3m" ? "3 Month" : `3m`}
+            </span>
+            <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1y")}>
+              {timeFrame[3] === "1y" ? "1 Year" : `1y`}
+            </span>
+          </div>
+          <TooltipData tooltipData={tooltipData} redOrGreen={redOrGreen} />
         </div>
       )}
     </div>
