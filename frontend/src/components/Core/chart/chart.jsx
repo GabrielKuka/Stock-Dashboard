@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { alpaca } from "../../../config/alpaca";
 import useTicker from "../../../hooks/useTicker";
 import Helper from "../../../services/Helper";
+import { useSelector } from "react-redux";
 import "./chart.scss";
 
 const Alpaca = require("@alpacahq/alpaca-trade-api");
@@ -82,7 +83,7 @@ const TooltipData = ({ tooltipData, redOrGreen }) => {
   );
 };
 
-const Chart = ({ ticker }) => {
+const Chart = () => {
   const defaultTimeFrame = [
     moment().add(-7, "days").format().slice(0, 10),
     moment().add(-2, "days").format().slice(0, 10),
@@ -90,12 +91,18 @@ const Chart = ({ ticker }) => {
     "1w",
   ];
 
+  const ticker = useSelector(({ trade }) => trade.ticker);
+
   const [prices, setPrices] = useState([]);
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame);
 
   const [tooltipData, setTooltipData] = useState("");
 
   const [tickerData, setTickerInput] = useTicker(ticker);
+
+  useEffect(async () => {
+    await getBars(ticker, timeFrame);
+  }, [ticker]);
 
   const getBars = async (t, timeFrame = defaultTimeFrame) => {
     setTickerInput(t);
