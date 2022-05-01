@@ -1,0 +1,52 @@
+@import "../../../styles/mixins";
+
+.chart-wrapper {
+  @include flex(column, center, flex-start);
+  gap: 10px;
+
+  &__header {
+    @include flex(row, flex-start, center);
+    height: 50px;
+    column-gap: 10px;
+
+    .tooltip-box {
+      border: 1px solid green;
+      border-radius: 4px;
+      display: grid;
+      grid-template-columns: repeat(6, 80px);
+      justify-items: center;
+      font-size: 11px;
+
+      div {
+        @include flex(column);
+        gap: 0;
+        margin: 0;
+      }
+    }
+    span {
+      @include flex(row, center);
+      align-content: flex-end;
+    }
+    .ticker {
+      font-weight: 800;
+      font-size: 30px;
+    }
+    .changePercent {
+      font-size: 14px;
+    }
+  }
+  &__timeframe-buttons {
+    @include flex(row, flex-start, center);
+    gap: 30px;
+    span {
+      cursor: pointer;
+      border: 1px solid black;
+      border-radius: 2px;
+      padding-inline: 7px;
+    }
+  }
+  &__chart {
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+}

@@ -1,32 +1,35 @@
 @import "../../../styles/mixins";
 
-.header-wrapper {
-  @include flex(column, flex-start, flex-start);
+.wrapper {
+  @include flex(row, center, center);
   box-shadow: -3px 3px 10px 5px #c3c3c3;
   padding: 10px;
   border-radius: 5px;
 
-  &__tickerview {
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  &__logo {
-    width: 70px;
-    height: 70px;
-  }
-
-  &__company-name {
-    font-weight: bold;
-    font-size: 1.5em;
-  }
-
-  &__realtime-price-container {
-    border-bottom: 1px solid black;
-    @include flex(row, flex-start, center);
-    column-gap: 20px;
-
-    .price {
+  &__info {
+    @include flex(column, flex-start, flex-start);
+    .tickerview {
       font-weight: bold;
+      text-transform: uppercase;
+    }
+    .logo {
+      width: 70px;
+      height: 70px;
+    }
+
+    .company-name {
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+
+    .realtime-price-container {
+      border-bottom: 1px solid black;
+      @include flex(row, flex-start, center);
+      column-gap: 20px;
+
+      .price {
+        font-weight: bold;
+      }
     }
   }
 }
