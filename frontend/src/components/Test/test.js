@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { alpaca } from "../../config/alpaca";
@@ -62,6 +62,56 @@ const Searchfield = ({ makeCall }) => {
   );
 };
 
+const TooltipData = ({ tooltipData, redOrGreen }) => {
+  if (!tooltipData) {
+    return null;
+  }
+  return (
+    <div style={{ borderColor: redOrGreen() }} className={"tooltip-box"}>
+      <div>
+        <span>
+          <b>Open</b>
+        </span>
+        <span> ${Helper.formatNumber(tooltipData.openPrice)}</span>
+      </div>
+      <div>
+        <span>
+          <b>Close</b>
+        </span>
+        <span>${Helper.formatNumber(tooltipData.price)}</span>
+      </div>
+      <div>
+        <span>
+          <b>Low</b>
+        </span>
+        <span style={{ color: "red" }}>
+          ${Helper.formatNumber(tooltipData?.lowPrice)}
+        </span>
+      </div>
+      <div>
+        <span>
+          <b>High</b>
+        </span>
+        <span style={{ color: "green" }}>
+          ${Helper.formatNumber(tooltipData?.highPrice)}
+        </span>
+      </div>
+      <div>
+        <span>
+          <b>Volume</b>
+        </span>
+        <span>{Helper.formatNumber(tooltipData?.volume, 0)}</span>
+      </div>
+      <div>
+        <span>
+          <b>Date</b>
+        </span>
+        <span>{tooltipData?.date}</span>
+      </div>
+    </div>
+  );
+};
+
 const Test = () => {
   const defaultTimeFrame = [
     moment().add(-7, "days").format().slice(0, 10),
@@ -73,13 +123,12 @@ const Test = () => {
   const [prices, setPrices] = useState([]);
   const [ticker, setTicker] = useState("");
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame);
-  const wrapper = useRef(null);
 
   const [tooltipData, setTooltipData] = useState("");
 
   const [tickerData, setTickerInput] = useTicker(ticker);
 
-  const makeCall = async (t, timeFrame = defaultTimeFrame) => {
+  const getBars = async (t, timeFrame = defaultTimeFrame) => {
     setTicker(t);
     setTickerInput(t);
     let resp = client.getBarsV2(
@@ -129,7 +178,7 @@ const Test = () => {
   };
 
   useEffect(async () => {
-    await makeCall(ticker, timeFrame);
+    await getBars(ticker, timeFrame);
   }, [timeFrame]);
 
   const percentColor = () => {
@@ -152,7 +201,7 @@ const Test = () => {
   };
 
   return (
-    <div ref={wrapper} className={"wrapper"} style={{ marginTop: "8%" }}>
+    <div className={"wrapper"} style={{ marginTop: "8%" }}>
       {ticker && timeFrame && (
         <div className={"wrapper__header"}>
           <span className={"ticker"}>{ticker.toUpperCase()}</span>
@@ -160,53 +209,7 @@ const Test = () => {
           <span className={"changePercent"} style={percentColor()}>
             {tickerData?.changePercent}%
           </span>
-          {tooltipData && (
-            <div
-              style={{ borderColor: redOrGreen() }}
-              className={"tooltip-box"}
-            >
-              <div>
-                <span>
-                  <b>Open</b>
-                </span>
-                <span> ${Helper.formatNumber(tooltipData.openPrice)}</span>
-              </div>
-              <div>
-                <span>
-                  <b>Close</b>
-                </span>
-                <span>${Helper.formatNumber(tooltipData.price)}</span>
-              </div>
-              <div>
-                <span>
-                  <b>Low</b>
-                </span>
-                <span style={{ color: "red" }}>
-                  ${Helper.formatNumber(tooltipData?.lowPrice)}
-                </span>
-              </div>
-              <div>
-                <span>
-                  <b>High</b>
-                </span>
-                <span style={{ color: "green" }}>
-                  ${Helper.formatNumber(tooltipData?.highPrice)}
-                </span>
-              </div>
-              <div>
-                <span>
-                  <b>Volume</b>
-                </span>
-                <span>{Helper.formatNumber(tooltipData?.volume, 0)}</span>
-              </div>
-              <div>
-                <span>
-                  <b>Date</b>
-                </span>
-                <span>{tooltipData?.date}</span>
-              </div>
-            </div>
-          )}
+          <TooltipData tooltipData={tooltipData} redOrGreen={redOrGreen} />
         </div>
       )}
       {prices?.length > 0 && (
@@ -251,31 +254,18 @@ const Test = () => {
           <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1w")}>
             {timeFrame[3] === "1w" ? "1 Week" : `1w`}
           </span>
-          <span
-            style={tfButtonStyle()}
-            className={""}
-            onClick={() => handleTimeFrame("1m")}
-          >
+          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1m")}>
             {timeFrame[3] === "1m" ? "1 Month" : `1m`}
           </span>
-          <span
-            style={tfButtonStyle()}
-            className={""}
-            onClick={() => handleTimeFrame("3m")}
-          >
+          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("3m")}>
             {timeFrame[3] === "3m" ? "3 Month" : `3m`}
           </span>
-          <span
-            style={tfButtonStyle()}
-            className={""}
-            onClick={() => handleTimeFrame("1y")}
-          >
+          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1y")}>
             {timeFrame[3] === "1y" ? "1 Year" : `1y`}
           </span>
         </div>
       )}
-      <br />
-      <Searchfield makeCall={makeCall} />
+      <Searchfield makeCall={getBars} />
     </div>
   );
 };
