@@ -1,6 +1,7 @@
 import React from "react";
 import Helper from "../../../services/Helper";
 import useTicker from "../../../hooks/useTicker";
+import Button from "../../Core/button";
 
 const TickerRow = ({ ticker, edit, listAction }) => {
   const [tickerData] = useTicker(ticker);
@@ -16,21 +17,20 @@ const TickerRow = ({ ticker, edit, listAction }) => {
       {tickerData && (
         <tr>
           <td>{ticker}</td>
-          <td>$ {tickerData.price}</td>
+          <td>${tickerData.price}</td>
           <td style={changeStyle()}>
             {tickerData.changePercent}% (
             {Helper.formatNumber(tickerData.change)})
           </td>
           {edit && (
             <td>
-              <button
+              <Button
                 onClick={() =>
                   listAction({ type: "REMOVE_STOCK", data: ticker })
                 }
-                className="btn btn-danger"
-              >
-                X
-              </button>
+                className="danger"
+                text={"X"}
+              />
             </td>
           )}
         </tr>
