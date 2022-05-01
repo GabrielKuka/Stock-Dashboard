@@ -1,7 +1,7 @@
 @import "../../../styles/mixins";
 
 .dashboard-wrapper {
-  margin-top: 6.5%;
+  margin-top: 7%;
   display: grid;
   grid-template-columns: 25% 75%;
   align-items: start;
@@ -19,14 +19,14 @@
 
   .sidebar {
     position: sticky;
-    top: 13.2%;
-    height: 86.7vh !important;
+    top: 17%;
+    height: min-content !important;
     z-index: 1;
     padding: 1rem;
+    border-radius: 5px;
 
     @include mq("tablet-wide", max) {
       top: 10%;
-      height: 90vh !important;
     }
 
     @include mq("phone-wide", max) {

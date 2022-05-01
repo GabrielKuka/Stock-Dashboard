@@ -22,7 +22,6 @@ const Header = (props) => {
 
   return (
     <div className="wrapper">
-      <h3 className={"tickerview"}>{props.tickerView}</h3>
       <div className={"wrapper__info"}>
         <div className={"company-info"}>
           <div className="company-name">{props.header.name}</div>
