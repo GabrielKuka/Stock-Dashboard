@@ -7,11 +7,14 @@ const Helper = {
   formatChangePercent: (change) => {
     return Number(100 * change).toFixed(2);
   },
-  formatNumber: (number) => {
-    if (typeof number === "undefined") {
+  formatNumber: (number, dec = 2) => {
+    if (!number) {
       return "-";
     } else {
-      return Number(number).toFixed(2).toLocaleString();
+      return Number(number)
+        .toFixed(dec)
+        .toLocaleString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   },
   formatDateTime: (date) => {

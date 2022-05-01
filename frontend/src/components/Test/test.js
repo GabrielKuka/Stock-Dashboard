@@ -197,7 +197,7 @@ const Test = () => {
                 <span>
                   <b>Volume</b>
                 </span>
-                <span>{tooltipData?.volume}</span>
+                <span>{Helper.formatNumber(tooltipData?.volume, 0)}</span>
               </div>
               <div>
                 <span>
