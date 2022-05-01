@@ -2,15 +2,14 @@
 
 .wrapper {
   padding-left: 20px;
+  @include flex(column, center, flex-start);
+  gap: 10px;
 
   &__header {
     @include flex(row, flex-start, center);
-    height: 60px;
+    height: 50px;
     column-gap: 10px;
 
-    div {
-      @include flex(row, flex-start, flex-end);
-    }
     .tooltip-box {
       border: 1px solid green;
       border-radius: 4px;
@@ -25,17 +24,26 @@
         margin: 0;
       }
     }
+    span {
+      @include flex(row, center);
+      align-content: flex-end;
+    }
     .ticker {
       font-weight: 800;
+      font-size: 30px;
     }
     .changePercent {
       font-size: 14px;
     }
   }
   &__timeframe-buttons {
-    .ternary,
-    .info {
-      transform: scale(0.7, 0.7);
+    @include flex(row, flex-start, center);
+    gap: 30px;
+    span {
+      cursor: pointer;
+      border: 1px solid black;
+      border-radius: 2px;
+      padding-inline: 7px;
     }
   }
   &__chart {

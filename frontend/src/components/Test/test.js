@@ -70,7 +70,7 @@ const Test = () => {
     "1w",
   ];
 
-  const [data, setData] = useState([]);
+  const [prices, setPrices] = useState([]);
   const [ticker, setTicker] = useState("");
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame);
   const wrapper = useRef(null);
@@ -93,10 +93,10 @@ const Test = () => {
       client.configuration
     );
 
-    const prices = [];
+    const p = [];
 
     for await (let b of resp) {
-      prices.push({
+      p.push({
         highPrice: b.HighPrice,
         lowPrice: b.LowPrice,
         openPrice: b.OpenPrice,
@@ -105,7 +105,7 @@ const Test = () => {
         date: new Date(b.Timestamp).toLocaleDateString("en-US"),
       });
     }
-    setData([...prices]);
+    setPrices([...p]);
   };
 
   const handleTimeFrame = (frame) => {
@@ -138,17 +138,33 @@ const Test = () => {
     };
   };
 
+  const redOrGreen = () => {
+    return prices?.[0]?.price > prices?.[prices?.length - 1]?.price
+      ? "red"
+      : "green";
+  };
+
+  const tfButtonStyle = () => {
+    return {
+      color: redOrGreen(),
+      borderColor: redOrGreen(),
+    };
+  };
+
   return (
     <div ref={wrapper} className={"wrapper"} style={{ marginTop: "8%" }}>
       {ticker && timeFrame && (
         <div className={"wrapper__header"}>
-          <div className={"ticker"}>{ticker.toUpperCase()}</div>
-          <div className={"price"}>${tickerData?.price}</div>
-          <div className={"changePercent"} style={percentColor()}>
+          <span className={"ticker"}>{ticker.toUpperCase()}</span>
+          <span className={"price"}>${tickerData?.price}</span>
+          <span className={"changePercent"} style={percentColor()}>
             {tickerData?.changePercent}%
-          </div>
+          </span>
           {tooltipData && (
-            <div className={"tooltip-box"}>
+            <div
+              style={{ borderColor: redOrGreen() }}
+              className={"tooltip-box"}
+            >
               <div>
                 <span>
                   <b>Open</b>
@@ -193,15 +209,16 @@ const Test = () => {
           )}
         </div>
       )}
-      {data?.length > 0 && (
+      {prices?.length > 0 && (
         <LineChart
           onMouseLeave={() => setTooltipData("")}
           className={"wrapper__chart"}
           width={800}
           height={300}
-          data={data}
+          data={prices}
+          style={{ borderColor: redOrGreen() }}
         >
-          <Line dot={false} dataKey="price" stroke="#8884d8" />
+          <Line dot={false} dataKey="price" stroke={redOrGreen()} />
           <XAxis
             dataKey="date"
             height={60}
@@ -214,7 +231,7 @@ const Test = () => {
           <YAxis
             hide={true}
             tickLine={false}
-            domain={[getMin(data), getMax(data)]}
+            domain={[getMin(prices), getMax(prices)]}
             type="number"
             dataKey="price"
           />
@@ -231,26 +248,30 @@ const Test = () => {
       )}
       {ticker && (
         <div className={"wrapper__timeframe-buttons"}>
-          <Button
-            className={timeFrame[3] === "1w" ? "info" : "ternary"}
-            text={"1w"}
-            onClick={() => handleTimeFrame("1w")}
-          />
-          <Button
-            className={timeFrame[3] === "1m" ? "info" : "ternary"}
-            text={"1m"}
+          <span style={tfButtonStyle()} onClick={() => handleTimeFrame("1w")}>
+            {timeFrame[3] === "1w" ? "1 Week" : `1w`}
+          </span>
+          <span
+            style={tfButtonStyle()}
+            className={""}
             onClick={() => handleTimeFrame("1m")}
-          />
-          <Button
-            className={timeFrame[3] === "3m" ? "info" : "ternary"}
-            text={"3m"}
+          >
+            {timeFrame[3] === "1m" ? "1 Month" : `1m`}
+          </span>
+          <span
+            style={tfButtonStyle()}
+            className={""}
             onClick={() => handleTimeFrame("3m")}
-          />
-          <Button
-            className={timeFrame[3] === "1y" ? "info" : "ternary"}
-            text={"1y"}
+          >
+            {timeFrame[3] === "3m" ? "3 Month" : `3m`}
+          </span>
+          <span
+            style={tfButtonStyle()}
+            className={""}
             onClick={() => handleTimeFrame("1y")}
-          />
+          >
+            {timeFrame[3] === "1y" ? "1 Year" : `1y`}
+          </span>
         </div>
       )}
       <br />

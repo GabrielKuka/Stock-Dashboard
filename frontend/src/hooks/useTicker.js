@@ -31,10 +31,13 @@ const useTicker = (ticker) => {
   useEffect(() => {
     if (stock?.ticker === tickerInput) {
       const change = Helper.getChange(stock.price, prevClose.current);
+      const changePercent = Helper.formatChangePercent(
+        change / prevClose?.current
+      );
       setTickerData({
         price: stock?.price,
-        change: change,
-        changePercent: Helper.formatChangePercent(change / prevClose?.current),
+        change,
+        changePercent,
       });
     }
   }, [stock.price]);

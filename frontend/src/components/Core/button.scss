@@ -7,17 +7,17 @@
 }
 
 .ternary {
-  border: 2px solid #f28500;
+  border: 2px solid #0073cf;
   border-radius: 5px;
   background-color: white;
-  color: #f28500;
+  color: #0073cf;
   transition: all 0.2s ease-in;
 
   padding: 0.4em 0.7em;
   margin-inline: 0.5rem;
 
   &:hover {
-    background-color: #f28500;
+    background-color: #0073cf;
     color: white;
   }
 }
