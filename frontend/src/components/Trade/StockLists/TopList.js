@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import tradeService from "../../../services/trade";
 import Helper from "../../../services/Helper";
+import { changeTicker } from "../../../reducers/tradeReducer";
 import useTicker from "../../../hooks/useTicker";
 import "./toplist.scss";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const TopListItem = ({ ticker, issueType }) => {
   const [tickerData] = useTicker(ticker);
+  const dispatch = useDispatch();
 
   const changeStyle = () => {
     const changeColor = tickerData?.changePercent > 0 ? "#4cbb17" : "red";
@@ -18,7 +22,12 @@ const TopListItem = ({ ticker, issueType }) => {
   };
 
   return (
-    <div className="toplist__item" style={itemBorder()}>
+    <Link
+      className="toplist__item"
+      style={itemBorder()}
+      to={"/dashboard"}
+      onClick={() => dispatch(changeTicker(ticker))}
+    >
       <div className="item-container">
         <span className="ticker">{ticker}</span>
         <span className="issuetype">{Helper.formatIssueType(issueType)}</span>
@@ -33,7 +42,7 @@ const TopListItem = ({ ticker, issueType }) => {
           </span>
         </div>
       )}
-    </div>
+    </Link>
   );
 };
 

@@ -9,9 +9,15 @@
   &__item {
     padding: 5px 5px 5px 5px;
     //border: 1px solid gray;
+    color: white;
     border-radius: 0.2rem;
     width: 170px;
     height: 60px;
+
+    &:hover {
+      text-decoration: none;
+      color: white;
+    }
 
     @include flex(column, center);
 
