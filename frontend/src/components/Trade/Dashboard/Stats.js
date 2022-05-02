@@ -2,6 +2,9 @@ import React from "react";
 import Helper from "../../../services/Helper";
 
 const Stats = ({ data }) => {
+  if (!data) {
+    return null;
+  }
   return (
     <div className="container-fluid">
       <div className="row">

@@ -27,8 +27,14 @@
     grid-template-columns: repeat(2, 200px);
     gap: 20px 20px;
 
+    @include mq("phone-wide", max) {
+      grid-template-columns: unset;
+      justify-content: center;
+    }
+
     .result-item {
-      @include flex(row, flex-start);
+      display: grid;
+      grid-template-columns: 65% 30%;
       gap: 32px;
 
       box-shadow: -3px 2px 15px 2px #c3c3c3;
@@ -41,6 +47,7 @@
 
       button {
         justify-self: flex-end;
+        padding-inline: 15px;
       }
     }
   }

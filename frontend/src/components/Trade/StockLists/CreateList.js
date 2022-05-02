@@ -137,39 +137,21 @@ const CreateList = ({ user }) => {
   const listAction = (action) => {
     switch (action.type) {
       case "REMOVE_STOCK":
-        removeStock(action.data);
+        setStocks([...stocks.filter((s) => s != action.data)]);
         break;
       case "ADD_STOCK":
-        addStock(action.data);
+        setStocks((old) => [...old, action.data]);
         break;
       case "IS_EMPTY":
-        return isEmpty();
+        return stocks.length === 0;
       case "IS_PRESENT":
-        return isPresent(action.data);
+        return stocks.find((s) => s === action.data);
       case "FINISHED":
         setFinished(action.data);
         break;
       default:
         return null;
     }
-  };
-
-  const removeStock = (stock) => {
-    setStocks(stocks.filter((s) => s !== stock));
-  };
-
-  const addStock = (data) => {
-    setStocks((oldStocks) => [...oldStocks, data]);
-  };
-
-  const isEmpty = () => {
-    return true ? stocks.length === 0 : false;
-  };
-
-  const isPresent = (ticker) => {
-    for (let i = 0; i < stocks.length; i++)
-      if (ticker === stocks[i]) return true;
-    return false;
   };
 
   const finishList = async () => {
@@ -223,7 +205,9 @@ const CreateList = ({ user }) => {
               <span className="">{stock}</span>
               <Button
                 className={"danger"}
-                onClick={() => removeStock(stock)}
+                onClick={() =>
+                  setStocks([...stocks.filter((s) => s !== stock)])
+                }
                 text={"X"}
               />
             </div>
